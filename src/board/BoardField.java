@@ -5,64 +5,44 @@ package board;
  */
 public class BoardField {
 
-    private int row;
-    private int col;
-    private Disk disk;
+    public int row;
+    public int col;
+    public int size;
+    private Disk disk = null;
 
-    public BoardField(int row, int col) {
+    public BoardField(int row, int col, int size) {
         this.row = row;
         this.col = col;
+        this.size = size;
     }
 
-    public void addNextField(Direction dirs, BoardField field) {
-        switch (dirs) {
-            case D:
-                Board.field[row + 1] [col] = field;
-                break;
-            case L:
-                Board.field[row] [col - 1] = field;
-                break;
-            case LD:
-                Board.field[row + 1] [col - 1] = field;
-                break;
-            case LU:
-                Board.field[row - 1] [col - 1] = field;
-                break;
-            case R:
-                Board.field[row] [col + 1] = field;
-                break;
-            case RD:
-                Board.field[row + 1] [col + 1] = field;
-                break;
-            case RU:
-                Board.field[row - 1] [col + 1] = field;
-                break;
-            case U:
-                Board.field[row - 1][col] = field;
-                break;
-        }
-    }
 
     public BoardField nextField(Direction dirs) {
-
         switch (dirs) {
             case D:
-                return Board.field[row + 1][col];
+                if (row != size -1 ){return Board.field[row + 1][col];}
+                break;
             case L:
-                return Board.field[row][col - 1];
+                if (col != 0 ){return Board.field[row][col - 1];}
+                break;
             case LD:
-                return Board.field[row + 1][col - 1];
+                if (row != size-1 && col != 0){return Board.field[row + 1][col - 1];}
+                break;
             case LU:
-                return  Board.field[row - 1][col - 1];
+                if (row != 0 && col != 0){return  Board.field[row - 1][col - 1];}
+                break;
             case R:
-                return  Board.field[row][col + 1];
+                if (col != size-1 ){return  Board.field[row][col + 1];}
+                break;
             case RD:
-                return  Board.field[row + 1][col + 1];
+                if (row != size-1  && col != size-1 ){return  Board.field[row + 1][col + 1];}
+                break;
             case RU:
-                return  Board.field[row - 1][col + 1];
+                if (row != 0 && col != size-1 ){return  Board.field[row - 1][col + 1];}
+                break;
             case U:
-                return  Board.field[row - 1][col];
-
+                if (row != 0){return  Board.field[row - 1][col];}
+                break;
         }
         return null;
     }
@@ -91,6 +71,7 @@ public class BoardField {
     public boolean putDisk(Disk disk) {
         Boolean ret_val = false;
         if (this.disk == null){
+            disk.setY(row,col);
             this.disk = disk;
             ret_val = true;
         }

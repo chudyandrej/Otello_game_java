@@ -1,6 +1,7 @@
 package GUI;
 
 import game.Game;
+import game.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,9 +14,10 @@ import java.awt.event.ActionListener;
 public class OthelloGUI {
 
     boolean singlePlayer = false;
-    int mode;
+    byte mode;
     public int boardSize;
-
+    private Player player1;
+    private Player player2;
     JFrame frame;
 
     Box mainMenu;
@@ -149,7 +151,6 @@ public class OthelloGUI {
         backBtn.addActionListener(new backExitBtnClicked(chooseBoardSize));
     }
 
-
     private class boardSizeBtnClicked implements ActionListener {
         private JButton button;
 
@@ -158,18 +159,19 @@ public class OthelloGUI {
         }
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (this.button == size6x6Btn) {boardSize = 6;}
+            if (this.button == size6x6Btn) { boardSize = 6; }
             else if(this.button == size8x8Btn) { boardSize = 8; }
             else if(this.button == size10x10Btn) { boardSize = 10; }
             else if(this.button == size12x12Btn) { boardSize = 12; }
 
-            Game new_game = new Game(boardSize);
+            player1 = new Player(true);
+            if(singlePlayer){player2 = new Player(false, mode);}
+            else{player2 = new Player(false);}
 
-            //initUIBoard();
+            BoardGUI boardGUI = new BoardGUI(frame, boardSize,player1, player2);
             frame.remove(chooseBoardSize);
-            frame.setContentPane(new JPanel());
-            frame.validate();
-            frame.repaint();
+            //initUIBoard();
+
             previousPage = chooseBoardSize;
         }
     }

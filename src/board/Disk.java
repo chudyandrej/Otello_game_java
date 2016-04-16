@@ -1,10 +1,13 @@
 package board;
 
+import GUI.BoardGUI;
+
 /**
  * Created by andrejchudy on 15/04/16.
  */
 public class Disk {
     private boolean isWhite;
+    private int x, y;
 
     public Disk(boolean isWhite){
         this.isWhite = isWhite;
@@ -12,6 +15,7 @@ public class Disk {
 
     public void turn(){
         this.isWhite = !isWhite;
+        BoardGUI.changeDisc(x,y, isWhite);
     }
 
     public boolean isWhite(){
@@ -33,4 +37,11 @@ public class Disk {
     public int hashCode() {
         return (isWhite ? 1 : 0);
     }
+
+    public void setY(int x , int y) {
+        this.x = x;
+        this.y = y;
+        BoardGUI.changeDisc(x,y, isWhite);
+    }
+
 }

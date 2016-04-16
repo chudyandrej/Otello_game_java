@@ -13,7 +13,7 @@ public class Board {
         field = new BoardField[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                field[i][j] = new BoardField(i,j);
+                field[i][j] = new BoardField(i,j,size);
             }
         }
     }

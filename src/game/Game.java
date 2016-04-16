@@ -38,8 +38,9 @@ public class Game {
         currentPlayer = (currentPlayer == black) ? white : black;
         if (currentPlayer.is_pc()){
             currentPlayer.uiTurn();
+            currentPlayer = (currentPlayer == black) ? white : black;
         }
-        currentPlayer = (currentPlayer == black) ? white : black;
+
         return currentPlayer;
     }
 
