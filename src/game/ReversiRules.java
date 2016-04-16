@@ -26,7 +26,8 @@ public class ReversiRules {
 
     }
 
-    static public boolean canPutDisk(BoardField field, Player playerTurn){
+    public boolean canPutDisk(int x, int y, Player playerTurn){
+        BoardField  field =  Board.field[x][y];
         BoardField tmp;
         for (BoardField.Direction way : BoardField.Direction.values()) {
             tmp = field.nextField(way);
@@ -42,7 +43,8 @@ public class ReversiRules {
         return false;
     }
 
-    static public boolean putDisk(BoardField field, Player playerTurn){
+    public boolean putDisk(int x, int y, Player playerTurn){
+        BoardField  field =  Board.field[x][y];
         BoardField tmp;
         boolean success = false;
         for (BoardField.Direction way : BoardField.Direction.values()) {
@@ -63,7 +65,6 @@ public class ReversiRules {
                     }
                     tmp = tmp.nextField(way);
                 }
-                st = null;
                 if (validPosition){
                     field.putDisk(new Disk(playerTurn.isWhite()));
                 }

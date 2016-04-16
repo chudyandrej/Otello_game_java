@@ -17,17 +17,20 @@ public class Player {
         this.isWhite = isWhite;
     }
 
+    public String toString() {
+        return (isWhite)?"white":"black";
+    }
+
     public boolean isWhite(){
         return isWhite;
     }
 
-    public boolean canPutDisk(BoardField field){
-        return rules.canPutDisk(field, this);
+    public boolean canPutDisk(int x, int y){
+        return rules.canPutDisk(x, y, this);
     }
 
-    public boolean putDisk(BoardField field){
-        return rules.putDisk(field, this);
+    public boolean putDisk(int x, int y){
+        return rules.putDisk(x, y, this);
     }
-
 
 }
