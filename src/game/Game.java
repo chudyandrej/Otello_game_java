@@ -8,21 +8,18 @@ public class Game {
     private Player currentPlayer;
     private Player black;
     private Player white;
-    private ReversiRules rules;
+    static public ReversiRules rules;
 
     public Game(int size){
         rules = new ReversiRules(size);
 
     }
 
-    public boolean addPlayer(boolean isWhite){
-        Player newPlayer = new Player(rules,isWhite);
+    public boolean addPlayer(Player newPlayer){
 
-        if(currentPlayer == null){
-            currentPlayer = newPlayer;
-        }
         if(newPlayer.isWhite() && white == null){
             white = newPlayer;
+            currentPlayer = newPlayer;
             return true;
 
         }else if (!newPlayer.isWhite() && black == null){
@@ -38,6 +35,10 @@ public class Game {
     }
 
     public Player nextPlayer(){
+        currentPlayer = (currentPlayer == black) ? white : black;
+        if (currentPlayer.is_pc()){
+            currentPlayer.uiTurn();
+        }
         currentPlayer = (currentPlayer == black) ? white : black;
         return currentPlayer;
     }
