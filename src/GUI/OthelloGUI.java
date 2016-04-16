@@ -1,6 +1,7 @@
 package GUI;
 
 import game.Game;
+import game.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,9 +14,10 @@ import java.awt.event.ActionListener;
 public class OthelloGUI {
 
     boolean singlePlayer = false;
-    int mode;
+    byte mode;
     public int boardSize;
-
+    private Player player1;
+    private Player player2;
     JFrame frame;
 
     Box mainMenu;
@@ -44,7 +46,7 @@ public class OthelloGUI {
 
         frame.add(mainMenu);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(new Dimension(500, 500));
+        frame.setMinimumSize(new Dimension(610, 500));
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);
@@ -162,7 +164,11 @@ public class OthelloGUI {
             else if(this.button == size10x10Btn) { boardSize = 10; }
             else if(this.button == size12x12Btn) { boardSize = 12; }
 
-            BoardGUI boardGUI = new BoardGUI(frame, boardSize);
+            player1 = new Player(true);
+            if(singlePlayer){player2 = new Player(false, mode);}
+            else{player2 = new Player(false);}
+
+            BoardGUI boardGUI = new BoardGUI(frame, boardSize,player1, player2);
             frame.remove(chooseBoardSize);
             //initUIBoard();
 

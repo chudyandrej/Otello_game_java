@@ -1,6 +1,7 @@
 package GUI;
 
 import game.Game;
+import game.Player;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,19 +20,46 @@ public class BoardGUI {
     private JPanel board;
     private int boardSize;
     private Game game;
+    static JLabel scoreLabel1;
+    static JLabel scoreLabel2;
+    static JLabel onTurnLabel;
 
     static BoardFieldLabel[][] fields;
 
-    BoardGUI(JFrame frame, int boardSize){
+    BoardGUI(JFrame frame, int boardSize, Player player1, Player player2){
         this.frame = frame;
         this.boardSize = boardSize;
-        game = new Game(boardSize);
-
         createBoard();
 
         frame.setContentPane(board);
         frame.validate();
         frame.repaint();
+
+        game = new Game(boardSize);
+        game.addPlayer(player1, "Player1");
+        game.addPlayer(player2, "Player2");
+    }
+
+    static public void changeDisc(int x, int y, boolean isWhite){
+        String imageName = (isWhite) ? "lib/white.png" : "lib/black.png";
+        System.out.format("%d %d\n", x, y);
+        ImageIcon imageIcon = new ImageIcon(resizeImage(imageName, fields[x][y].getWidth(), fields[x][y].getHeight()));
+        fields[x][y].setIcon(imageIcon);
+    }
+
+    static private Image resizeImage(String imgName, int w, int h){
+        BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = resizedImage.createGraphics();
+        Image img = null;
+        try{
+            img = ImageIO.read(new File(imgName));
+        }catch(IOException ex){
+            System.err.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        g.drawImage(img, 0, 0, w, h, null);
+        g.dispose();
+        return resizedImage;
     }
 
     public class BoardFieldLabel extends JLabel {
@@ -50,12 +78,39 @@ public class BoardGUI {
         board.setLayout(new BorderLayout());
 
         JToolBar menuBar = new JToolBar();
-        menuBar.setLayout(new FlowLayout(FlowLayout.LEFT));
+        menuBar.setLayout(new FlowLayout(FlowLayout.CENTER));
         menuBar.setBackground(Color.decode("#54AFE8"));
-        board.add(menuBar, BorderLayout.NORTH);
+        menuBar.setPreferredSize(new Dimension(130, frame.getHeight()));
+        board.add(menuBar, BorderLayout.EAST);
 
-        JButton undo = new JButton("UNDO");
-        menuBar.add(undo);
+        //JButton undo = new JButton("UNDO");
+        //menuBar.add(undo);
+        JLabel onTurnTitle = new JLabel("<html><font size='6' color='black' face='verdana'><b>On turn:</b></font></html>");
+        menuBar.add(onTurnTitle);
+        onTurnLabel = new JLabel();
+        onTurnLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        menuBar.add(onTurnLabel);
+
+        JLabel scoreTitle = new JLabel("<html><font size='6' color='blue' face='League Gothic'><b><u>SCORE</u></b></font></html>");
+        scoreTitle.setBorder(BorderFactory.createEmptyBorder(60, 0, 0, 0));
+        menuBar.add(scoreTitle);
+
+        JLabel p1Title = new JLabel("<html><font size='5' color='white' face='verdana'><b>Player1</b></font></html>");
+        p1Title.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        menuBar.add(p1Title);
+        scoreLabel1 = new JLabel();
+        scoreLabel1.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        menuBar.add(scoreLabel1);
+
+        JLabel p2Title = new JLabel("<html><font size='5' color='black' face='League Gothic'><b>Player2</b></font></html>");
+        p2Title.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+        menuBar.add(p2Title);
+        scoreLabel2 = new JLabel();
+        scoreLabel1.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        menuBar.add(scoreLabel2);
+
+        setGameState(10, 12, "Player1"); //change from string to call player instance
+
 
         Box playAreaContent = new Box(BoxLayout.Y_AXIS);
         playAreaContent.setBackground(Color.red);
@@ -89,20 +144,29 @@ public class BoardGUI {
                 fields[row][col].setOpaque(true);
                 fields[row][col].addMouseListener(new boardFieldClicked( fields[row][col]));
                 playArea.add(fields[row][col]);
+                System.out.format("INIT: %d %d\n", row,col);
             }
         }
     }
 
-    private class boardFieldClicked implements MouseListener {
-        private BoardFieldLabel panel;
+    static public void setGameState(int score1, int score2, String onTurn){
+        onTurnLabel.setText("<html><font size='6' color='red' face='League Gothic'><b>"+onTurn+"</b></font></html>");
+        scoreLabel1.setText("<html><font size='6' color='white' face='League Gothic'><b>"+score1+"</b></font></html>");
+        scoreLabel2.setText("<html><font size='6' color='black' face='League Gothic'><b>"+score2+"</b></font></html>");
+    }
 
-        boardFieldClicked(BoardFieldLabel panel){
-            this.panel = panel;
+    private class boardFieldClicked implements MouseListener {
+        private BoardFieldLabel label;
+
+        boardFieldClicked(BoardFieldLabel label){
+            this.label = label;
         }
         @Override
         public void mouseEntered(MouseEvent e) {
-            if(!panel.pressed) {
-                panel.setBackground(Color.red);
+            if(!label.pressed) {
+                if (game.currentPlayer().canPutDisk(label.row, label.col)) {
+                    label.setBackground(Color.red);
+                }
             }
         }
         @Override
@@ -110,8 +174,8 @@ public class BoardGUI {
         }
         @Override
         public void mouseExited(MouseEvent e) {
-            if(!panel.pressed) {
-                panel.setBackground(Color.decode("#06943C")); //green
+            if(!label.pressed) {    //if there is no disc
+                label.setBackground(Color.decode("#06943C")); //green
             }
         }
         @Override
@@ -119,26 +183,14 @@ public class BoardGUI {
         }
         @Override
         public void mousePressed(MouseEvent e) {
+            Player tmp  = game.currentPlayer();
+            System.out.format("%d:%d %s\n", label.row, label.col, tmp.isWhite());
+            if (tmp.putDisk(label.row, label.col)) {
+                changeDisc(label.row, label.col, tmp.isWhite());
+                label.pressed = true;
 
-            ImageIcon imageIcon = new ImageIcon(resizeImage("lib/image.png", panel.getWidth(), panel.getHeight()));
-            panel.setIcon(imageIcon);
-            panel.pressed = true;
-            System.out.format("%d:%d\n", panel.row, panel.col);
+                game.nextPlayer();
+            }
         }
-    }
-
-    private Image resizeImage(String imgName, int w, int h){
-        BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = resizedImage.createGraphics();
-        Image img = null;
-        try{
-            img = ImageIO.read(new File(imgName));
-        }catch(IOException ex){
-            System.err.println(ex.getMessage());
-            ex.printStackTrace();
-        }
-        g.drawImage(img, 0, 0, w, h, null);
-        g.dispose();
-        return resizedImage;
     }
 }

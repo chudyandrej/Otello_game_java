@@ -12,9 +12,8 @@ public class Board {
         this.size = size;
         field = new BoardField[size][size];
         for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size ; j++) {
-                field[i][j] = new BoardField(i,j);
-
+            for (int j = 0; j < size; j++) {
+                field[i][j] = new BoardField(i,j,size);
             }
         }
     }
