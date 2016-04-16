@@ -1,6 +1,5 @@
 package game;
 
-import GUI.BoardGUI;
 import board.Board;
 import board.BoardField;
 import java.util.Stack;
@@ -29,18 +28,18 @@ public class ReversiRules {
 
     public boolean canPutDisk(int x, int y, Player playerTurn){
         BoardField  field =  Board.field[x][y];
-        BoardField tmp;
-        for (BoardField.Direction way : BoardField.Direction.values()) {
-            tmp = field.nextField(way);
-            if (tmp != null) {
-                if (tmp.getDisk() != null && tmp.getDisk().isWhite() != playerTurn.isWhite()) {
+        if(field.getDisk() == null) {
+            BoardField tmp;
+            for (BoardField.Direction way : BoardField.Direction.values()) {
+                tmp = field.nextField(way);
+                if (tmp != null && tmp.getDisk() != null && tmp.getDisk().isWhite() != playerTurn.isWhite()) {
                     while (tmp != null && tmp.getDisk() != null) {
                         if (tmp.getDisk().isWhite() == playerTurn.isWhite()) {
                             return true;
                         }
                         tmp = tmp.nextField(way);
-
                     }
+
                 }
             }
         }
@@ -49,18 +48,13 @@ public class ReversiRules {
 
     public boolean putDisk(int x, int y, Player playerTurn){
         BoardField  field =  Board.field[x][y];
-        System.out.printf("vypis---------------------------\n",x, y );
         BoardField tmp;
         boolean success = false;
-
-        for (BoardField.Direction way : BoardField.Direction.values()) {
-            System.out.printf("Way : %s\n",way);
-
-            tmp = field.nextField(way);
-            if (tmp != null) {
-                if (tmp.getDisk() != null && tmp.getDisk().isWhite() != playerTurn.isWhite()) {
-                    System.out.printf("next : %d %d  %s  %s\n",tmp.row, tmp.col,way, tmp.getDisk().isWhite());
-                    Stack st = new Stack();
+        if(field.getDisk() == null) {
+            for (BoardField.Direction way : BoardField.Direction.values()) {
+                tmp = field.nextField(way);
+                if (tmp != null && tmp.getDisk() != null && tmp.getDisk().isWhite() != playerTurn.isWhite()) {
+                    Stack<BoardField> st = new Stack<BoardField>();
                     while (tmp != null && tmp.getDisk() != null) {
                         if (tmp.getDisk().isWhite() == playerTurn.isWhite()) {
                             turn_disks(st);
@@ -72,9 +66,7 @@ public class ReversiRules {
                     }
                 }
             }
-        }
-        if (success){
-            field.putDisk(new Disk(playerTurn.isWhite()));
+            if (success){ field.putDisk(new Disk(playerTurn.isWhite())); }
         }
         return success;
     }
@@ -83,11 +75,11 @@ public class ReversiRules {
         return size;
     }
 
-    private void turn_disks(Stack st){
+    private void turn_disks(Stack<BoardField> st){
         boolean success = false;
         BoardField tmp;
         while (!st.empty()) {
-            tmp = (BoardField) st.pop();
+            tmp = st.pop();
             tmp.getDisk().turn();
             tmp = null;
         }

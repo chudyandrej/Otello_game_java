@@ -9,18 +9,21 @@ import board.BoardField;
 public class Player {
 
     private boolean isWhite;
-    private int pool;
+
     private byte level;
     private boolean is_pc = false;
+    public String name;
 
-    public Player(boolean isWhite) {
+    public Player(boolean isWhite, String name) {
         this.isWhite = isWhite;
+        this.name = name;
     }
 
-    public Player(boolean isWhite, byte level){
+    public Player(boolean isWhite, byte level, String name){
         is_pc = true;
         this.level = level;
         this.isWhite = isWhite;
+        this.name = name;
     }
 
     public String toString() {
@@ -39,16 +42,23 @@ public class Player {
         return Game.rules.putDisk(x, y, this);
     }
 
-    public void uiTurn() {
+
+
+
+
+    public void uiTurn(Game game) {
         int size = Game.rules.getSize();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (canPutDisk(i,j)){
                     putDisk(i,j);
+                    game.nextPlayer();
                     return;
                 }
             }
+
         }
+
     }
 
     public boolean is_pc() {

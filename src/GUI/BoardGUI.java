@@ -2,6 +2,7 @@ package GUI;
 
 import game.Game;
 import game.Player;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -36,8 +37,8 @@ public class BoardGUI {
         frame.repaint();
 
         game = new Game(boardSize);
-        game.addPlayer(player1, "Player1");
-        game.addPlayer(player2, "Player2");
+        game.addPlayer(player1);
+        game.addPlayer(player2);
     }
 
     static public void changeDisc(int x, int y, boolean isWhite){
@@ -79,6 +80,9 @@ public class BoardGUI {
 
         JToolBar menuBar = new JToolBar();
         menuBar.setLayout(new FlowLayout(FlowLayout.CENTER));
+        Box menuBarContent = Box.createVerticalBox();
+        menuBar.add(menuBarContent);
+        menuBar.setFloatable(false);
         menuBar.setBackground(Color.decode("#54AFE8"));
         menuBar.setPreferredSize(new Dimension(130, frame.getHeight()));
         board.add(menuBar, BorderLayout.EAST);
@@ -86,30 +90,32 @@ public class BoardGUI {
         //JButton undo = new JButton("UNDO");
         //menuBar.add(undo);
         JLabel onTurnTitle = new JLabel("<html><font size='6' color='black' face='verdana'><b>On turn:</b></font></html>");
-        menuBar.add(onTurnTitle);
+        onTurnTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 0));
+        menuBarContent.add(onTurnTitle);
+
         onTurnLabel = new JLabel();
-        onTurnLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        menuBar.add(onTurnLabel);
+        onTurnLabel.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 0));
+        menuBarContent.add(onTurnLabel);
 
         JLabel scoreTitle = new JLabel("<html><font size='6' color='blue' face='League Gothic'><b><u>SCORE</u></b></font></html>");
-        scoreTitle.setBorder(BorderFactory.createEmptyBorder(60, 0, 0, 0));
-        menuBar.add(scoreTitle);
+        scoreTitle.setBorder(BorderFactory.createEmptyBorder(60, 5, 0, 0));
+        menuBarContent.add(scoreTitle);
 
         JLabel p1Title = new JLabel("<html><font size='5' color='white' face='verdana'><b>Player1</b></font></html>");
-        p1Title.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        menuBar.add(p1Title);
+        p1Title.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 0));
+        menuBarContent.add(p1Title);
         scoreLabel1 = new JLabel();
-        scoreLabel1.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        menuBar.add(scoreLabel1);
+        scoreLabel1.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 0));
+        menuBarContent.add(scoreLabel1);
 
         JLabel p2Title = new JLabel("<html><font size='5' color='black' face='League Gothic'><b>Player2</b></font></html>");
-        p2Title.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
-        menuBar.add(p2Title);
+        p2Title.setBorder(BorderFactory.createEmptyBorder(20, 5, 0, 0));
+        menuBarContent.add(p2Title);
         scoreLabel2 = new JLabel();
-        scoreLabel1.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        menuBar.add(scoreLabel2);
+        scoreLabel1.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 0));
+        menuBarContent.add(scoreLabel2);
 
-        setGameState(10, 12, "Player1"); //change from string to call player instance
+        setGameState(0, 0, "Player1"); //change from string to call player instance
 
 
         Box playAreaContent = new Box(BoxLayout.Y_AXIS);
