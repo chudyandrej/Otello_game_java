@@ -46,7 +46,7 @@ public class OthelloGUI {
 
         frame.add(mainMenu);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(new Dimension(500, 500));
+        frame.setMinimumSize(new Dimension(610, 500));
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);
@@ -164,9 +164,9 @@ public class OthelloGUI {
             else if(this.button == size10x10Btn) { boardSize = 10; }
             else if(this.button == size12x12Btn) { boardSize = 12; }
 
-            player1 = new Player(true);
-            if(singlePlayer){player2 = new Player(false, mode);}
-            else{player2 = new Player(false);}
+            player1 = new Player(true,"Player1");
+            if(singlePlayer){player2 = new Player(false, mode, "Computer");}
+            else{player2 = new Player(false, "Player2");}
 
             BoardGUI boardGUI = new BoardGUI(frame, boardSize,player1, player2);
             frame.remove(chooseBoardSize);
