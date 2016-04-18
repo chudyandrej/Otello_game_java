@@ -25,10 +25,12 @@ public class BoardGUI {
     static JLabel scoreLabel2;
     static JLabel onTurnLabel;
 
-    static ImageIcon whitePlayerDisc;
-    static ImageIcon blackPlayerDisc;
+    static ImageIcon whitePlayerFieldDisc;
+    static ImageIcon blackPlayerFieldDisc;
     static ImageIcon fieldBackground;
     static ImageIcon fieldCanPutDisc;
+    static ImageIcon arrow1;
+    static ImageIcon arrow2;
 
     static BoardFieldLabel[][] fields;
 
@@ -59,13 +61,13 @@ public class BoardGUI {
                 frame.setMinimumSize(new Dimension(500, 480));
                 break;
             case 8:
-                w = 49;
-                h = 47;
+                w = 48;
+                h = 45;
                 frame.setMinimumSize(new Dimension(500, 480));
                 break;
             case 10:
-                w = 49;
-                h = 46;
+                w = 48;
+                h = 44;
                 frame.setMinimumSize(new Dimension(600, 600));
                 break;
             case 12:
@@ -73,14 +75,16 @@ public class BoardGUI {
                 h = 44;
                 frame.setMinimumSize(new Dimension(700, 700));
         }
-        whitePlayerDisc = new ImageIcon(resizeImage("lib/white2.png", w, h));
-        blackPlayerDisc = new ImageIcon(resizeImage("lib/black2.png", w, h));
+        whitePlayerFieldDisc = new ImageIcon(resizeImage("lib/white2.png", w, h));
+        blackPlayerFieldDisc = new ImageIcon(resizeImage("lib/black2.png", w, h));
         fieldBackground = new ImageIcon(resizeImage("lib/field.png", w, h));
         fieldCanPutDisc = new ImageIcon(resizeImage("lib/fieldCanPut.png", w, h));
+        arrow1 = new ImageIcon(resizeImage("lib/arrow_l.png", 20, 20));
+        arrow2 = new ImageIcon(resizeImage("lib/arrow_r.png", 20, 20));
     }
 
     static public void changeDisc(int x, int y, boolean isWhite){
-        fields[x][y].setIcon( (isWhite) ? whitePlayerDisc : blackPlayerDisc );
+        fields[x][y].setIcon( (isWhite) ? whitePlayerFieldDisc : blackPlayerFieldDisc );
         if(!fields[x][y].pressed){ fields[x][y].pressed = true; }
     }
 
@@ -124,25 +128,30 @@ public class BoardGUI {
         topBar.setPreferredSize(new Dimension(frame.getWidth(), 38));
         board.add(topBar, BorderLayout.NORTH);
 
-        JButton exitBtn = new JButton("Exit Game");
-        topBar.add(exitBtn);
+        JButton newGameBtn = new JButton("New Game");
+        //newGameBtn.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+        topBar.add(newGameBtn);
 
         JButton undoBtn = new JButton("Undo");
         topBar.add(undoBtn);
 
-        JButton newGameBtn = new JButton("New Game");
-        topBar.add(newGameBtn);
+        JButton saveBtn = new JButton("Save");
+        topBar.add(saveBtn);
+
 
         Box playAreaContent = new Box(BoxLayout.Y_AXIS);
+        //playAreaContent.setBorder(BorderFactory.createEmptyBorder());
         playAreaContent.add(Box.createVerticalGlue());
 
         Box playAreaContent2 = new Box(BoxLayout.X_AXIS);
+        //playAreaContent2.setBorder(BorderFactory.createEmptyBorder());
         playAreaContent2.add(Box.createHorizontalGlue());
 
         board.add(playAreaContent,BorderLayout.CENTER);
         playAreaContent.add(playAreaContent2);
 
         JPanel playArea = new JPanel();
+        //playArea.setBorder(BorderFactory.createEmptyBorder());
         playAreaContent2.add(playArea);
         playArea.setBorder(new LineBorder(Color.black, 5));
 
@@ -185,15 +194,40 @@ public class BoardGUI {
         menuBar.setFloatable(false);
         menuBar.setOpaque(false);
         menuBar.setPreferredSize(new Dimension(frame.getWidth(), 60));
-
         board.add(menuBar, BorderLayout.SOUTH);
 
+        //score bar
+        JLabel player1Label = new JLabel();
+        player1Label.setOpaque(true);
+        player1Label.setBackground(Color.white);
+        player1Label.setText("Player1");
+        //menuBar.add(player1Label);
+
+        JLabel player1Image = new JLabel("Player1");
+        menuBar.add(player1Image);
+
+        scoreLabel1 = new JLabel();
+        scoreLabel1.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 15));
+        menuBar.add(scoreLabel1);
+
+        onTurnLabel = new JLabel();
+        onTurnLabel.setOpaque(false);
+        menuBar.add(onTurnLabel);
+
+        scoreLabel2 = new JLabel();
+        scoreLabel2.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 10));
+        menuBar.add(scoreLabel2);
+
+        JLabel player2Image = new JLabel("Player2");
+        menuBar.add(player2Image);
+
+        setGameState(10,15, false);
     }
 
-    static public void setGameState(int score1, int score2, String onTurn){
-        onTurnLabel.setText("<html><font size='6' color='red' face='League Gothic'><b>"+onTurn+"</b></font></html>");
+    static public void setGameState(int score1, int score2, boolean isWhite){
+        onTurnLabel.setIcon( (isWhite)? arrow1 : arrow2);
         scoreLabel1.setText("<html><font size='6' color='white' face='League Gothic'><b>"+score1+"</b></font></html>");
-        scoreLabel2.setText("<html><font size='6' color='black' face='League Gothic'><b>"+score2+"</b></font></html>");
+        scoreLabel2.setText("<html><font size='6' color='white' face='League Gothic'><b>"+score2+"</b></font></html>");
     }
 
     private class boardFieldClicked implements MouseListener {
