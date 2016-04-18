@@ -1,6 +1,5 @@
 package GUI;
 
-import game.Game;
 import game.Player;
 
 import javax.imageio.ImageIO;
@@ -43,11 +42,13 @@ public class OthelloGUI {
     JButton backBtn = new JButton("Back");
 
     ImageIcon background;
+    ImageIcon buttonImage;
     BackgroundPane bg;
 
     public OthelloGUI(){
         frame = new JFrame("Othello");
         background = new ImageIcon(BoardGUI.resizeImage("lib/background.jpg", 500, 550));
+        buttonImage = new ImageIcon(BoardGUI.resizeImage("lib/button.jpg", 170, 40));
         createMainPage();
         createChooseGameModePage();
         createChooseSizeOfBoardPage();
@@ -102,20 +103,30 @@ public class OthelloGUI {
         return panelBtn;
     }
 
+    private void setButton(JButton button){
+        button.setIcon(buttonImage);
+        button.setForeground(Color.white);
+        button.setVerticalTextPosition(SwingConstants.CENTER);
+        button.setHorizontalTextPosition(SwingConstants.CENTER);
+    }
+
     private void createMainPage(){
         mainMenu = new Box(BoxLayout.Y_AXIS);
         mainMenu.add(Box.createVerticalGlue());
 
         JPanel panelBtnSingleP = createPanelBtn();
         panelBtnSingleP.add(singlePlayerBtn);
+        setButton(singlePlayerBtn);
         mainMenu.add(panelBtnSingleP);
 
         JPanel panelBtnMultiP = createPanelBtn();
         panelBtnMultiP.add(multiPlayerBtn);
+        setButton(multiPlayerBtn);
         mainMenu.add(panelBtnMultiP);
 
         JPanel panelBtnExit = createPanelBtn();
         panelBtnExit.add(exitBtn);
+        setButton(exitBtn);
         mainMenu.add(panelBtnExit);
 
         mainMenu.add(Box.createVerticalGlue());
@@ -249,12 +260,12 @@ public class OthelloGUI {
         public void actionPerformed(ActionEvent e) {
             if(currentPage == mainMenu){ System.exit(0); }
 
-            frame.remove(currentPage);
+            bg.remove(currentPage);
             if(currentPage == chooseMode){
-                frame.setContentPane(mainMenu);
+                bg.add(mainMenu);
                 singlePlayer = false;
             }
-            else if(currentPage == chooseBoardSize) { frame.setContentPane(previousPage); }
+            else if(currentPage == chooseBoardSize) { bg.add(previousPage); }
 
             frame.validate();
             frame.repaint();

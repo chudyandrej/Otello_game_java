@@ -7,6 +7,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -43,13 +45,17 @@ public class BoardGUI {
         this.player1 = player1;
         this.player2 = player2;
         initImages();
+        initNewGame();
+
+        System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight()); //debug
+    }
+
+    private void initNewGame(){
         createBoard();
 
         frame.setContentPane(board);
         frame.validate();
         frame.repaint();
-
-        System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight());
 
         game = new Game(boardSize);
         game.addPlayer(player1);
@@ -84,8 +90,8 @@ public class BoardGUI {
         blackPlayerFieldDisc = new ImageIcon(resizeImage("lib/black2.png", w, h));
         fieldBackground = new ImageIcon(resizeImage("lib/field.png", w, h));
         fieldCanPutDisc = new ImageIcon(resizeImage("lib/fieldCanPut.png", w, h));
-        arrow1 = new ImageIcon(resizeImage("lib/arrow_l.png", 20, 20));
-        arrow2 = new ImageIcon(resizeImage("lib/arrow_r.png", 20, 20));
+        arrow1 = new ImageIcon(resizeImage("lib/arrow_l.png", 25, 25));
+        arrow2 = new ImageIcon(resizeImage("lib/arrow_r.png", 25, 25));
     }
 
     static public void changeDisc(int x, int y, boolean isWhite){
@@ -94,8 +100,9 @@ public class BoardGUI {
     }
 
     static public Image resizeImage(String imgName, int w, int h){
-        BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = resizedImage.createGraphics();
+        //g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Image img = null;
         try{
             img = ImageIO.read(new File(imgName));
@@ -127,14 +134,15 @@ public class BoardGUI {
         JToolBar topBar = new JToolBar();
         board.add(topBar);
         topBar.setBorder(BorderFactory.createEmptyBorder());
-        topBar.setLayout(new FlowLayout(FlowLayout.CENTER));
+        topBar.setLayout(new FlowLayout(FlowLayout.RIGHT,10,15));
         topBar.setFloatable(false);
         topBar.setOpaque(false);
         topBar.setPreferredSize(new Dimension(frame.getWidth(), 38));
         board.add(topBar, BorderLayout.NORTH);
 
         JButton newGameBtn = new JButton("New Game");
-        //newGameBtn.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+        //newGameBtn.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50));
+        newGameBtn.addActionListener(new newGameClicked());
         topBar.add(newGameBtn);
 
         JButton undoBtn = new JButton("Undo");
@@ -164,7 +172,7 @@ public class BoardGUI {
         playAreaContent2.add(Box.createHorizontalGlue());
 
         playArea.setLayout(new GridLayout(boardSize, boardSize));
-        // playArea.addComponentListener(new resize());
+
         switch (boardSize){
             case 6:
                 playArea.setPreferredSize(new Dimension(250, 250));
@@ -201,13 +209,14 @@ public class BoardGUI {
         menuBar.setPreferredSize(new Dimension(frame.getWidth(), 60));
         board.add(menuBar, BorderLayout.SOUTH);
 
-        //score bar
+        //score
         JLabel player1Label = new JLabel();
         player1Label.setOpaque(true);
         player1Label.setBackground(Color.white);
         //menuBar.add(player1Label);
 
         JLabel player1Image = new JLabel(player1.name);
+        player1Image.setForeground(Color.white);
         menuBar.add(player1Image);
 
         scoreLabel1 = new JLabel();
@@ -223,9 +232,10 @@ public class BoardGUI {
         menuBar.add(scoreLabel2);
 
         JLabel player2Image = new JLabel(player2.name);
+        player2Image.setForeground(Color.white);
         menuBar.add(player2Image);
 
-        setGameState(10,15, false);
+        setGameState(0, 0, false);
     }
 
     static public void setGameState(int score1, int score2, boolean isWhite){
@@ -270,6 +280,29 @@ public class BoardGUI {
 
                 game.nextPlayer();
             }
+        }
+    }
+
+    private class newGameClicked implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            frame.remove(board);
+
+            initNewGame();
+        }
+    }
+
+    private class saveBtnClicked implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    private class undoBtnClicked implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
         }
     }
 }
