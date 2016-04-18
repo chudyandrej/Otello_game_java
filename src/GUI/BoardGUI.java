@@ -25,6 +25,9 @@ public class BoardGUI {
     static JLabel scoreLabel2;
     static JLabel onTurnLabel;
 
+    private Player player1;
+    private Player player2;
+
     static ImageIcon whitePlayerFieldDisc;
     static ImageIcon blackPlayerFieldDisc;
     static ImageIcon fieldBackground;
@@ -37,6 +40,8 @@ public class BoardGUI {
     BoardGUI(JFrame frame, int boardSize, Player player1, Player player2){
         this.frame = frame;
         this.boardSize = boardSize;
+        this.player1 = player1;
+        this.player2 = player2;
         initImages();
         createBoard();
 
@@ -88,7 +93,7 @@ public class BoardGUI {
         if(!fields[x][y].pressed){ fields[x][y].pressed = true; }
     }
 
-    static private Image resizeImage(String imgName, int w, int h){
+    static public Image resizeImage(String imgName, int w, int h){
         BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = resizedImage.createGraphics();
         Image img = null;
@@ -200,10 +205,9 @@ public class BoardGUI {
         JLabel player1Label = new JLabel();
         player1Label.setOpaque(true);
         player1Label.setBackground(Color.white);
-        player1Label.setText("Player1");
         //menuBar.add(player1Label);
 
-        JLabel player1Image = new JLabel("Player1");
+        JLabel player1Image = new JLabel(player1.name);
         menuBar.add(player1Image);
 
         scoreLabel1 = new JLabel();
@@ -218,7 +222,7 @@ public class BoardGUI {
         scoreLabel2.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 10));
         menuBar.add(scoreLabel2);
 
-        JLabel player2Image = new JLabel("Player2");
+        JLabel player2Image = new JLabel(player2.name);
         menuBar.add(player2Image);
 
         setGameState(10,15, false);
