@@ -46,7 +46,7 @@ public class OthelloGUI {
 
         frame.add(mainMenu);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(new Dimension(610, 500));
+        frame.setMinimumSize(new Dimension(500, 550));
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);
