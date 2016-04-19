@@ -17,7 +17,6 @@ public class BoardField {
         this.disk = null;
     }
 
-
     public BoardField nextField(Direction dirs) {
         switch (dirs) {
             case D:

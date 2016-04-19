@@ -7,14 +7,11 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by martin on 16/04/16.
@@ -39,6 +36,11 @@ public class BoardGUI {
     static ImageIcon fieldCanPutDisc;
     static ImageIcon arrow1;
     static ImageIcon arrow2;
+
+    JLabel newGameBtn;
+    JLabel exitGameBtn;
+    JLabel undoBtn;
+    JLabel saveBtn;
 
     static BoardFieldLabel[][] fields;
 
@@ -101,41 +103,14 @@ public class BoardGUI {
     }
 
     static public void deleteDisc(int x, int y){
+        fields[x][y].pressed = false;
         fields[x][y].setIcon(fieldBackground);
     }
 
     static public void changeDisc(int x, int y, boolean isWhite){
-        //whitePlayerFieldDisc.getImage().flush();
-        //blackPlayerFieldDisc.getImage().flush();
-        //ImageIcon icon = new ImageIcon(whiteTest);
-        //icon.getImage().flush();
 
-        //ImageIcon icon2 = new ImageIcon(blackTest);
-        //icon2.getImage().flush();
-
-        fields[x][y].setIcon( (isWhite) ? whitePlayerFieldDisc : blackPlayerFieldDisc );
+        fields[x][y].setIcon((isWhite) ? whitePlayerFieldDisc : blackPlayerFieldDisc );
         if(!fields[x][y].pressed){ fields[x][y].pressed = true; }
-
-        board.validate();
-        fields[x][y].repaint(); //update the display??
-        frame.repaint();
-        frame.validate();
-        frame.getContentPane().repaint();
-        //fields[x][y].updateUI();
-       // fields[x][y].invalidate();
-        // Use this ONLY if invalidate doesn't work...
-        fields[x][y].revalidate();
-       // fields[x][y].repaint();
-
-
-        System.out.format("%d %d \n", x,y);
-        try {
-            TimeUnit.MILLISECONDS.sleep(500);
-           // fields[x][y].getIcon().wait();
-        } catch (InterruptedException e) {
-            //Handle exception
-        }
-        fields[x][y].revalidate();
     }
 
     static public Image resizeImage(String imgName, int w, int h){
@@ -169,6 +144,7 @@ public class BoardGUI {
         public int row;
         public int col;
         public boolean pressed = false;
+        private boolean state;
 
         BoardFieldLabel(int row, int col){
             this.row = row;
@@ -187,18 +163,33 @@ public class BoardGUI {
         topBar.setLayout(new FlowLayout(FlowLayout.RIGHT,10,15));
         topBar.setFloatable(false);
         topBar.setOpaque(false);
-        topBar.setPreferredSize(new Dimension(frame.getWidth(), 38));
+        topBar.setPreferredSize(new Dimension(frame.getWidth(), 40));
         board.add(topBar, BorderLayout.NORTH);
 
-        JButton newGameBtn = new JButton("New Game");
+        newGameBtn = new JLabel(); // new game button
         //newGameBtn.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50));
-        newGameBtn.addActionListener(new newGameClicked());
+        newGameBtn.setSize(25, 25);
+        newGameBtn.addMouseListener(new boardButtonClicked(newGameBtn));
+        newGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/playAgain.png", 25, 25)));
         topBar.add(newGameBtn);
 
-        JButton undoBtn = new JButton("Undo");
+        exitGameBtn = new JLabel(); //exit game button
+        exitGameBtn.setSize(25, 25);
+        exitGameBtn.addMouseListener(new boardButtonClicked(exitGameBtn));
+        exitGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/home.png", 25, 25)));
+        topBar.add(exitGameBtn);
+
+        undoBtn = new JLabel(); //undo button
+        //undoBtn.addActionListener(new undoBtnClicked());
+        undoBtn.setSize(25, 25);
+        undoBtn.addMouseListener(new boardButtonClicked(undoBtn));
+        undoBtn.setIcon(new ImageIcon(resizeImage("lib/icons/undo.png", 25, 25)));
         topBar.add(undoBtn);
 
-        JButton saveBtn = new JButton("Save");
+        saveBtn = new JLabel();//save button
+        saveBtn.setSize(25, 25);
+        saveBtn.addMouseListener(new boardButtonClicked(saveBtn));
+        saveBtn.setIcon(new ImageIcon(resizeImage("lib/icons/saveGame.png", 25, 25)));
         topBar.add(saveBtn);
 
 
@@ -300,6 +291,7 @@ public class BoardGUI {
         boardFieldClicked(BoardFieldLabel label){
             this.label = label;
         }
+
         @Override
         public void mouseEntered(MouseEvent e) {
             if(!label.pressed) {
@@ -309,48 +301,95 @@ public class BoardGUI {
             }
         }
         @Override
-        public void mouseClicked(MouseEvent e) {
-        }
-        @Override
         public void mouseExited(MouseEvent e) {
             if(!label.pressed) {    //if there is no disc
                 fields[label.row][label.col].setIcon(fieldBackground);
             }
         }
         @Override
-        public void mouseReleased(MouseEvent e) {
-        }
-        @Override
         public void mousePressed(MouseEvent e) {
             Player tmp  = game.currentPlayer();
-            //System.out.format("%d:%d %s\n", label.row, label.col, tmp.isWhite());
+            System.out.format("pressed %d:%d %s\n", label.row, label.col, tmp.isWhite());
             if (tmp.putDisk(label.row, label.col)) {
                 label.pressed = true;
 
                 game.nextPlayer();
+                System.out.format("pressed2 %d:%d %s\n", label.row, label.col, tmp.isWhite());
             }
         }
-    }
-
-    private class newGameClicked implements ActionListener{
         @Override
-        public void actionPerformed(ActionEvent e) {
-            frame.remove(board);
-            initNewGame();
+        public void mouseReleased(MouseEvent e) {
+        }
+        @Override
+        public void mouseClicked(MouseEvent e) {
         }
     }
 
-    private class saveBtnClicked implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
+    public class boardButtonClicked implements MouseListener {
+        private JLabel button;
 
+        boardButtonClicked(JLabel button){
+            this.button = button;
         }
-    }
 
-    private class undoBtnClicked implements ActionListener{
         @Override
-        public void actionPerformed(ActionEvent e) {
-
+        public void mouseEntered(MouseEvent e) {
+            if(button == newGameBtn){
+                newGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/playAgainEntered.png", 25, 25)));
+            }else if (button == exitGameBtn){
+                exitGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/homeEntered.png", 25, 25)));
+            }else if(button == undoBtn){
+                undoBtn.setIcon(new ImageIcon(resizeImage("lib/icons/undoEntered.png", 25, 25)));
+            }else if(button == saveBtn){
+                saveBtn.setIcon(new ImageIcon(resizeImage("lib/icons/saveGameEntered.png", 25, 25)));
+            }
         }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            if(button == newGameBtn){
+                newGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/playAgain.png", 25, 25)));
+            }else if (button == exitGameBtn){
+                exitGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/home.png", 25, 25)));
+            }else if(button == undoBtn){
+                undoBtn.setIcon(new ImageIcon(resizeImage("lib/icons/undo.png", 25, 25)));
+            }else if(button == saveBtn){
+                saveBtn.setIcon(new ImageIcon(resizeImage("lib/icons/saveGame.png", 25, 25)));
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if(button == newGameBtn){
+                newGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/playAgainPressed.png", 25, 25)));
+            }else if (button == exitGameBtn){
+                exitGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/homePressed.png", 25, 25)));
+            }else if(button == undoBtn){
+                undoBtn.setIcon(new ImageIcon(resizeImage("lib/icons/undoPressed.png", 25, 25)));
+            }else if(button == saveBtn){
+                saveBtn.setIcon(new ImageIcon(resizeImage("lib/icons/saveGamePressed.png", 25, 25)));
+            }
+        }
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if(button == newGameBtn){
+                frame.remove(board);
+                initNewGame();
+                newGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/playAgainPressed.png", 25, 25)));
+            }else if (button == exitGameBtn){
+                frame.remove(board);
+                OthelloGUI.initMenuAgain(frame);
+                exitGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/homePressed.png", 25, 25)));
+            }else if(button == undoBtn){
+                game.undo();
+                undoBtn.setIcon(new ImageIcon(resizeImage("lib/icons/undoPressed.png", 25, 25)));
+            }else if(button == saveBtn){
+                saveBtn.setIcon(new ImageIcon(resizeImage("lib/icons/saveGamePressed.png", 25, 25)));
+            }
+        }
+
     }
 }

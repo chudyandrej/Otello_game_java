@@ -2,6 +2,7 @@ package GUI;
 
 import game.Player;
 
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -23,10 +24,10 @@ public class OthelloGUI {
     private Player player2;
     JFrame frame;
 
-    Box mainMenu;
-    Box chooseMode;
-    Box chooseBoardSize;
-    Box previousPage = null;
+    public static Box mainMenu;
+    public static Box chooseMode;
+    public static Box chooseBoardSize;
+    public static Box previousPage = null;
 
     Dimension buttonDimension = new Dimension(150, 40);
 
@@ -44,7 +45,7 @@ public class OthelloGUI {
 
     ImageIcon background;
     ImageIcon buttonImage;
-    BackgroundPane bg;
+    public static BackgroundPane bg;
 
     public OthelloGUI(){
         frame = new JFrame("Othello");
@@ -65,6 +66,15 @@ public class OthelloGUI {
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);
+    }
+
+    public static void initMenuAgain(JFrame frame){
+        bg.removeAll();
+        bg.add(mainMenu);
+        frame.setContentPane(bg);
+        frame.validate();
+        frame.repaint();
+        previousPage = null;
     }
 
     public class BackgroundPane extends JPanel {

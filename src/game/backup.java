@@ -4,7 +4,7 @@ import board.BoardField;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
+
 
 /**
  * Created by andrejchudy on 19/04/16.
