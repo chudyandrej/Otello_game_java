@@ -103,6 +103,7 @@ public class BoardGUI {
     }
 
     static public void deleteDisc(int x, int y){
+        fields[x][y].pressed = false;
         fields[x][y].setIcon(fieldBackground);
     }
 
