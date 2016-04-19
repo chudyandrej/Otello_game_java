@@ -23,8 +23,8 @@ public class Backup {
         new_turn = new TurnBackUp(base_Point, turn_player);
     }
 
-    public void add_TurnedDisks(List turnndDisk){
-        new_turn.add_Stack_turned(turnndDisk);
+    public void add_TurnedDisks(List turnedDisk){
+        new_turn.add_Stack_turned(turnedDisk);
 
     }
 

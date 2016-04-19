@@ -27,6 +27,8 @@ public class BoardGUI {
 
     private Player player1;
     private Player player2;
+    private int score1;
+    private int score2;
 
     static ImageIcon whitePlayerFieldDisc;
     static ImageIcon blackPlayerFieldDisc;
@@ -129,14 +131,21 @@ public class BoardGUI {
         return resizedImage;
     }
 
-    public void showDialog(String msg){
-        //JOptionPane.showMessageDialog(frame, "Eggs are not supposed to be green.");
+    private void showGameOverDialog(){
+        String msg = "Congratulation!\n";
+        if(score1 > score2){ //player1 won
+            msg = msg + player1.name + "won, score: " + score1;
+        }else if(score1 < score2){ //player2 won
+            msg = msg + player2.name + "won, score: " + score2;
+        }else{      //stalemate
+            msg = "Stalemate! Winners:\n  -"+player1.name+"\n  -"+player2.name+"\nScore: "+score1;
+        }
+        msg = msg + "\nWould you like to play again?";
+
         int result = JOptionPane.showConfirmDialog(frame, msg);
         if(result == JOptionPane.YES_OPTION){
-            //frame.remove(board);
-            //initNewGame();
-        }else{
-            //return to menu or close application?
+            frame.remove(board);
+            initNewGame();
         }
     }
 
@@ -169,12 +178,14 @@ public class BoardGUI {
         newGameBtn = new JLabel(); // new game button
         //newGameBtn.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50));
         newGameBtn.setSize(25, 25);
+        newGameBtn.setToolTipText("Reload game");
         newGameBtn.addMouseListener(new boardButtonClicked(newGameBtn));
         newGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/playAgain.png", 25, 25)));
         topBar.add(newGameBtn);
 
         exitGameBtn = new JLabel(); //exit game button
         exitGameBtn.setSize(25, 25);
+        exitGameBtn.setToolTipText("Home");
         exitGameBtn.addMouseListener(new boardButtonClicked(exitGameBtn));
         exitGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/home.png", 25, 25)));
         topBar.add(exitGameBtn);
@@ -182,12 +193,14 @@ public class BoardGUI {
         undoBtn = new JLabel(); //undo button
         //undoBtn.addActionListener(new undoBtnClicked());
         undoBtn.setSize(25, 25);
+        undoBtn.setToolTipText("Undo");
         undoBtn.addMouseListener(new boardButtonClicked(undoBtn));
         undoBtn.setIcon(new ImageIcon(resizeImage("lib/icons/undo.png", 25, 25)));
         topBar.add(undoBtn);
 
         saveBtn = new JLabel();//save button
         saveBtn.setSize(25, 25);
+        saveBtn.setToolTipText("Save game");
         saveBtn.addMouseListener(new boardButtonClicked(saveBtn));
         saveBtn.setIcon(new ImageIcon(resizeImage("lib/icons/saveGame.png", 25, 25)));
         topBar.add(saveBtn);
@@ -309,12 +322,14 @@ public class BoardGUI {
         @Override
         public void mousePressed(MouseEvent e) {
             Player tmp  = game.currentPlayer();
-            System.out.format("pressed %d:%d %s\n", label.row, label.col, tmp.isWhite());
+
             if (tmp.putDisk(label.row, label.col)) {
                 label.pressed = true;
-
                 game.nextPlayer();
-                System.out.format("pressed2 %d:%d %s\n", label.row, label.col, tmp.isWhite());
+
+                if(game.gameOver){
+                    showGameOverDialog();
+                }
             }
         }
         @Override
@@ -376,18 +391,20 @@ public class BoardGUI {
         @Override
         public void mouseClicked(MouseEvent e) {
             if(button == newGameBtn){
-                frame.remove(board);
-                initNewGame();
-                newGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/playAgainPressed.png", 25, 25)));
+                int option = JOptionPane.showConfirmDialog(frame, "Do you want reload game?");
+                if(option == JOptionPane.YES_OPTION){
+                    frame.remove(board);
+                    initNewGame();
+                }
             }else if (button == exitGameBtn){
-                frame.remove(board);
-                OthelloGUI.initMenuAgain(frame);
-                exitGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/homePressed.png", 25, 25)));
+                int option = JOptionPane.showConfirmDialog(frame, "Would you like to quit the game and enter the menu?");
+                if(option == JOptionPane.YES_OPTION){
+                    frame.remove(board);
+                    OthelloGUI.initMenuAgain(frame);
+                }
             }else if(button == undoBtn){
                 game.undo();
-                undoBtn.setIcon(new ImageIcon(resizeImage("lib/icons/undoPressed.png", 25, 25)));
             }else if(button == saveBtn){
-                saveBtn.setIcon(new ImageIcon(resizeImage("lib/icons/saveGamePressed.png", 25, 25)));
             }
         }
 

@@ -13,13 +13,17 @@ public class Game {
     private Player currentPlayer;
     private Player black;
     private Player white;
-    public Backup backupGame;
+    public boolean gameOver;
+    private Backup backupGame;
+    private int white_Disk;
+    private int blac_Dsik;
+
     static public ReversiRules rules;
 
     public Game(int size){
         backupGame = new Backup();
         rules = new ReversiRules(size,backupGame);
-
+        gameOver = false;
 
     }
 
@@ -38,8 +42,6 @@ public class Game {
         return false;
     }
 
-
-
     public Player currentPlayer(){
         return currentPlayer;
     }
@@ -49,27 +51,24 @@ public class Game {
         currentPlayer = (currentPlayer == black) ? white : black;
         if (currentPlayer.is_pc() &&  exitsingTurn(currentPlayer)) {
             currentPlayer.uiTurn(this);
-
-
             return null;
-
         }
         else if(exitsingTurn(currentPlayer)) {
             return currentPlayer;
         }
         else if (!exitsingTurn(white) && !exitsingTurn(black)){
-            System.out.printf("Game end!!!!\n");
-            return white; ///// !!!!!!Game Over
+            changeScore();
+            gameOver = true;
+            return null;
         }
         currentPlayer = (currentPlayer == black) ? white : black;
-        System.out.printf("Skip TurnBackUp!!!!\n");
         return currentPlayer;
 
     }
 
     private void changeScore(){
-        int white_Disk = 0;
-        int blac_Dsik = 0;
+        white_Disk = 0;
+        blac_Dsik = 0;
         int size = Game.rules.getSize();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -78,7 +77,7 @@ public class Game {
                     continue;
                 }
                 else if(tmp.isWhite()){ white_Disk++; }
-                else if(!tmp.isWhite()){blac_Dsik++; }
+                else if(!tmp.isWhite()){ blac_Dsik++; }
             }
         }
         BoardGUI.setGameState(blac_Dsik, white_Disk, currentPlayer.isWhite());
@@ -97,6 +96,7 @@ public class Game {
     }
 
     public void undo(){
+        gameOver = false;
         Backup.TurnBackUp lastTurn;
         if (backupGame.backupTurns.size() > 4 ) {
             lastTurn = (Backup.TurnBackUp) backupGame.backupTurns.get(backupGame.backupTurns.size() - 1);
