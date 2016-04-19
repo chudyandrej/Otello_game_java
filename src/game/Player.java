@@ -2,6 +2,8 @@ package game;
 
 import board.BoardField;
 
+import java.util.concurrent.TimeUnit;
+
 
 /**
  * Created by andrejchudy on 15/04/16.
@@ -44,21 +46,17 @@ public class Player {
 
 
 
-
-
     public void uiTurn(Game game) {
-        int size = Game.rules.getSize();
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (canPutDisk(i,j)){
-                    putDisk(i,j);
-                    game.nextPlayer();
-                    return;
-                }
-            }
 
+
+        System.out.printf("level : %d", level);
+        if (level == 1) {
+            Game.rules.uiAlgorithmLevel1(this);
         }
-
+        else {
+            Game.rules.uiAlgorithmLevel2(this);
+        }
+        game.nextPlayer();
     }
 
     public boolean is_pc() {
