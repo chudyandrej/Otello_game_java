@@ -9,6 +9,7 @@ import java.util.Stack;
 /**
  * Created by andrejchudy on 19/04/16.
  */
+
 public class Backup {
     private TurnBackUp new_turn;
     public List backupTurns;

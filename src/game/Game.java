@@ -101,9 +101,13 @@ public class Game {
         if (backupGame.backupTurns.size() > 4 ) {
             lastTurn = (Backup.TurnBackUp) backupGame.backupTurns.get(backupGame.backupTurns.size() - 1);
             lastTurn.base_Point.deleteDisk();
-
             rules.turn_disks(lastTurn.turned);
             backupGame.backupTurns.remove(lastTurn);
+            currentPlayer = lastTurn.turn_player;
+            if (currentPlayer.is_pc()){
+                undo();
+            }
+            changeScore();
         }
     }
 

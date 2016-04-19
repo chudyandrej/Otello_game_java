@@ -47,8 +47,8 @@ public class ReversiRules {
 
     public boolean canPutDisk(int x, int y, Player playerTurn){
         BoardField  field =  Board.field[x][y];
+        System.out.printf("%s\n",(field.getDisk()== null) ? "null" : field.getDisk().toString());
         if(field.getDisk() == null) {
-            System.out.printf("Nit naull %d %d\n",x,y);
             BoardField tmp;
             for (BoardField.Direction way : BoardField.Direction.values()) {
                 tmp = field.nextField(way);
@@ -102,7 +102,6 @@ public class ReversiRules {
         }
         return null;
     }
-
 
     public void turn_disks(List st){
         BoardField tmp;
