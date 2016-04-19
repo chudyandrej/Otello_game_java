@@ -2,6 +2,7 @@ package GUI;
 
 import game.Game;
 import game.Player;
+import jdk.nashorn.internal.scripts.JO;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -80,8 +81,8 @@ public class BoardGUI {
                 frame.setMinimumSize(new Dimension(500, 480));
                 break;
             case 8:
-                w = 48;
-                h = 45;
+                w = 46;
+                h = 43;
                 frame.setMinimumSize(new Dimension(500, 480));
                 break;
             case 10:
@@ -131,21 +132,48 @@ public class BoardGUI {
         return resizedImage;
     }
 
-    private void showGameOverDialog(){
-        String msg = "Congratulation!\n";
-        if(score1 > score2){ //player1 won
+    private String createMultiPlayerGameOverMsg(){
+        String msg = "";
+        if(score1 > score2){        //player1 won
             msg = msg + player1.name + " won with score: " + score1;
         }else if(score1 < score2){ //player2 won
             msg = msg + player2.name + " won with score: " + score2;
-        }else{      //stalemate
-            msg = "Stalemate! Winners:\n  -"+player1.name+"\n  -"+player2.name+"\nScore: "+score1;
         }
+        return msg;
+    }
+
+    private String createSinglePlayerGameOverMsg(){
+        String msg = "";
+        if(player1.is_pc()) {
+            msg = (score1 > score2) ? "You LOST. Computer won.\n" : "Congratulation!\nYou WON.\n";
+        }
+        else{
+            msg = (score1 < score2) ? "You LOST. Computer won.\n" : "Congratulation!\nYou WON.\n";
+        }
+        msg = msg + "Your score: " + score2 + "\n" +player1.name+": "+score1;
+        return msg;
+    }
+
+    private void showGameOverDialog(){
+        String msg = "";
+        if (score1 == score2){      //stalemate
+            msg = msg + "Stalemate! Winners:\n  -"+player1.name+"\n  -"+player2.name+"\nScore: "+score1;
+        }
+        else if(player1.is_pc() || player2.is_pc()){
+            msg = msg + createSinglePlayerGameOverMsg();
+        }else{
+            msg = msg + createMultiPlayerGameOverMsg();
+        }
+
         msg = msg + "\nWould you like to play again?";
 
         int result = JOptionPane.showConfirmDialog(frame, msg);
         if(result == JOptionPane.YES_OPTION){
             frame.remove(board);
             initNewGame();
+        }else if(result == JOptionPane.NO_OPTION){
+            frame.remove(board);
+            OthelloGUI.initMenuAgain(frame);
         }
     }
 
@@ -297,7 +325,6 @@ public class BoardGUI {
 
     static public void setGameState(int score1, int score2, boolean isWhite){
         onTurnLabel.setIcon( (isWhite)? arrowR : arrowL);
-        System.out.format("set: %s\n", isWhite);
         scoreLabel1.setText("<html><font size='6' color='white' face='League Gothic'><b>"+score1+"</b></font></html>");
         scoreLabel2.setText("<html><font size='6' color='white' face='League Gothic'><b>"+score2+"</b></font></html>");
         BoardGUI.score1 = score1;
@@ -328,7 +355,6 @@ public class BoardGUI {
         @Override
         public void mousePressed(MouseEvent e) {
             Player tmp  = game.currentPlayer();
-            System.out.format("%s\n", tmp.isWhite());
 
             if (tmp.putDisk(label.row, label.col)) {
                 label.pressed = true;
@@ -415,6 +441,5 @@ public class BoardGUI {
             }else if(button == saveBtn){
             }
         }
-
     }
 }
