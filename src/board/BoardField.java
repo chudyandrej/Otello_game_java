@@ -8,14 +8,14 @@ public class BoardField {
     public int row;
     public int col;
     public int size;
-    private Disk disk = null;
+    private Disk disk;
 
     public BoardField(int row, int col, int size) {
         this.row = row;
         this.col = col;
         this.size = size;
+        this.disk = null;
     }
-
 
     public BoardField nextField(Direction dirs) {
         switch (dirs) {
@@ -47,26 +47,6 @@ public class BoardField {
         return null;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        BoardField that = (BoardField) o;
-
-        if (row != that.row) return false;
-        if (col != that.col) return false;
-        return disk != null ? disk.equals(that.disk) : that.disk == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = row;
-        result = 31 * result + col;
-        result = 31 * result + (disk != null ? disk.hashCode() : 0);
-        return result;
-    }
 
     public boolean putDisk(Disk disk) {
         Boolean ret_val = false;
@@ -85,7 +65,7 @@ public class BoardField {
     }
 
     public Disk getDisk(){
-        return this.disk;
+        return disk;
     }
 
     public enum Direction{D, L, LD, LU, R, RD, RU, U}
