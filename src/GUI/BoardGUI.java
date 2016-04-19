@@ -264,10 +264,9 @@ public class BoardGUI {
         board.add(menuBar, BorderLayout.SOUTH);
 
         //score
-        JLabel player1Label = new JLabel();
-        player1Label.setOpaque(true);
-        player1Label.setBackground(Color.white);
-        //menuBar.add(player1Label);
+        JLabel player1Disc = new JLabel();
+        player1Disc.setIcon(new ImageIcon(resizeImage("lib/whiteDisc.png", 25, 25)));
+        menuBar.add(player1Disc);
 
         JLabel player1Image = new JLabel(player1.name);
         player1Image.setForeground(Color.white);
@@ -289,14 +288,18 @@ public class BoardGUI {
         player2Image.setForeground(Color.white);
         menuBar.add(player2Image);
 
-        setGameState(2, 2, false);
+        JLabel player2Disc = new JLabel();
+        player2Disc.setIcon(new ImageIcon(resizeImage("lib/blackDisc.png", 25, 25)));
+        menuBar.add(player2Disc);
+
+        setGameState(2, 2, false); //initialize
     }
 
     static public void setGameState(int score1, int score2, boolean isWhite){
         onTurnLabel.setIcon( (isWhite)? arrowR : arrowL);
         System.out.format("set: %s\n", isWhite);
         scoreLabel1.setText("<html><font size='6' color='white' face='League Gothic'><b>"+score1+"</b></font></html>");
-        scoreLabel2.setText("<html><font size='6' color='black' face='League Gothic'><b>"+score2+"</b></font></html>");
+        scoreLabel2.setText("<html><font size='6' color='white' face='League Gothic'><b>"+score2+"</b></font></html>");
         BoardGUI.score1 = score1;
         BoardGUI.score2 = score2;
     }
