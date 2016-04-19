@@ -243,7 +243,6 @@ public class OthelloGUI {
 
             BoardGUI boardGUI = new BoardGUI(frame, boardSize,player1, player2);
             frame.remove(chooseBoardSize);
-            //initUIBoard();
 
             previousPage = chooseBoardSize;
         }

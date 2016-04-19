@@ -27,8 +27,8 @@ public class BoardGUI {
 
     private Player player1;
     private Player player2;
-    private int score1;
-    private int score2;
+    private static int score1;
+    private static int score2;
 
     static ImageIcon whitePlayerFieldDisc;
     static ImageIcon blackPlayerFieldDisc;
@@ -36,8 +36,8 @@ public class BoardGUI {
     static Image blackTest;
     static ImageIcon fieldBackground;
     static ImageIcon fieldCanPutDisc;
-    static ImageIcon arrow1;
-    static ImageIcon arrow2;
+    static ImageIcon arrowL;
+    static ImageIcon arrowR;
 
     JLabel newGameBtn;
     JLabel exitGameBtn;
@@ -98,8 +98,8 @@ public class BoardGUI {
         blackPlayerFieldDisc = new ImageIcon(resizeImage("lib/black2.png", w, h));
         fieldBackground = new ImageIcon(resizeImage("lib/field.png", w, h));
         fieldCanPutDisc = new ImageIcon(resizeImage("lib/fieldCanPut.png", w, h));
-        arrow1 = new ImageIcon(resizeImage("lib/arrow_l.png", 25, 25));
-        arrow2 = new ImageIcon(resizeImage("lib/arrow_r.png", 25, 25));
+        arrowL = new ImageIcon(resizeImage("lib/arrow_l.png", 25, 25));
+        arrowR = new ImageIcon(resizeImage("lib/arrow_r.png", 25, 25));
         whiteTest = resizeImage("lib/white2.png", w, h);
         blackTest = resizeImage("lib/black2.png", w, h);
     }
@@ -134,9 +134,9 @@ public class BoardGUI {
     private void showGameOverDialog(){
         String msg = "Congratulation!\n";
         if(score1 > score2){ //player1 won
-            msg = msg + player1.name + "won, score: " + score1;
+            msg = msg + player1.name + " won with score: " + score1;
         }else if(score1 < score2){ //player2 won
-            msg = msg + player2.name + "won, score: " + score2;
+            msg = msg + player2.name + " won with score: " + score2;
         }else{      //stalemate
             msg = "Stalemate! Winners:\n  -"+player1.name+"\n  -"+player2.name+"\nScore: "+score1;
         }
@@ -289,13 +289,16 @@ public class BoardGUI {
         player2Image.setForeground(Color.white);
         menuBar.add(player2Image);
 
-        setGameState(0, 0, false);
+        setGameState(2, 2, false);
     }
 
     static public void setGameState(int score1, int score2, boolean isWhite){
-        onTurnLabel.setIcon( (isWhite)? arrow1 : arrow2);
+        onTurnLabel.setIcon( (isWhite)? arrowR : arrowL);
+        System.out.format("set: %s\n", isWhite);
         scoreLabel1.setText("<html><font size='6' color='white' face='League Gothic'><b>"+score1+"</b></font></html>");
-        scoreLabel2.setText("<html><font size='6' color='white' face='League Gothic'><b>"+score2+"</b></font></html>");
+        scoreLabel2.setText("<html><font size='6' color='black' face='League Gothic'><b>"+score2+"</b></font></html>");
+        BoardGUI.score1 = score1;
+        BoardGUI.score2 = score2;
     }
 
     private class boardFieldClicked implements MouseListener {
@@ -322,6 +325,7 @@ public class BoardGUI {
         @Override
         public void mousePressed(MouseEvent e) {
             Player tmp  = game.currentPlayer();
+            System.out.format("%s\n", tmp.isWhite());
 
             if (tmp.putDisk(label.row, label.col)) {
                 label.pressed = true;
@@ -387,6 +391,7 @@ public class BoardGUI {
         }
         @Override
         public void mouseReleased(MouseEvent e) {
+            mouseEntered(e);
         }
         @Override
         public void mouseClicked(MouseEvent e) {
