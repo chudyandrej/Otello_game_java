@@ -1,7 +1,6 @@
 package GUI;
 
 import game.Player;
-import javafx.embed.swing.JFXPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -262,6 +261,7 @@ public class OthelloGUI {
                 changeScene(mainMenu, chooseMode);
             }
             else if(button == multiPlayerBtn){
+                singlePlayer = false;
                 changeScene(mainMenu, chooseBoardSize);
             }
             else if(button == firstModeBtn){
