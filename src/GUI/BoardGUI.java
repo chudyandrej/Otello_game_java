@@ -169,26 +169,26 @@ public class BoardGUI {
         //newGameBtn.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50));
         newGameBtn.setSize(25, 25);
         newGameBtn.addMouseListener(new boardButtonClicked(newGameBtn));
-        newGameBtn.setIcon(new ImageIcon(resizeImage("lib/playAgain.png", 25, 25)));
+        newGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/playAgain.png", 25, 25)));
         topBar.add(newGameBtn);
 
         exitGameBtn = new JLabel(); //exit game button
         exitGameBtn.setSize(25, 25);
         exitGameBtn.addMouseListener(new boardButtonClicked(exitGameBtn));
-        exitGameBtn.setIcon(new ImageIcon(resizeImage("lib/exitGame3.png", 25, 25)));
+        exitGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/home.png", 25, 25)));
         topBar.add(exitGameBtn);
 
         undoBtn = new JLabel(); //undo button
         //undoBtn.addActionListener(new undoBtnClicked());
         undoBtn.setSize(25, 25);
         undoBtn.addMouseListener(new boardButtonClicked(undoBtn));
-        undoBtn.setIcon(new ImageIcon(resizeImage("lib/undo.png", 25, 25)));
+        undoBtn.setIcon(new ImageIcon(resizeImage("lib/icons/undo.png", 25, 25)));
         topBar.add(undoBtn);
 
         saveBtn = new JLabel();//save button
         saveBtn.setSize(25, 25);
         saveBtn.addMouseListener(new boardButtonClicked(saveBtn));
-        saveBtn.setIcon(new ImageIcon(resizeImage("lib/saveGame.png", 25, 25)));
+        saveBtn.setIcon(new ImageIcon(resizeImage("lib/icons/saveGame.png", 25, 25)));
         topBar.add(saveBtn);
 
 
@@ -334,44 +334,39 @@ public class BoardGUI {
         @Override
         public void mouseEntered(MouseEvent e) {
             if(button == newGameBtn){
-
+                newGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/playAgainEntered.png", 25, 25)));
             }else if (button == exitGameBtn){
-
+                exitGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/homeEntered.png", 25, 25)));
             }else if(button == undoBtn){
-
+                undoBtn.setIcon(new ImageIcon(resizeImage("lib/icons/undoEntered.png", 25, 25)));
             }else if(button == saveBtn){
-
+                saveBtn.setIcon(new ImageIcon(resizeImage("lib/icons/saveGameEntered.png", 25, 25)));
             }
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
             if(button == newGameBtn){
-
+                newGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/playAgain.png", 25, 25)));
             }else if (button == exitGameBtn){
-
+                exitGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/home.png", 25, 25)));
             }else if(button == undoBtn){
-
+                undoBtn.setIcon(new ImageIcon(resizeImage("lib/icons/undo.png", 25, 25)));
             }else if(button == saveBtn){
-
+                saveBtn.setIcon(new ImageIcon(resizeImage("lib/icons/saveGame.png", 25, 25)));
             }
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
             if(button == newGameBtn){
-                frame.remove(board);
-                initNewGame();
-
+                newGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/playAgainPressed.png", 25, 25)));
             }else if (button == exitGameBtn){
-                frame.remove(board);
-                OthelloGUI.initMenuAgain(frame);
-
+                exitGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/homePressed.png", 25, 25)));
             }else if(button == undoBtn){
-                game.undo();
-
+                undoBtn.setIcon(new ImageIcon(resizeImage("lib/icons/undoPressed.png", 25, 25)));
             }else if(button == saveBtn){
-
+                saveBtn.setIcon(new ImageIcon(resizeImage("lib/icons/saveGamePressed.png", 25, 25)));
             }
         }
         @Override
@@ -379,6 +374,20 @@ public class BoardGUI {
         }
         @Override
         public void mouseClicked(MouseEvent e) {
+            if(button == newGameBtn){
+                frame.remove(board);
+                initNewGame();
+                newGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/playAgainPressed.png", 25, 25)));
+            }else if (button == exitGameBtn){
+                frame.remove(board);
+                OthelloGUI.initMenuAgain(frame);
+                exitGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/homePressed.png", 25, 25)));
+            }else if(button == undoBtn){
+                game.undo();
+                undoBtn.setIcon(new ImageIcon(resizeImage("lib/icons/undoPressed.png", 25, 25)));
+            }else if(button == saveBtn){
+                saveBtn.setIcon(new ImageIcon(resizeImage("lib/icons/saveGamePressed.png", 25, 25)));
+            }
         }
 
     }
