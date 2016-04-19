@@ -7,6 +7,7 @@ import board.Disk;
 
 
 import javax.swing.*;
+import java.util.Random;
 import java.util.Stack;
 
 /**
@@ -18,9 +19,11 @@ public class ReversiRules {
     private int size;
     private Board playBoard ;
 
+
     public ReversiRules(int size){
         this.size = size;
         playBoard = new Board(size);
+
         //starting position
         Board.field[ (size/2)-1][(size/2)-1].putDisk(new Disk(true));
         Board.field[(size/2)][(size/2)].putDisk(new Disk(true));
@@ -58,11 +61,16 @@ public class ReversiRules {
             for (BoardField.Direction way : BoardField.Direction.values()) {
                 disks_for_turn = chack_IN_direct(field, way,playerTurn );
                 if (disks_for_turn != null){
+                    if(success != true){Game.backupGame.create_NewTurn(field);}
+                    Game.backupGame.add_TurnedDisks(disks_for_turn);
                     turn_disks(disks_for_turn);
                     success = true;
                 }
             }
-            if (success){ field.putDisk(new Disk(playerTurn.isWhite())); }
+            if (success){
+                field.putDisk(new Disk(playerTurn.isWhite()));
+                Game.backupGame.save_BackupRecord();
+            }
         }
         return success;
     }
@@ -125,12 +133,21 @@ public class ReversiRules {
                     }
                 }
             }
-
         }
         turn_disks(max_stack);
         best_field.putDisk(new Disk(UI.isWhite()));
     }
 
+    public void freezing_disks(){
+        int conunt_disks = 2;
+        Random time = new Random();
+        int from = 10;
+        int to = 100;
+        int random_time = time.nextInt(to-from) + to;
+
+
+
+    }
 
 
 }

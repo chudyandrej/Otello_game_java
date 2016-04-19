@@ -18,6 +18,8 @@ public class Disk {
         BoardGUI.changeDisc(x,y, isWhite);
     }
 
+
+
     public boolean isWhite(){
         return isWhite;
     }
@@ -43,5 +45,9 @@ public class Disk {
         this.y = y;
         BoardGUI.changeDisc(x,y, isWhite);
     }
+    public void delete(){
+        BoardGUI.deleteDisc(x,y);
+    }
+
 
 }

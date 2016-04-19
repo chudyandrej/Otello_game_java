@@ -15,10 +15,13 @@ public class Game {
     private Player currentPlayer;
     private Player black;
     private Player white;
+    static public backup backupGame;
     static public ReversiRules rules;
 
     public Game(int size){
+        backupGame = new backup();
         rules = new ReversiRules(size);
+
 
     }
 
@@ -36,6 +39,8 @@ public class Game {
 
         return false;
     }
+
+
 
     public Player currentPlayer(){
         return currentPlayer;

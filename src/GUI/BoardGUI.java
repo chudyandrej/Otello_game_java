@@ -14,6 +14,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by martin on 16/04/16.
@@ -32,6 +33,8 @@ public class BoardGUI {
 
     static ImageIcon whitePlayerFieldDisc;
     static ImageIcon blackPlayerFieldDisc;
+    static Image whiteTest;
+    static Image blackTest;
     static ImageIcon fieldBackground;
     static ImageIcon fieldCanPutDisc;
     static ImageIcon arrow1;
@@ -40,13 +43,14 @@ public class BoardGUI {
     static BoardFieldLabel[][] fields;
 
     BoardGUI(JFrame frame, int boardSize, Player player1, Player player2){
-        this.frame = frame;     //temporary solution
+        this.frame = frame;
         this.boardSize = boardSize;
         this.player1 = player1;
         this.player2 = player2;
         initImages();
         initNewGame();
 
+        //JOptionPane.showConfirmDialog(frame, "hello world, you FAILED");
         System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight()); //debug
     }
 
@@ -92,11 +96,46 @@ public class BoardGUI {
         fieldCanPutDisc = new ImageIcon(resizeImage("lib/fieldCanPut.png", w, h));
         arrow1 = new ImageIcon(resizeImage("lib/arrow_l.png", 25, 25));
         arrow2 = new ImageIcon(resizeImage("lib/arrow_r.png", 25, 25));
+        whiteTest = resizeImage("lib/white2.png", w, h);
+        blackTest = resizeImage("lib/black2.png", w, h);
+    }
+
+    static public void deleteDisc(int x, int y){
+        fields[x][y].setIcon(fieldBackground);
     }
 
     static public void changeDisc(int x, int y, boolean isWhite){
+        //whitePlayerFieldDisc.getImage().flush();
+        //blackPlayerFieldDisc.getImage().flush();
+        //ImageIcon icon = new ImageIcon(whiteTest);
+        //icon.getImage().flush();
+
+        //ImageIcon icon2 = new ImageIcon(blackTest);
+        //icon2.getImage().flush();
+
         fields[x][y].setIcon( (isWhite) ? whitePlayerFieldDisc : blackPlayerFieldDisc );
         if(!fields[x][y].pressed){ fields[x][y].pressed = true; }
+
+        board.validate();
+        fields[x][y].repaint(); //update the display??
+        frame.repaint();
+        frame.validate();
+        frame.getContentPane().repaint();
+        //fields[x][y].updateUI();
+       // fields[x][y].invalidate();
+        // Use this ONLY if invalidate doesn't work...
+        fields[x][y].revalidate();
+       // fields[x][y].repaint();
+
+
+        System.out.format("%d %d \n", x,y);
+        try {
+            TimeUnit.MILLISECONDS.sleep(500);
+           // fields[x][y].getIcon().wait();
+        } catch (InterruptedException e) {
+            //Handle exception
+        }
+        fields[x][y].revalidate();
     }
 
     static public Image resizeImage(String imgName, int w, int h){
@@ -115,7 +154,7 @@ public class BoardGUI {
         return resizedImage;
     }
 
-    static public void showDialog(String msg){
+    public void showDialog(String msg){
         //JOptionPane.showMessageDialog(frame, "Eggs are not supposed to be green.");
         int result = JOptionPane.showConfirmDialog(frame, msg);
         if(result == JOptionPane.YES_OPTION){
@@ -125,7 +164,6 @@ public class BoardGUI {
             //return to menu or close application?
         }
     }
-
 
     public class BoardFieldLabel extends JLabel {
         public int row;
