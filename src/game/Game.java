@@ -24,6 +24,7 @@ public class Game {
         backupGame = new Backup();
         rules = new ReversiRules(size,backupGame);
         gameOver = false;
+        currentPlayer = white;
 
     }
 
@@ -46,23 +47,34 @@ public class Game {
         return currentPlayer;
     }
 
-    public Player nextPlayer(){
+    public void nextPlayer(){
         changeScore();
         currentPlayer = (currentPlayer == black) ? white : black;
-        if (currentPlayer.is_pc() &&  exitsingTurn(currentPlayer)) {
+        if (currentPlayer.is_pc()) {
+            System.out.printf("Bot: %s\n",currentPlayer.isWhite());
             currentPlayer.uiTurn(this);
-            return null;
+            return;
+
         }
         else if(exitsingTurn(currentPlayer)) {
-            return currentPlayer;
+           System.out.printf("Regular Player: %s\n",currentPlayer.isWhite());
+           return;
         }
         else if (!exitsingTurn(white) && !exitsingTurn(black)){
+            System.out.printf("Game over: %s",currentPlayer.isWhite());
             changeScore();
             gameOver = true;
-            return null;
+            return;
+
         }
+        System.out.printf("else pred: %s\n",currentPlayer.isWhite());
         currentPlayer = (currentPlayer == black) ? white : black;
-        return currentPlayer;
+        if (currentPlayer.is_pc()) {
+            currentPlayer.uiTurn(this);
+        }
+
+        System.out.printf("else po: %s\n",currentPlayer.isWhite());
+
 
     }
 
@@ -80,7 +92,7 @@ public class Game {
                 else if(!tmp.isWhite()){ blac_Dsik++; }
             }
         }
-        BoardGUI.setGameState(blac_Dsik, white_Disk, currentPlayer.isWhite());
+        BoardGUI.setGameState(white_Disk, blac_Dsik , currentPlayer.isWhite());
     }
 
     public boolean exitsingTurn(Player player_on_turn) {

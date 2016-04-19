@@ -1,9 +1,5 @@
 package game;
 
-import board.BoardField;
-
-import java.util.concurrent.TimeUnit;
-
 
 /**
  * Created by andrejchudy on 15/04/16.
