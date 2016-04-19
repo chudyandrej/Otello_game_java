@@ -5,6 +5,8 @@ import GUI.BoardGUI;
 import board.Board;
 import board.Disk;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by andrejchudy on 15/04/16.
  */
@@ -44,7 +46,10 @@ public class Game {
         currentPlayer = (currentPlayer == black) ? white : black;
         if (currentPlayer.is_pc() &&  exitsingTurn(currentPlayer)) {
             currentPlayer.uiTurn(this);
+
+
             return null;
+
         }
         else if(exitsingTurn(currentPlayer)) {
             System.out.printf("Turn PC!!!!\n");
@@ -74,7 +79,7 @@ public class Game {
                 else if(!tmp.isWhite()){blac_Dsik++; }
             }
         }
-        BoardGUI.setGameState(blac_Dsik, white_Disk, currentPlayer.name);
+        BoardGUI.setGameState(blac_Dsik, white_Disk, currentPlayer.isWhite());
     }
 
     public boolean exitsingTurn(Player player_on_turn) {
