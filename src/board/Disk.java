@@ -47,6 +47,7 @@ public class Disk {
     }
     public void delete(){
         BoardGUI.deleteDisc(x,y);
+
     }
 
 

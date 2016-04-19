@@ -5,8 +5,6 @@ import GUI.BoardGUI;
 import board.Board;
 import board.Disk;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Created by andrejchudy on 15/04/16.
  */
@@ -15,12 +13,12 @@ public class Game {
     private Player currentPlayer;
     private Player black;
     private Player white;
-    static public backup backupGame;
+    public Backup backupGame;
     static public ReversiRules rules;
 
     public Game(int size){
-        backupGame = new backup();
-        rules = new ReversiRules(size);
+        backupGame = new Backup();
+        rules = new ReversiRules(size,backupGame);
 
 
     }
@@ -57,7 +55,6 @@ public class Game {
 
         }
         else if(exitsingTurn(currentPlayer)) {
-            System.out.printf("Turn PC!!!!\n");
             return currentPlayer;
         }
         else if (!exitsingTurn(white) && !exitsingTurn(black)){
@@ -65,7 +62,7 @@ public class Game {
             return white; ///// !!!!!!Game Over
         }
         currentPlayer = (currentPlayer == black) ? white : black;
-        System.out.printf("Skip turn!!!!\n");
+        System.out.printf("Skip TurnBackUp!!!!\n");
         return currentPlayer;
 
     }
@@ -98,6 +95,19 @@ public class Game {
         }
         return false;
     }
+
+    public void undo(){
+        Backup.TurnBackUp lastTurn;
+        if (backupGame.backupTurns.size() > 4 ) {
+            lastTurn = (Backup.TurnBackUp) backupGame.backupTurns.get(backupGame.backupTurns.size() - 1);
+            lastTurn.base_Point.deleteDisk();
+
+            rules.turn_disks(lastTurn.turned);
+            backupGame.backupTurns.remove(lastTurn);
+        }
+    }
+
+
 
 
 

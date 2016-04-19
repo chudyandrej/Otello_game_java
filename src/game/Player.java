@@ -47,10 +47,6 @@ public class Player {
 
 
     public void uiTurn(Game game) {
-
-
-
-        System.out.printf("level : %d", level);
         if (level == 1) {
             Game.rules.uiAlgorithmLevel1(this);
         }

@@ -9,40 +9,21 @@ import java.util.Stack;
 /**
  * Created by andrejchudy on 19/04/16.
  */
-public class backup {
-    private turn new_turn;
-    private List backupTurns;
+public class Backup {
+    private TurnBackUp new_turn;
+    public List backupTurns;
 
-    backup(){
+    Backup(){
         backupTurns = new ArrayList();
-    }
-
-    public void create_NewTurn(BoardField base_Point){
-        new_turn = new turn(base_Point);
 
     }
 
-    public void add_TurnedDisks(Stack<BoardField> turnndDisk){
+    public void create_NewTurn(BoardField base_Point, Player turn_player){
+        new_turn = new TurnBackUp(base_Point, turn_player);
+    }
+
+    public void add_TurnedDisks(List turnndDisk){
         new_turn.add_Stack_turned(turnndDisk);
-
-    }
-
-    public void undo(){
-        turn lastTurn;
-        lastTurn = (turn) backupTurns.get(backupTurns.size()-1);
-        lastTurn.base_Point.deleteDisk();
-        turn_disks(lastTurn.turned);
-        backupTurns.remove(lastTurn);
-    }
-
-    private void turn_disks(List st){
-        System.out.printf("SIZE    %d    \n\n",st.size());
-        BoardField tmp;
-        while (!st.isEmpty()){
-            tmp = (BoardField) st.get(st.size()-1);
-            tmp.getDisk().turn();
-            st.remove(tmp);
-        }
 
     }
 
@@ -50,14 +31,16 @@ public class backup {
         backupTurns.add(new_turn);
     }
 
-    private class turn {
-        private BoardField base_Point;
-        private List turned;
-        turn(BoardField base_Point){
+    public class TurnBackUp {
+        public BoardField base_Point;
+        public List turned;
+        public Player turn_player;
+        TurnBackUp(BoardField base_Point, Player turn_palyer){
             turned = new ArrayList();
             this.base_Point = base_Point;
+            this.turn_player = turn_palyer;
         }
-        public void add_Stack_turned(Stack<BoardField> turnndDisk){
+        public void add_Stack_turned(List turnndDisk){
             turned.addAll(turnndDisk);
         }
     }

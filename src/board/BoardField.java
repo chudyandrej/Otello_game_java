@@ -77,13 +77,11 @@ public class BoardField {
         }
         return ret_val;
     }
-    public boolean deleteDisk(){
+    public void deleteDisk(){
         if(disk != null){
             disk.delete();
-            disk = null;
-            return true;
         }
-        return false;
+        this.disk = null;
     }
 
     public Disk getDisk(){
