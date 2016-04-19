@@ -19,8 +19,8 @@ import java.io.IOException;
  * Created by martin on 16/04/16.
  */
 public class BoardGUI {
-    private JFrame frame;
-    private JLabel board;
+    private static JFrame frame;
+    private static JLabel board;
     private int boardSize;
     private Game game;
     static JLabel scoreLabel1;
@@ -40,7 +40,7 @@ public class BoardGUI {
     static BoardFieldLabel[][] fields;
 
     BoardGUI(JFrame frame, int boardSize, Player player1, Player player2){
-        this.frame = frame;
+        this.frame = frame;     //temporary solution
         this.boardSize = boardSize;
         this.player1 = player1;
         this.player2 = player2;
@@ -100,7 +100,7 @@ public class BoardGUI {
     }
 
     static public Image resizeImage(String imgName, int w, int h){
-        BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB); //TYPE_INT_ARGB makes parts of transparent image be transparent
         Graphics2D g = resizedImage.createGraphics();
         //g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Image img = null;
@@ -114,6 +114,18 @@ public class BoardGUI {
         g.dispose();
         return resizedImage;
     }
+
+    static public void showDialog(String msg){
+        //JOptionPane.showMessageDialog(frame, "Eggs are not supposed to be green.");
+        int result = JOptionPane.showConfirmDialog(frame, msg);
+        if(result == JOptionPane.YES_OPTION){
+            //frame.remove(board);
+            //initNewGame();
+        }else{
+            //return to menu or close application?
+        }
+    }
+
 
     public class BoardFieldLabel extends JLabel {
         public int row;
@@ -273,9 +285,8 @@ public class BoardGUI {
         @Override
         public void mousePressed(MouseEvent e) {
             Player tmp  = game.currentPlayer();
-            System.out.format("%d:%d %s\n", label.row, label.col, tmp.isWhite());
+            //System.out.format("%d:%d %s\n", label.row, label.col, tmp.isWhite());
             if (tmp.putDisk(label.row, label.col)) {
-                changeDisc(label.row, label.col, tmp.isWhite());
                 label.pressed = true;
 
                 game.nextPlayer();
@@ -287,7 +298,6 @@ public class BoardGUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             frame.remove(board);
-
             initNewGame();
         }
     }

@@ -32,6 +32,7 @@ public class OthelloGUI {
 
     JButton singlePlayerBtn = new JButton("Single Player");
     JButton multiPlayerBtn = new JButton("Multiplayer");
+    JButton loadGameBtn = new JButton("Load Game");
     JButton exitBtn = new JButton("Exit");
     JButton firstModeBtn = new JButton("First Mode");
     JButton secondModeBtn = new JButton("Second Mode");
@@ -124,6 +125,11 @@ public class OthelloGUI {
         setButton(multiPlayerBtn);
         mainMenu.add(panelBtnMultiP);
 
+        JPanel panelBtnLoad = createPanelBtn();
+        panelBtnLoad.add(loadGameBtn);
+        setButton(loadGameBtn);
+        mainMenu.add(panelBtnLoad);
+
         JPanel panelBtnExit = createPanelBtn();
         panelBtnExit.add(exitBtn);
         setButton(exitBtn);
@@ -134,6 +140,7 @@ public class OthelloGUI {
         //set listeners
         singlePlayerBtn.addActionListener(new buttonClicked(singlePlayerBtn));
         multiPlayerBtn.addActionListener(new buttonClicked(multiPlayerBtn));
+        loadGameBtn.addActionListener(new buttonClicked(loadGameBtn));
         exitBtn.addActionListener(new backExitBtnClicked(mainMenu));
     }
 
@@ -148,14 +155,17 @@ public class OthelloGUI {
 
         JPanel panelFirstModeBtn = createPanelBtn();
         panelFirstModeBtn.add(firstModeBtn);
+        setButton(firstModeBtn);
         chooseMode.add(panelFirstModeBtn);
 
         JPanel panelSecondModeBtn = createPanelBtn();
         panelSecondModeBtn.add(secondModeBtn);
+        setButton(secondModeBtn);
         chooseMode.add(panelSecondModeBtn);
 
         JPanel panelBackBtn = createPanelBtn();
         JButton backBtn = new JButton("Back");
+        setButton(backBtn);
         panelBackBtn.add(backBtn);
         chooseMode.add(panelBackBtn);
 
@@ -173,22 +183,27 @@ public class OthelloGUI {
 
         JPanel panel6x6Btn = createPanelBtn();
         panel6x6Btn.add(size6x6Btn);
+        setButton(size6x6Btn);
         chooseBoardSize.add(panel6x6Btn);
 
         JPanel panel8x8Btn = createPanelBtn();
         panel8x8Btn.add(size8x8Btn);
+        setButton(size8x8Btn);
         chooseBoardSize.add(panel8x8Btn);
 
         JPanel panel10x10Btn = createPanelBtn();
         panel10x10Btn.add(size10x10Btn);
+        setButton(size10x10Btn);
         panel6x6Btn.add(panel10x10Btn);
 
         JPanel panel12x12Btn = createPanelBtn();
         panel12x12Btn.add(size12x12Btn);
+        setButton(size12x12Btn);
         chooseBoardSize.add(panel12x12Btn);
 
         JPanel panelBackBtn = createPanelBtn();
         panelBackBtn.add(backBtn);
+        setButton(backBtn);
         chooseBoardSize.add(panelBackBtn);
 
         chooseBoardSize.add(Box.createVerticalGlue());
@@ -246,6 +261,9 @@ public class OthelloGUI {
             else if(button == secondModeBtn){
                 mode = 2;
                 changeScene(chooseMode, chooseBoardSize);
+            }
+            else if(button == loadGameBtn){
+                //code for load game goes here
             }
         }
     }
