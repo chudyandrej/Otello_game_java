@@ -58,7 +58,6 @@ public class ReversiRules {
                         }
                         tmp = tmp.nextField(way);
                     }
-
                 }
             }
         }
@@ -73,7 +72,7 @@ public class ReversiRules {
             for (BoardField.Direction way : BoardField.Direction.values()) {
                 disks_for_turn = chack_IN_direct(field, way,playerTurn );
                 if (disks_for_turn != null){
-                    if(success != true){backupGame.create_NewTurn(field,playerTurn);}
+                    if(!success){backupGame.create_NewTurn(field,playerTurn);}
                     backupGame.add_TurnedDisks(disks_for_turn);
                     turn_disks(disks_for_turn);
                     success = true;
@@ -90,7 +89,7 @@ public class ReversiRules {
     private List chack_IN_direct(BoardField  field, BoardField.Direction way, Player playerTurn){
         field = field.nextField(way);
         if (field != null && field.getDisk() != null && field.getDisk().isWhite() != playerTurn.isWhite()) {
-            List candidate_turn = new ArrayList();
+            List <BoardField> candidate_turn = new ArrayList<BoardField>();
             while (field != null && field.getDisk() != null) {
                 if (field.getDisk().isWhite() == playerTurn.isWhite()) {
                     return candidate_turn ;
@@ -131,7 +130,7 @@ public class ReversiRules {
 
     public void uiAlgorithmLevel2(Player UI){
         List disksForTurn;
-        List maxTurns = new ArrayList();
+        List maxTurns = new ArrayList<BoardField>();
         BoardField  best_field = null;
         int size = Game.rules.getSize();
         for (int i = 0; i < size; i++) {
@@ -151,6 +150,7 @@ public class ReversiRules {
         if (!maxTurns.isEmpty()) {
             backupGame.create_NewTurn(best_field,UI);
             backupGame.add_TurnedDisks(maxTurns);
+            assert best_field != null;
             best_field.putDisk(new Disk(UI.isWhite()));
             turn_disks(maxTurns);
             backupGame.save_BackupRecord();

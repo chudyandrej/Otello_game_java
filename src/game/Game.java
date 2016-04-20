@@ -14,14 +14,13 @@ public class Game {
     private Player black;
     private Player white;
     public boolean gameOver;
-    private Backup backupGame;
-    private int white_Disk;
-    private int blac_Dsik;
+    public Backup backupGame;
 
     static public ReversiRules rules;
 
     public Game(int size){
         backupGame = new Backup();
+        backupGame.sizeBoard = size;
         rules = new ReversiRules(size,backupGame);
         gameOver = false;
         currentPlayer = white;
@@ -33,10 +32,12 @@ public class Game {
         if(newPlayer.isWhite() && white == null){
             white = newPlayer;
             currentPlayer = newPlayer;
+            backupGame.player1 = white;
             return true;
 
         }else if (!newPlayer.isWhite() && black == null){
             black = newPlayer;
+            backupGame.player2 = black;
             return true;
         }
 
@@ -57,8 +58,8 @@ public class Game {
 
         }
         else if(exitsingTurn(currentPlayer)) {
-           System.out.printf("Regular Player: %s\n",currentPlayer.isWhite());
-           return;
+            System.out.printf("Regular Player: %s\n",currentPlayer.isWhite());
+            return;
         }
         else if (!exitsingTurn(white) && !exitsingTurn(black)){
             System.out.printf("Game over: %s",currentPlayer.isWhite());
@@ -79,8 +80,8 @@ public class Game {
     }
 
     private void changeScore(){
-        white_Disk = 0;
-        blac_Dsik = 0;
+        int white_Disk = 0;
+        int blac_Dsik = 0;
         int size = Game.rules.getSize();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -92,7 +93,7 @@ public class Game {
                 else if(!tmp.isWhite()){ blac_Dsik++; }
             }
         }
-        BoardGUI.setGameState(white_Disk, blac_Dsik , currentPlayer.isWhite());
+        BoardGUI.setGameState(white_Disk, blac_Dsik, currentPlayer.isWhite());
     }
 
     public boolean exitsingTurn(Player player_on_turn) {
@@ -111,7 +112,7 @@ public class Game {
         gameOver = false;
         Backup.TurnBackUp lastTurn;
         if (backupGame.backupTurns.size() > 4 ) {
-            lastTurn = (Backup.TurnBackUp) backupGame.backupTurns.get(backupGame.backupTurns.size() - 1);
+            lastTurn = backupGame.backupTurns.get(backupGame.backupTurns.size() - 1);
             lastTurn.base_Point.deleteDisk();
             rules.turn_disks(lastTurn.turned);
             backupGame.backupTurns.remove(lastTurn);

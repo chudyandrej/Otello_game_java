@@ -392,7 +392,6 @@ public class BoardGUI {
                     out.writeObject(game.backupGame);
                     out.close();
                     fileOut.close();
-
                 }
                 catch(IOException i) {
                     i.printStackTrace();

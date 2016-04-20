@@ -3,7 +3,7 @@ package board;
 /**
  * Created by andrejchudy on 15/04/16.
  */
-public class BoardField {
+public class BoardField implements java.io.Serializable {
 
     public int row;
     public int col;
