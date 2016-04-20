@@ -28,20 +28,13 @@ public class ReversiRules {
 
         //starting position
         Board.field[ (size/2)-1][(size/2)-1].putDisk(new Disk(true));
-        backupGame.create_NewTurn(Board.field[ (size/2)-1][(size/2)-1], null);
-        backupGame.save_BackupRecord();
 
         Board.field[(size/2)][(size/2)].putDisk(new Disk(true));
-        backupGame.create_NewTurn(Board.field[(size/2)][(size/2)],null);
-        backupGame.save_BackupRecord();
 
         Board.field[(size/2)-1][(size/2)].putDisk(new Disk(false));
-        backupGame.create_NewTurn(Board.field[(size/2)-1][(size/2)],null);
-        backupGame.save_BackupRecord();
 
         Board.field[(size/2)][(size/2)-1].putDisk(new Disk(false));
-        backupGame.create_NewTurn(Board.field[(size/2)][(size/2)-1],null);
-        backupGame.save_BackupRecord();
+
 
     }
 

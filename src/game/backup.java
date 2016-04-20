@@ -1,6 +1,8 @@
 package game;
 
+import board.Board;
 import board.BoardField;
+import board.Disk;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.List;
 
 /**
  * Created by andrejchudy on 19/04/16.
- */ 
+ */
 
 public class Backup implements java.io.Serializable{
 
@@ -39,20 +41,22 @@ public class Backup implements java.io.Serializable{
     }
 
     public void load(){
-
-
-
+        for(TurnBackUp turn  : backupTurns) {
+            turn.turn_player.putDisk(turn.base_Point.row,turn.base_Point.col);
+        }
     }
 
     public class TurnBackUp implements java.io.Serializable{
         public BoardField base_Point;
         public List<BoardField> turned;
         public Player turn_player;
+
         TurnBackUp(BoardField base_Point, Player turn_palyer){
             turned = new ArrayList<BoardField>();
             this.base_Point = base_Point;
             this.turn_player = turn_palyer;
         }
+        
         public void add_Stack_turned(List<BoardField> turnndDisk){
             turned.addAll(turnndDisk);
         }

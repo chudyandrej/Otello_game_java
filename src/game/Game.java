@@ -111,7 +111,7 @@ public class Game {
     public void undo(){
         gameOver = false;
         Backup.TurnBackUp lastTurn;
-        if (backupGame.backupTurns.size() > 4 ) {
+        if (backupGame.backupTurns.size() > 0) {
             lastTurn = backupGame.backupTurns.get(backupGame.backupTurns.size() - 1);
             lastTurn.base_Point.deleteDisk();
             rules.turn_disks(lastTurn.turned);
