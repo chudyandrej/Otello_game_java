@@ -6,7 +6,6 @@ import game.Player;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileOutputStream;
@@ -21,7 +20,7 @@ public class BoardGUI {
     private static JFrame frame;
     private static JLabel board;
     private int boardSize;
-    private Game game;
+    public static Game game;
     static JLabel scoreLabel1;
     static JLabel scoreLabel2;
     static JLabel onTurnLabel;
@@ -81,9 +80,9 @@ public class BoardGUI {
         fields[x][y].setDisc(isWhite);
     }
 
-    private void showGameOverDialog(){
+    public void showGameOverDialog(){
 
-        String msg  =  new GameOverDialog().getMsg(score1, score2, player1, player2);
+        String msg  = GameOverDialog.getMsg(score1, score2, player1, player2);
 
         int result = JOptionPane.showConfirmDialog(frame, msg, "Game Over", JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
@@ -94,80 +93,6 @@ public class BoardGUI {
         }else if(result == JOptionPane.NO_OPTION){  //go to main menu
             frame.remove(board);
             OthelloGUI.initMenuAgain(frame);
-        }
-    }
-
-    public class BoardFieldLabel extends JLabel implements MouseListener{
-        private int row;
-        public int col;
-        private boolean pressed = false;
-        private Icon beforeFroze;
-
-        BoardFieldLabel(int row, int col){
-            this.row = row;
-            this.col = col;
-
-            setBorder(BorderFactory.createLineBorder(Color.black));
-            setIcon(I.fieldBackground);
-            setOpaque(true);
-            addMouseListener(this);
-        }
-
-        public void setDisc(boolean isWhite){
-            setIcon( (isWhite) ? I.whitePlayerFieldDisc : I.blackPlayerFieldDisc );
-            if(!pressed){ pressed = true; }
-        }
-
-        public void deleteDisc(){
-            pressed = false;
-            setIcon(I.fieldBackground);
-        }
-
-        public void freeze(){
-            beforeFroze = getIcon();
-            setIcon(I.saveBtnImage);        //just temporary, new image is needed to create
-        }
-
-        public void unFreeze(){
-            setIcon(beforeFroze);
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            if(!pressed) {
-                if (game.currentPlayer().canPutDisk(row, col)) {
-                    setIcon(I.fieldCanPutDisc);
-                }
-            }
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            if(!pressed) {    //if there is no disc
-                setIcon(I.fieldBackground);
-            }
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            Player tmp  = game.currentPlayer();
-
-            if (tmp.putDisk(row, col)) {
-                pressed = true;
-                game.nextPlayer();
-
-                if(game.gameOver){
-                    showGameOverDialog();
-                }
-            }
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
         }
     }
 
@@ -268,8 +193,7 @@ public class BoardGUI {
 
         for(int row=0; row < boardSize; row++){
             for(int col=0; col < boardSize; col++){
-                fields[row][col] = new BoardFieldLabel(row, col);
-                //fields[row][col].addMouseListener(new boardFieldClicked(fields[row][col]));
+                fields[row][col] = new BoardFieldLabel(row, col, I, this);
                 playArea.add(fields[row][col]);
             }
         }

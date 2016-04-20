@@ -5,28 +5,18 @@ import game.Player;
 /**
  * Created by martin on 20/04/16.
  */
-public class GameOverDialog {
+public final class GameOverDialog {
 
-    private int score1;
-    private int score2;
-    private Player player1;
-    private Player player2;
-
-    public String getMsg(int score1, int score2, Player player1, Player player2){
-
-        this.score1 = score1;
-        this.score2 = score2;
-        this.player1 = player1;
-        this.player2 = player2;
+    public static String getMsg(int score1, int score2, Player player1, Player player2){
 
         String msg = "";
         if (score1 == score2){      //stalemate
             msg = msg + "Stalemate! Winners:\n  -"+player1.name+"\n  -"+player2.name+"\nScore: "+score1;
         }
         else if(player1.is_pc() || player2.is_pc()){
-            msg = msg + createSinglePlayerGameOverMsg();
+            msg = msg + createSinglePlayerGameOverMsg(score1, score2, player1, player2);
         }else{
-            msg = msg + createMultiPlayerGameOverMsg();
+            msg = msg + createMultiPlayerGameOverMsg(score1, score2, player1, player2);
         }
 
         msg = msg + "\nWould you like to play again?";
@@ -34,7 +24,7 @@ public class GameOverDialog {
         return msg;
     }
 
-    private String createMultiPlayerGameOverMsg(){
+    public static String createMultiPlayerGameOverMsg(int score1, int score2, Player player1, Player player2){
         String msg;
         if(score1 > score2){        //player1 won
             msg = player1.name + " won with score: " + score1;
@@ -44,7 +34,7 @@ public class GameOverDialog {
         return msg;
     }
 
-    private String createSinglePlayerGameOverMsg(){
+    public static String createSinglePlayerGameOverMsg(int score1, int score2, Player player1, Player player2){
         String msg;
         if(player1.is_pc()) {
             msg = (score1 > score2) ? "You LOST. Computer won.\n" : "Congratulation!\nYou WON.\n";
