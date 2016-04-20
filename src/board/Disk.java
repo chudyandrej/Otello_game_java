@@ -5,7 +5,7 @@ import GUI.BoardGUI;
 /**
  * Created by andrejchudy on 15/04/16.
  */
-public class Disk {
+public class Disk implements java.io.Serializable {
     private boolean isWhite;
     private int x, y;
 

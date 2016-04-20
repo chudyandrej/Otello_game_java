@@ -4,7 +4,7 @@ package game;
 /**
  * Created by andrejchudy on 15/04/16.
  */
-public class Player {
+public class Player  implements java.io.Serializable{
 
     private boolean isWhite;
 

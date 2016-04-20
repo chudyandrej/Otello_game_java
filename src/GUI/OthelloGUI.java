@@ -1,5 +1,6 @@
 package GUI;
 
+import game.Backup;
 import game.Player;
 
 import javax.imageio.ImageIO;
@@ -9,24 +10,28 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 
 /**
  * Created by martin on 16/04/16.
  */
 public class OthelloGUI {
 
-    boolean singlePlayer = false;
-    byte mode;
+    private boolean singlePlayer = false;
+    private byte mode;
     public int boardSize;
+
     private Player player1;
     private Player player2;
-    JFrame frame;
+    private JFrame frame;
 
     public static Box mainMenu;
     public static Box chooseMode;
     public static Box chooseBoardSize;
     public static Box previousPage = null;
+    public static BackgroundPane bg;
 
     Dimension buttonDimension = new Dimension(150, 40);
 
@@ -44,12 +49,11 @@ public class OthelloGUI {
 
     ImageIcon background;
     ImageIcon buttonImage;
-    public static BackgroundPane bg;
 
     public OthelloGUI(){
         frame = new JFrame("Othello");
-        background = new ImageIcon(BoardGUI.resizeImage("lib/background.jpg", 500, 550));
-        buttonImage = new ImageIcon(BoardGUI.resizeImage("lib/button.jpg", 170, 40));
+        background = new ImageIcon(Images.resizeImage("lib/background.jpg", 500, 550));
+        buttonImage = new ImageIcon(Images.resizeImage("lib/button.jpg", 170, 40));
         createMainPage();
         createChooseGameModePage();
         createChooseSizeOfBoardPage();
@@ -59,8 +63,7 @@ public class OthelloGUI {
         bg.add(mainMenu);
 
         frame.add(bg);
-        //bg.add(mainMenu);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(500, 550));
         frame.pack();
         frame.setVisible(true);
@@ -272,7 +275,23 @@ public class OthelloGUI {
                 changeScene(chooseMode, chooseBoardSize);
             }
             else if(button == loadGameBtn){
-                //code for load game goes here
+                Backup backup_game = null;
+                try {
+                    FileInputStream fileIn = new FileInputStream("employee.ser");
+                    ObjectInputStream in = new ObjectInputStream(fileIn);
+                    backup_game = (Backup) in.readObject();
+                    in.close();
+                    fileIn.close();
+                }
+                catch(IOException i) {
+                    i.printStackTrace();
+
+                }catch(ClassNotFoundException c) {
+                    System.out.println("Employee class not found");
+                    c.printStackTrace();
+                }
+                if (backup_game != null)
+                    backup_game.load();
             }
         }
     }
