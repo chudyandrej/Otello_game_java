@@ -84,7 +84,6 @@ public class Images {
         saveBtnImage = new ImageIcon(Images.resizeImage("lib/icons/saveGame.png", iconSize, iconSize));
         saveBtnImageE = new ImageIcon(Images.resizeImage("lib/icons/saveGameEntered.png", iconSize, iconSize));
         saveBtnImageP = new ImageIcon(Images.resizeImage("lib/icons/saveGamePressed.png", iconSize, iconSize));
-        System.out.format("haaaaa");
     }
 
     static public Image resizeImage(String imgName, int w, int h){
