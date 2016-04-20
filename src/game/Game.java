@@ -20,7 +20,7 @@ public class Game {
 
     public Game(int size){
         backupGame = new Backup();
-        backupGame.sizeBoard = size;
+        backupGame.boardSize = size;
         rules = new ReversiRules(size,backupGame);
         gameOver = false;
         currentPlayer = white;
