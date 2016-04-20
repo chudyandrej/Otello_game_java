@@ -1,5 +1,6 @@
 package GUI;
 
+import game.Backup;
 import game.Player;
 
 import javax.imageio.ImageIO;
@@ -16,17 +17,19 @@ import java.io.IOException;
  */
 public class OthelloGUI {
 
-    boolean singlePlayer = false;
-    byte mode;
+    private boolean singlePlayer = false;
+    private byte mode;
     public int boardSize;
+
     private Player player1;
     private Player player2;
-    JFrame frame;
+    private JFrame frame;
 
     public static Box mainMenu;
     public static Box chooseMode;
     public static Box chooseBoardSize;
     public static Box previousPage = null;
+    public static BackgroundPane bg;
 
     Dimension buttonDimension = new Dimension(150, 40);
 
@@ -44,7 +47,6 @@ public class OthelloGUI {
 
     ImageIcon background;
     ImageIcon buttonImage;
-    public static BackgroundPane bg;
 
     public OthelloGUI(){
         frame = new JFrame("Othello");
@@ -59,8 +61,7 @@ public class OthelloGUI {
         bg.add(mainMenu);
 
         frame.add(bg);
-        //bg.add(mainMenu);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(500, 550));
         frame.pack();
         frame.setVisible(true);
@@ -272,7 +273,10 @@ public class OthelloGUI {
                 changeScene(chooseMode, chooseBoardSize);
             }
             else if(button == loadGameBtn){
-                //code for load game goes here
+                Backup backup = new Backup();
+                backup.doLoad();
+                backup.renewData();
+                BoardGUI boardGUI = new BoardGUI(frame, backup.boardSize, backup.player1, backup.player2);
             }
         }
     }

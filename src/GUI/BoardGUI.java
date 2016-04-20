@@ -2,7 +2,6 @@ package GUI;
 
 import game.Game;
 import game.Player;
-import jdk.nashorn.internal.scripts.JO;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -48,7 +47,7 @@ public class BoardGUI {
     static BoardFieldLabel[][] fields;
 
     BoardGUI(JFrame frame, int boardSize, Player player1, Player player2){
-        this.frame = frame;
+        BoardGUI.frame = frame;
         this.boardSize = boardSize;
         this.player1 = player1;
         this.player2 = player2;
@@ -439,6 +438,8 @@ public class BoardGUI {
             }else if(button == undoBtn){
                 game.undo();
             }else if(button == saveBtn){
+                game.backupGame.doSave();
+                JOptionPane.showMessageDialog(frame, "Game was successfully");
             }
         }
     }
