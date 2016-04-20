@@ -12,18 +12,18 @@ import java.awt.event.MouseListener;
  */
 public class BoardFieldLabel extends JLabel implements MouseListener {
     private int row;
-    public int col;
+    private int col;
     private boolean pressed = false;
     private boolean frozen = false;
     private Icon beforeFroze;
     private Images I;
-    private BoardGUI instance;
+    private BoardGUI boardGUI;
 
-    BoardFieldLabel(int row, int col, Images I, BoardGUI instance){
+    BoardFieldLabel(int row, int col, Images I, BoardGUI boardGUI){
         this.row = row;
         this.col = col;
         this.I = I;
-        this.instance = instance;
+        this.boardGUI = boardGUI;
 
         setBorder(BorderFactory.createLineBorder(Color.black));
         setIcon(I.fieldBackground);
@@ -32,8 +32,8 @@ public class BoardFieldLabel extends JLabel implements MouseListener {
     }
 
     public void setDisc(boolean isWhite){
+        pressed = true;
         setIcon( (isWhite) ? I.whitePlayerFieldDisc : I.blackPlayerFieldDisc );
-        if(!pressed){ pressed = true; }
     }
 
     public void deleteDisc(){
@@ -42,21 +42,21 @@ public class BoardFieldLabel extends JLabel implements MouseListener {
     }
 
     public void freeze(){
-        beforeFroze = getIcon();
         frozen = true;
+        beforeFroze = getIcon();
         setIcon(I.saveBtnImage);        //just temporary, new image is needed to create
     }
 
     public void unFreeze(){
+        frozen = false;
         setIcon(beforeFroze);
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        if (BoardGUI.game.currentPlayer().canPutDisk(row, col)) {
+        if (boardGUI.game.currentPlayer().canPutDisk(row, col)) {
             setIcon(I.fieldCanPutDisc);
         }
-
     }
 
     @Override
@@ -68,14 +68,14 @@ public class BoardFieldLabel extends JLabel implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        Player tmp  = BoardGUI.game.currentPlayer();
+        Player tmp  = boardGUI.game.currentPlayer();
 
         if (tmp.putDisk(row, col)) {
             pressed = true;
-            BoardGUI.game.nextPlayer();
+            boardGUI.game.nextPlayer();
 
-            if(BoardGUI.game.gameOver){
-                instance.showGameOverDialog();
+            if(boardGUI.game.gameOver){
+                boardGUI.showGameOverDialog();
             }
         }
     }

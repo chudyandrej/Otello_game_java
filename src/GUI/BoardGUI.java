@@ -20,7 +20,7 @@ public class BoardGUI {
     private static JFrame frame;
     private static JLabel board;
     private int boardSize;
-    public static Game game;
+    public Game game;
     static JLabel scoreLabel1;
     static JLabel scoreLabel2;
     static JLabel onTurnLabel;
@@ -245,8 +245,6 @@ public class BoardGUI {
         BoardGUI.score2 = score2;
     }
 
-
-
     public class boardButtonClicked implements MouseListener {
         private JLabel button;
 
@@ -292,10 +290,12 @@ public class BoardGUI {
                 saveBtn.setIcon(I.saveBtnImageP);
             }
         }
+
         @Override
         public void mouseReleased(MouseEvent e) {
             mouseEntered(e);
         }
+
         @Override
         public void mouseClicked(MouseEvent e) {
             if(button == newGameBtn){
