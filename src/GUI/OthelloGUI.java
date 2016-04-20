@@ -10,7 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 
 /**
  * Created by martin on 16/04/16.
@@ -50,8 +52,8 @@ public class OthelloGUI {
 
     public OthelloGUI(){
         frame = new JFrame("Othello");
-        background = new ImageIcon(BoardGUI.resizeImage("lib/background.jpg", 500, 550));
-        buttonImage = new ImageIcon(BoardGUI.resizeImage("lib/button.jpg", 170, 40));
+        background = new ImageIcon(Images.resizeImage("lib/background.jpg", 500, 550));
+        buttonImage = new ImageIcon(Images.resizeImage("lib/button.jpg", 170, 40));
         createMainPage();
         createChooseGameModePage();
         createChooseSizeOfBoardPage();
@@ -273,10 +275,23 @@ public class OthelloGUI {
                 changeScene(chooseMode, chooseBoardSize);
             }
             else if(button == loadGameBtn){
-                Backup backup = new Backup();
-                backup.doLoad();
-                backup.renewData();
-                BoardGUI boardGUI = new BoardGUI(frame, backup.boardSize, backup.player1, backup.player2);
+                Backup backup_game = null;
+                try {
+                    FileInputStream fileIn = new FileInputStream("employee.ser");
+                    ObjectInputStream in = new ObjectInputStream(fileIn);
+                    backup_game = (Backup) in.readObject();
+                    in.close();
+                    fileIn.close();
+                }
+                catch(IOException i) {
+                    i.printStackTrace();
+
+                }catch(ClassNotFoundException c) {
+                    System.out.println("Employee class not found");
+                    c.printStackTrace();
+                }
+                if (backup_game != null)
+                    backup_game.load();
             }
         }
     }

@@ -3,15 +3,15 @@ package GUI;
 import game.Game;
 import game.Player;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 
 /**
  * Created by martin on 16/04/16.
@@ -30,15 +30,6 @@ public class BoardGUI {
     private static int score1;
     private static int score2;
 
-    static ImageIcon whitePlayerFieldDisc;
-    static ImageIcon blackPlayerFieldDisc;
-    static Image whiteTest;
-    static Image blackTest;
-    static ImageIcon fieldBackground;
-    static ImageIcon fieldCanPutDisc;
-    static ImageIcon arrowL;
-    static ImageIcon arrowR;
-
     JLabel newGameBtn;
     JLabel exitGameBtn;
     JLabel undoBtn;
@@ -46,15 +37,18 @@ public class BoardGUI {
 
     static BoardFieldLabel[][] fields;
 
+    static Images I;
+
     BoardGUI(JFrame frame, int boardSize, Player player1, Player player2){
         BoardGUI.frame = frame;
         this.boardSize = boardSize;
         this.player1 = player1;
         this.player2 = player2;
-        initImages();
+
+        I = new Images(frame, boardSize);
+
         initNewGame();
 
-        //JOptionPane.showConfirmDialog(frame, "hello world, you FAILED");
         System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight()); //debug
     }
 
@@ -70,86 +64,37 @@ public class BoardGUI {
         game.addPlayer(player2);
     }
 
-    private void initImages(){
-        int w = 0;
-        int h = 0;
-        switch (this.boardSize){
-            case 6:
-                w = 55;
-                h = 52;
-                frame.setMinimumSize(new Dimension(500, 480));
-                break;
-            case 8:
-                w = 46;
-                h = 43;
-                frame.setMinimumSize(new Dimension(500, 480));
-                break;
-            case 10:
-                w = 48;
-                h = 44;
-                frame.setMinimumSize(new Dimension(600, 600));
-                break;
-            case 12:
-                w = 47;
-                h = 44;
-                frame.setMinimumSize(new Dimension(700, 700));
-        }
-        whitePlayerFieldDisc = new ImageIcon(resizeImage("lib/white2.png", w, h));
-        blackPlayerFieldDisc = new ImageIcon(resizeImage("lib/black2.png", w, h));
-        fieldBackground = new ImageIcon(resizeImage("lib/field.png", w, h));
-        fieldCanPutDisc = new ImageIcon(resizeImage("lib/fieldCanPut.png", w, h));
-        arrowL = new ImageIcon(resizeImage("lib/arrow_l.png", 25, 25));
-        arrowR = new ImageIcon(resizeImage("lib/arrow_r.png", 25, 25));
-        whiteTest = resizeImage("lib/white2.png", w, h);
-        blackTest = resizeImage("lib/black2.png", w, h);
-    }
-
     static public void deleteDisc(int x, int y){
         fields[x][y].pressed = false;
-        fields[x][y].setIcon(fieldBackground);
+        fields[x][y].setIcon(I.fieldBackground);
     }
 
     static public void changeDisc(int x, int y, boolean isWhite){
 
-        fields[x][y].setIcon((isWhite) ? whitePlayerFieldDisc : blackPlayerFieldDisc );
+        fields[x][y].setIcon((isWhite) ? I.whitePlayerFieldDisc : I.blackPlayerFieldDisc );
         if(!fields[x][y].pressed){ fields[x][y].pressed = true; }
     }
 
-    static public Image resizeImage(String imgName, int w, int h){
-        BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB); //TYPE_INT_ARGB makes parts of transparent image be transparent
-        Graphics2D g = resizedImage.createGraphics();
-        //g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Image img = null;
-        try{
-            img = ImageIO.read(new File(imgName));
-        }catch(IOException ex){
-            System.err.println(ex.getMessage());
-            ex.printStackTrace();
-        }
-        g.drawImage(img, 0, 0, w, h, null);
-        g.dispose();
-        return resizedImage;
-    }
-
     private String createMultiPlayerGameOverMsg(){
-        String msg = "";
+        String msg;
         if(score1 > score2){        //player1 won
-            msg = msg + player1.name + " won with score: " + score1;
-        }else if(score1 < score2){ //player2 won
-            msg = msg + player2.name + " won with score: " + score2;
+            msg = player1.name + " won with score: " + score1;
+        }else{                      //player2 won
+            msg = player2.name + " won with score: " + score2;
         }
         return msg;
     }
 
     private String createSinglePlayerGameOverMsg(){
-        String msg = "";
+        String msg;
         if(player1.is_pc()) {
             msg = (score1 > score2) ? "You LOST. Computer won.\n" : "Congratulation!\nYou WON.\n";
+            msg = msg + "Your score: " + score2 + "\n" +player1.name+": "+score1;
         }
         else{
             msg = (score1 < score2) ? "You LOST. Computer won.\n" : "Congratulation!\nYou WON.\n";
+            msg = msg + "Your score: " + score1 + "\n" +player2.name+": "+score2;
         }
-        msg = msg + "Your score: " + score2 + "\n" +player1.name+": "+score1;
         return msg;
     }
 
@@ -166,11 +111,13 @@ public class BoardGUI {
 
         msg = msg + "\nWould you like to play again?";
 
-        int result = JOptionPane.showConfirmDialog(frame, msg);
-        if(result == JOptionPane.YES_OPTION){
+        int result = JOptionPane.showConfirmDialog(frame, msg, "Game Over", JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
+
+        if(result == JOptionPane.YES_OPTION){       //start new game
             frame.remove(board);
             initNewGame();
-        }else if(result == JOptionPane.NO_OPTION){
+        }else if(result == JOptionPane.NO_OPTION){  //go to main menu
             frame.remove(board);
             OthelloGUI.initMenuAgain(frame);
         }
@@ -180,7 +127,6 @@ public class BoardGUI {
         public int row;
         public int col;
         public boolean pressed = false;
-        private boolean state;
 
         BoardFieldLabel(int row, int col){
             this.row = row;
@@ -191,7 +137,7 @@ public class BoardGUI {
     private void createBoard(){
         board = new JLabel();
         board.setLayout(new BorderLayout());
-        board.setIcon(new ImageIcon(resizeImage("lib/background.jpg", frame.getWidth(), frame.getHeight()+70)));
+        board.setIcon(new ImageIcon(Images.resizeImage("lib/background.jpg", frame.getWidth(), frame.getHeight()+70)));
 
         JToolBar topBar = new JToolBar();
         board.add(topBar);
@@ -207,14 +153,14 @@ public class BoardGUI {
         newGameBtn.setSize(25, 25);
         newGameBtn.setToolTipText("Reload game");
         newGameBtn.addMouseListener(new boardButtonClicked(newGameBtn));
-        newGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/playAgain.png", 25, 25)));
+        newGameBtn.setIcon(new ImageIcon(Images.resizeImage("lib/icons/playAgain.png", 25, 25)));
         topBar.add(newGameBtn);
 
         exitGameBtn = new JLabel(); //exit game button
         exitGameBtn.setSize(25, 25);
         exitGameBtn.setToolTipText("Home");
         exitGameBtn.addMouseListener(new boardButtonClicked(exitGameBtn));
-        exitGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/home.png", 25, 25)));
+        exitGameBtn.setIcon(new ImageIcon(Images.resizeImage("lib/icons/home.png", 25, 25)));
         topBar.add(exitGameBtn);
 
         undoBtn = new JLabel(); //undo button
@@ -222,14 +168,14 @@ public class BoardGUI {
         undoBtn.setSize(25, 25);
         undoBtn.setToolTipText("Undo");
         undoBtn.addMouseListener(new boardButtonClicked(undoBtn));
-        undoBtn.setIcon(new ImageIcon(resizeImage("lib/icons/undo.png", 25, 25)));
+        undoBtn.setIcon(new ImageIcon(Images.resizeImage("lib/icons/undo.png", 25, 25)));
         topBar.add(undoBtn);
 
         saveBtn = new JLabel();//save button
         saveBtn.setSize(25, 25);
         saveBtn.setToolTipText("Save game");
         saveBtn.addMouseListener(new boardButtonClicked(saveBtn));
-        saveBtn.setIcon(new ImageIcon(resizeImage("lib/icons/saveGame.png", 25, 25)));
+        saveBtn.setIcon(new ImageIcon(Images.resizeImage("lib/icons/saveGame.png", 25, 25)));
         topBar.add(saveBtn);
 
 
@@ -274,7 +220,7 @@ public class BoardGUI {
             for(int col=0; col < boardSize; col++){
                 fields[row][col] = new BoardFieldLabel(row, col);
                 fields[row][col].setBorder(BorderFactory.createLineBorder(Color.black));
-                fields[row][col].setIcon(fieldBackground);
+                fields[row][col].setIcon(I.fieldBackground);
                 fields[row][col].setOpaque(true);
                 fields[row][col].addMouseListener(new boardFieldClicked( fields[row][col]));
                 playArea.add(fields[row][col]);
@@ -292,7 +238,7 @@ public class BoardGUI {
 
         //score
         JLabel player1Disc = new JLabel();
-        player1Disc.setIcon(new ImageIcon(resizeImage("lib/whiteDisc.png", 25, 25)));
+        player1Disc.setIcon(I.whiteDisc);
         menuBar.add(player1Disc);
 
         JLabel player1Image = new JLabel(player1.name);
@@ -316,14 +262,14 @@ public class BoardGUI {
         menuBar.add(player2Image);
 
         JLabel player2Disc = new JLabel();
-        player2Disc.setIcon(new ImageIcon(resizeImage("lib/blackDisc.png", 25, 25)));
+        player2Disc.setIcon(I.blackDisc);
         menuBar.add(player2Disc);
 
         setGameState(2, 2, false); //initialize
     }
 
     static public void setGameState(int score1, int score2, boolean isWhite){
-        onTurnLabel.setIcon( (isWhite)? arrowR : arrowL);
+        onTurnLabel.setIcon( (isWhite)? I.arrowR : I.arrowL);
         scoreLabel1.setText("<html><font size='6' color='white' face='League Gothic'><b>"+score1+"</b></font></html>");
         scoreLabel2.setText("<html><font size='6' color='white' face='League Gothic'><b>"+score2+"</b></font></html>");
         BoardGUI.score1 = score1;
@@ -341,14 +287,14 @@ public class BoardGUI {
         public void mouseEntered(MouseEvent e) {
             if(!label.pressed) {
                 if (game.currentPlayer().canPutDisk(label.row, label.col)) {
-                    fields[label.row][label.col].setIcon(fieldCanPutDisc);
+                    fields[label.row][label.col].setIcon(I.fieldCanPutDisc);
                 }
             }
         }
         @Override
         public void mouseExited(MouseEvent e) {
             if(!label.pressed) {    //if there is no disc
-                fields[label.row][label.col].setIcon(fieldBackground);
+                fields[label.row][label.col].setIcon(I.fieldBackground);
             }
         }
         @Override
@@ -382,39 +328,39 @@ public class BoardGUI {
         @Override
         public void mouseEntered(MouseEvent e) {
             if(button == newGameBtn){
-                newGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/playAgainEntered.png", 25, 25)));
+                newGameBtn.setIcon(I.newGameBtnImage);
             }else if (button == exitGameBtn){
-                exitGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/homeEntered.png", 25, 25)));
+                exitGameBtn.setIcon(I.homeBtnImage);
             }else if(button == undoBtn){
-                undoBtn.setIcon(new ImageIcon(resizeImage("lib/icons/undoEntered.png", 25, 25)));
+                undoBtn.setIcon(I.undoBtnImage);
             }else if(button == saveBtn){
-                saveBtn.setIcon(new ImageIcon(resizeImage("lib/icons/saveGameEntered.png", 25, 25)));
+                saveBtn.setIcon(I.saveBtnImage);
             }
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
             if(button == newGameBtn){
-                newGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/playAgain.png", 25, 25)));
+                newGameBtn.setIcon(I.newGameBtnImageE);
             }else if (button == exitGameBtn){
-                exitGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/home.png", 25, 25)));
+                exitGameBtn.setIcon(I.homeBtnImageE);
             }else if(button == undoBtn){
-                undoBtn.setIcon(new ImageIcon(resizeImage("lib/icons/undo.png", 25, 25)));
+                undoBtn.setIcon(I.undoBtnImageE);
             }else if(button == saveBtn){
-                saveBtn.setIcon(new ImageIcon(resizeImage("lib/icons/saveGame.png", 25, 25)));
+                saveBtn.setIcon(I.saveBtnImageE);
             }
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
             if(button == newGameBtn){
-                newGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/playAgainPressed.png", 25, 25)));
+                newGameBtn.setIcon(I.newGameBtnImageP);
             }else if (button == exitGameBtn){
-                exitGameBtn.setIcon(new ImageIcon(resizeImage("lib/icons/homePressed.png", 25, 25)));
+                exitGameBtn.setIcon(I.homeBtnImageP);
             }else if(button == undoBtn){
-                undoBtn.setIcon(new ImageIcon(resizeImage("lib/icons/undoPressed.png", 25, 25)));
+                undoBtn.setIcon(I.undoBtnImageP);
             }else if(button == saveBtn){
-                saveBtn.setIcon(new ImageIcon(resizeImage("lib/icons/saveGamePressed.png", 25, 25)));
+                saveBtn.setIcon(I.saveBtnImageP);
             }
         }
         @Override
@@ -424,13 +370,15 @@ public class BoardGUI {
         @Override
         public void mouseClicked(MouseEvent e) {
             if(button == newGameBtn){
-                int option = JOptionPane.showConfirmDialog(frame, "Do you want reload game?");
+                int option = JOptionPane.showConfirmDialog(frame, "Would you like to reload game?", "Warning",
+                            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if(option == JOptionPane.YES_OPTION){
                     frame.remove(board);
                     initNewGame();
                 }
             }else if (button == exitGameBtn){
-                int option = JOptionPane.showConfirmDialog(frame, "Would you like to quit the game and enter the menu?");
+                int option = JOptionPane.showConfirmDialog(frame, "Would you like to quit the game and enter the menu?",
+                        "Warning", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if(option == JOptionPane.YES_OPTION){
                     frame.remove(board);
                     OthelloGUI.initMenuAgain(frame);
@@ -438,9 +386,22 @@ public class BoardGUI {
             }else if(button == undoBtn){
                 game.undo();
             }else if(button == saveBtn){
-                game.backupGame.doSave();
-                JOptionPane.showMessageDialog(frame, "Game was successfully");
+                try {
+                    FileOutputStream fileOut = new FileOutputStream("employee.ser");
+                    ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                    out.writeObject(game.backupGame);
+                    out.close();
+                    fileOut.close();
+
+                }
+                catch(IOException i) {
+                    i.printStackTrace();
+                }
+
+                JOptionPane.showMessageDialog(frame, "Game was successfully saved", "Game Saved",
+                        JOptionPane.INFORMATION_MESSAGE, I.whiteDisc);
             }
+
         }
     }
 }
