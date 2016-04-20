@@ -20,7 +20,7 @@ public class BoardGUI {
     private static JFrame frame;
     private static JLabel board;
     private int boardSize;
-    private Game game;
+    public static Game game;
     static JLabel scoreLabel1;
     static JLabel scoreLabel2;
     static JLabel onTurnLabel;
@@ -49,7 +49,7 @@ public class BoardGUI {
 
         initNewGame();
 
-        System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight()); //debug
+        //System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight()); //debug
     }
 
     private void initNewGame(){
@@ -64,52 +64,25 @@ public class BoardGUI {
         game.addPlayer(player2);
     }
 
+    static public void freezeField(int x, int y){
+        fields[x][y].freeze();
+    }
+
+    static public void unFreezeField(int x, int y){
+        fields[x][y].unFreeze();
+    }
+
     static public void deleteDisc(int x, int y){
-        fields[x][y].pressed = false;
-        fields[x][y].setIcon(I.fieldBackground);
+        fields[x][y].deleteDisc();
     }
 
     static public void changeDisc(int x, int y, boolean isWhite){
-
-        fields[x][y].setIcon((isWhite) ? I.whitePlayerFieldDisc : I.blackPlayerFieldDisc );
-        if(!fields[x][y].pressed){ fields[x][y].pressed = true; }
+        fields[x][y].setDisc(isWhite);
     }
 
-    private String createMultiPlayerGameOverMsg(){
-        String msg;
-        if(score1 > score2){        //player1 won
-            msg = player1.name + " won with score: " + score1;
-        }else{                      //player2 won
-            msg = player2.name + " won with score: " + score2;
-        }
-        return msg;
-    }
+    public void showGameOverDialog(){
 
-    private String createSinglePlayerGameOverMsg(){
-        String msg;
-        if(player1.is_pc()) {
-            msg = (score1 > score2) ? "You LOST. Computer won.\n" : "Congratulation!\nYou WON.\n";
-            msg = msg + "Your score: " + score2 + "\n" +player1.name+": "+score1;
-        }
-        else{
-            msg = (score1 < score2) ? "You LOST. Computer won.\n" : "Congratulation!\nYou WON.\n";
-            msg = msg + "Your score: " + score1 + "\n" +player2.name+": "+score2;
-        }
-        return msg;
-    }
-
-    private void showGameOverDialog(){
-        String msg = "";
-        if (score1 == score2){      //stalemate
-            msg = msg + "Stalemate! Winners:\n  -"+player1.name+"\n  -"+player2.name+"\nScore: "+score1;
-        }
-        else if(player1.is_pc() || player2.is_pc()){
-            msg = msg + createSinglePlayerGameOverMsg();
-        }else{
-            msg = msg + createMultiPlayerGameOverMsg();
-        }
-
-        msg = msg + "\nWould you like to play again?";
+        String msg  = GameOverDialog.getMsg(score1, score2, player1, player2);
 
         int result = JOptionPane.showConfirmDialog(frame, msg, "Game Over", JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
@@ -123,80 +96,82 @@ public class BoardGUI {
         }
     }
 
-    public class BoardFieldLabel extends JLabel {
-        public int row;
-        public int col;
-        public boolean pressed = false;
-
-        BoardFieldLabel(int row, int col){
-            this.row = row;
-            this.col = col;
-        }
-    }
-
-    private void createBoard(){
-        board = new JLabel();
-        board.setLayout(new BorderLayout());
-        board.setIcon(new ImageIcon(Images.resizeImage("lib/background.jpg", frame.getWidth(), frame.getHeight()+70)));
-
-        JToolBar topBar = new JToolBar();
-        board.add(topBar);
+    private void setTopBar(JToolBar topBar){
         topBar.setBorder(BorderFactory.createEmptyBorder());
         topBar.setLayout(new FlowLayout(FlowLayout.RIGHT,10,15));
         topBar.setFloatable(false);
         topBar.setOpaque(false);
         topBar.setPreferredSize(new Dimension(frame.getWidth(), 40));
-        board.add(topBar, BorderLayout.NORTH);
 
         newGameBtn = new JLabel(); // new game button
-        //newGameBtn.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50));
         newGameBtn.setSize(25, 25);
         newGameBtn.setToolTipText("Reload game");
         newGameBtn.addMouseListener(new boardButtonClicked(newGameBtn));
-        newGameBtn.setIcon(new ImageIcon(Images.resizeImage("lib/icons/playAgain.png", 25, 25)));
+        newGameBtn.setIcon(I.newGameBtnImage);
         topBar.add(newGameBtn);
 
         exitGameBtn = new JLabel(); //exit game button
         exitGameBtn.setSize(25, 25);
         exitGameBtn.setToolTipText("Home");
         exitGameBtn.addMouseListener(new boardButtonClicked(exitGameBtn));
-        exitGameBtn.setIcon(new ImageIcon(Images.resizeImage("lib/icons/home.png", 25, 25)));
+        exitGameBtn.setIcon(I.homeBtnImage);
         topBar.add(exitGameBtn);
 
         undoBtn = new JLabel(); //undo button
-        //undoBtn.addActionListener(new undoBtnClicked());
         undoBtn.setSize(25, 25);
         undoBtn.setToolTipText("Undo");
         undoBtn.addMouseListener(new boardButtonClicked(undoBtn));
-        undoBtn.setIcon(new ImageIcon(Images.resizeImage("lib/icons/undo.png", 25, 25)));
+        undoBtn.setIcon(I.undoBtnImage);
         topBar.add(undoBtn);
 
         saveBtn = new JLabel();//save button
         saveBtn.setSize(25, 25);
         saveBtn.setToolTipText("Save game");
         saveBtn.addMouseListener(new boardButtonClicked(saveBtn));
-        saveBtn.setIcon(new ImageIcon(Images.resizeImage("lib/icons/saveGame.png", 25, 25)));
+        saveBtn.setIcon(I.saveBtnImage);
         topBar.add(saveBtn);
+    }
 
+    private void setBottomBar(JToolBar bottomBar){
+        bottomBar.setLayout(new FlowLayout(FlowLayout.CENTER));
+        bottomBar.setBorder(BorderFactory.createEmptyBorder());
+        //bottomBar.setBorder(new LineBorder(Color.black, 5));
+        bottomBar.setFloatable(false);
+        bottomBar.setOpaque(false);
+        bottomBar.setPreferredSize(new Dimension(frame.getWidth(), 60));
 
-        Box playAreaContent = new Box(BoxLayout.Y_AXIS);
-        //playAreaContent.setBorder(BorderFactory.createEmptyBorder());
-        playAreaContent.add(Box.createVerticalGlue());
+        //score
+        JLabel player1Disc = new JLabel();
+        player1Disc.setIcon(I.whiteDisc);
+        bottomBar.add(player1Disc);
 
-        Box playAreaContent2 = new Box(BoxLayout.X_AXIS);
-        //playAreaContent2.setBorder(BorderFactory.createEmptyBorder());
-        playAreaContent2.add(Box.createHorizontalGlue());
+        JLabel player1Image = new JLabel(player1.name);
+        player1Image.setForeground(Color.white);
+        bottomBar.add(player1Image);
 
-        board.add(playAreaContent,BorderLayout.CENTER);
-        playAreaContent.add(playAreaContent2);
+        scoreLabel1 = new JLabel();
+        scoreLabel1.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 15));
+        bottomBar.add(scoreLabel1);
 
-        JPanel playArea = new JPanel();
-        //playArea.setBorder(BorderFactory.createEmptyBorder());
-        playAreaContent2.add(playArea);
+        onTurnLabel = new JLabel();
+        onTurnLabel.setOpaque(false);
+        bottomBar.add(onTurnLabel);
+
+        scoreLabel2 = new JLabel();
+        scoreLabel2.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 10));
+        bottomBar.add(scoreLabel2);
+
+        JLabel player2Image = new JLabel(player2.name);
+        player2Image.setForeground(Color.white);
+        bottomBar.add(player2Image);
+
+        JLabel player2Disc = new JLabel();
+        player2Disc.setIcon(I.blackDisc);
+        bottomBar.add(player2Disc);
+    }
+
+    private void setPlayArea(JPanel playArea){
         playArea.setBorder(new LineBorder(Color.black, 5));
-
-        playAreaContent.add(Box.createVerticalGlue());
-        playAreaContent2.add(Box.createHorizontalGlue());
 
         playArea.setLayout(new GridLayout(boardSize, boardSize));
 
@@ -218,52 +193,46 @@ public class BoardGUI {
 
         for(int row=0; row < boardSize; row++){
             for(int col=0; col < boardSize; col++){
-                fields[row][col] = new BoardFieldLabel(row, col);
-                fields[row][col].setBorder(BorderFactory.createLineBorder(Color.black));
-                fields[row][col].setIcon(I.fieldBackground);
-                fields[row][col].setOpaque(true);
-                fields[row][col].addMouseListener(new boardFieldClicked( fields[row][col]));
+                fields[row][col] = new BoardFieldLabel(row, col, I, this);
                 playArea.add(fields[row][col]);
             }
         }
+    }
 
-        JToolBar menuBar = new JToolBar();
-        menuBar.setLayout(new FlowLayout(FlowLayout.CENTER));
-        menuBar.setBorder(BorderFactory.createEmptyBorder());
-        //menuBar.setBorder(new LineBorder(Color.black, 5));
-        menuBar.setFloatable(false);
-        menuBar.setOpaque(false);
-        menuBar.setPreferredSize(new Dimension(frame.getWidth(), 60));
-        board.add(menuBar, BorderLayout.SOUTH);
+    private void createBoard(){
+        board = new JLabel();
+        board.setLayout(new BorderLayout());
+        board.setIcon(new ImageIcon(Images.resizeImage("lib/background.jpg", frame.getWidth(), frame.getHeight()+70)));
 
-        //score
-        JLabel player1Disc = new JLabel();
-        player1Disc.setIcon(I.whiteDisc);
-        menuBar.add(player1Disc);
 
-        JLabel player1Image = new JLabel(player1.name);
-        player1Image.setForeground(Color.white);
-        menuBar.add(player1Image);
+        JToolBar topBar = new JToolBar();
+        board.add(topBar, BorderLayout.NORTH);
 
-        scoreLabel1 = new JLabel();
-        scoreLabel1.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 15));
-        menuBar.add(scoreLabel1);
 
-        onTurnLabel = new JLabel();
-        onTurnLabel.setOpaque(false);
-        menuBar.add(onTurnLabel);
+        Box playAreaContent = new Box(BoxLayout.Y_AXIS);
+        Box playAreaContent2 = new Box(BoxLayout.X_AXIS);
+        //playAreaContent.setBorder(BorderFactory.createEmptyBorder());
+        playAreaContent.add(Box.createVerticalGlue());
+        playAreaContent2.add(Box.createHorizontalGlue());
 
-        scoreLabel2 = new JLabel();
-        scoreLabel2.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 10));
-        menuBar.add(scoreLabel2);
+        board.add(playAreaContent, BorderLayout.CENTER);
+        playAreaContent.add(playAreaContent2);
 
-        JLabel player2Image = new JLabel(player2.name);
-        player2Image.setForeground(Color.white);
-        menuBar.add(player2Image);
+        JPanel playArea = new JPanel();
+        playAreaContent2.add(playArea);
 
-        JLabel player2Disc = new JLabel();
-        player2Disc.setIcon(I.blackDisc);
-        menuBar.add(player2Disc);
+        playAreaContent.add(Box.createVerticalGlue());
+        playAreaContent2.add(Box.createHorizontalGlue());
+
+
+        JToolBar bottomBar = new JToolBar();
+        board.add(bottomBar, BorderLayout.SOUTH);
+
+
+        setTopBar(topBar);
+        setPlayArea(playArea);
+        setBottomBar(bottomBar);
+
 
         setGameState(2, 2, false); //initialize
     }
@@ -276,47 +245,7 @@ public class BoardGUI {
         BoardGUI.score2 = score2;
     }
 
-    private class boardFieldClicked implements MouseListener {
-        private BoardFieldLabel label;
 
-        boardFieldClicked(BoardFieldLabel label){
-            this.label = label;
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            if(!label.pressed) {
-                if (game.currentPlayer().canPutDisk(label.row, label.col)) {
-                    fields[label.row][label.col].setIcon(I.fieldCanPutDisc);
-                }
-            }
-        }
-        @Override
-        public void mouseExited(MouseEvent e) {
-            if(!label.pressed) {    //if there is no disc
-                fields[label.row][label.col].setIcon(I.fieldBackground);
-            }
-        }
-        @Override
-        public void mousePressed(MouseEvent e) {
-            Player tmp  = game.currentPlayer();
-
-            if (tmp.putDisk(label.row, label.col)) {
-                label.pressed = true;
-                game.nextPlayer();
-
-                if(game.gameOver){
-                    showGameOverDialog();
-                }
-            }
-        }
-        @Override
-        public void mouseReleased(MouseEvent e) {
-        }
-        @Override
-        public void mouseClicked(MouseEvent e) {
-        }
-    }
 
     public class boardButtonClicked implements MouseListener {
         private JLabel button;
@@ -400,7 +329,6 @@ public class BoardGUI {
                 JOptionPane.showMessageDialog(frame, "Game was successfully saved", "Game Saved",
                         JOptionPane.INFORMATION_MESSAGE, I.whiteDisc);
             }
-
         }
     }
 }

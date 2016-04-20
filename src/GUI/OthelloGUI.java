@@ -293,8 +293,8 @@ public class OthelloGUI {
                 if (backup_game != null){
                     BoardGUI boardGUI = new BoardGUI(frame, backup_game.boardSize, backup_game.player1, backup_game.player2);
                     frame.remove(mainMenu);
-                    backup_game.load();
 
+                    backup_game.load();
                 }else{
                     JOptionPane.showMessageDialog(frame, "Couldn't find any saved game.");
                 }

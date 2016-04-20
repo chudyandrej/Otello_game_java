@@ -1,5 +1,9 @@
 package board;
 
+import GUI.BoardGUI;
+
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by andrejchudy on 15/04/16.
  */
@@ -8,13 +12,18 @@ public class BoardField implements java.io.Serializable {
     public int row;
     public int col;
     public int size;
+    public boolean isFreez;
+
+    private boolean freezEnd;
     private Disk disk;
+
 
     public BoardField(int row, int col, int size) {
         this.row = row;
         this.col = col;
         this.size = size;
         this.disk = null;
+        isFreez = false;
     }
 
     public BoardField nextField(Direction dirs) {
@@ -57,6 +66,7 @@ public class BoardField implements java.io.Serializable {
         }
         return ret_val;
     }
+
     public void deleteDisk(){
         if(disk != null){
             disk.delete();
@@ -67,6 +77,31 @@ public class BoardField implements java.io.Serializable {
     public Disk getDisk(){
         return disk;
     }
+
+    public void freezField(final int time){
+
+        freezEnd = false;
+        isFreez = true;
+        BoardGUI.freezeField(row,col);
+
+        new Thread()
+        {
+            public void run() {
+                try {
+                    int timeFreez = (int) (Math.random() * time);
+                    TimeUnit.SECONDS.sleep(timeFreez);
+                } catch (InterruptedException e) {
+                    System.out.println("Exception thrown  :" + e);
+                }
+                freezEnd = true;
+            }
+        }.start();
+    }
+
+    public boolean getfreezEnd() {
+        return freezEnd;
+    }
+
 
     public enum Direction{D, L, LD, LU, R, RD, RU, U}
     

@@ -1,8 +1,8 @@
 package game;
 
-import board.Board;
+
 import board.BoardField;
-import board.Disk;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,7 @@ public class Backup implements java.io.Serializable{
             this.base_Point = base_Point;
             this.turn_player = turn_palyer;
         }
-        
+
         public void add_Stack_turned(List<BoardField> turnndDisk){
             turned.addAll(turnndDisk);
         }

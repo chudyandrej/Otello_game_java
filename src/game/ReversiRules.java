@@ -40,7 +40,7 @@ public class ReversiRules {
 
     public boolean canPutDisk(int x, int y, Player playerTurn){
         BoardField  field =  Board.field[x][y];
-        if(field.getDisk() == null) {
+        if(field.getDisk() == null && !field.isFreez) {
             BoardField tmp;
             for (BoardField.Direction way : BoardField.Direction.values()) {
                 tmp = field.nextField(way);
@@ -61,7 +61,7 @@ public class ReversiRules {
         BoardField  field =  Board.field[x][y];
         List disks_for_turn;
         boolean success = false;
-        if(field.getDisk() == null) {
+        if(field.getDisk() == null && !field.isFreez) {
             for (BoardField.Direction way : BoardField.Direction.values()) {
                 disks_for_turn = chack_IN_direct(field, way,playerTurn );
                 if (disks_for_turn != null){
@@ -81,7 +81,7 @@ public class ReversiRules {
 
     private List chack_IN_direct(BoardField  field, BoardField.Direction way, Player playerTurn){
         field = field.nextField(way);
-        if (field != null && field.getDisk() != null && field.getDisk().isWhite() != playerTurn.isWhite()) {
+        if (field != null && !field.isFreez && field.getDisk() != null  && field.getDisk().isWhite() != playerTurn.isWhite()) {
             List <BoardField> candidate_turn = new ArrayList<BoardField>();
             while (field != null && field.getDisk() != null) {
                 if (field.getDisk().isWhite() == playerTurn.isWhite()) {
