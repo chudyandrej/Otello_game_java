@@ -12,6 +12,8 @@ import java.io.IOException;
  */
 public class Images {
 
+    private int iconSize = 25;
+
     ImageIcon whitePlayerFieldDisc;
     ImageIcon blackPlayerFieldDisc;
     ImageIcon fieldBackground;
@@ -60,28 +62,29 @@ public class Images {
                 h = 44;
                 frame.setMinimumSize(new Dimension(700, 700));
         }
+
         whitePlayerFieldDisc = new ImageIcon(resizeImage("lib/white2.png", w, h));
         blackPlayerFieldDisc = new ImageIcon(resizeImage("lib/black2.png", w, h));
         fieldBackground = new ImageIcon(resizeImage("lib/field.png", w, h));
         fieldCanPutDisc = new ImageIcon(resizeImage("lib/fieldCanPut.png", w, h));
-        arrowL = new ImageIcon(resizeImage("lib/arrow_l.png", 25, 25));
-        arrowR = new ImageIcon(resizeImage("lib/arrow_r.png", 25, 25));
-        whiteDisc = new ImageIcon(resizeImage("lib/whiteDisc.png", 25, 25));
-        blackDisc = new ImageIcon(resizeImage("lib/blackDisc.png", 25, 25));
+        arrowL = new ImageIcon(resizeImage("lib/arrow_l.png", iconSize, iconSize));
+        arrowR = new ImageIcon(resizeImage("lib/arrow_r.png", iconSize, iconSize));
+        whiteDisc = new ImageIcon(resizeImage("lib/whiteDisc.png", iconSize, iconSize));
+        blackDisc = new ImageIcon(resizeImage("lib/blackDisc.png", iconSize, iconSize));
 
-        newGameBtnImage = new ImageIcon(Images.resizeImage("lib/icons/playAgain.png", 25, 25));
-        newGameBtnImageE = new ImageIcon(Images.resizeImage("lib/icons/playAgainEntered.png", 25, 25));
-        newGameBtnImageP = new ImageIcon(Images.resizeImage("lib/icons/playAgainPressed.png", 25, 25));
-        homeBtnImage = new ImageIcon(Images.resizeImage("lib/icons/home.png", 25, 25));
-        homeBtnImageE = new ImageIcon(Images.resizeImage("lib/icons/homeEntered.png", 25, 25));
-        homeBtnImageP = new ImageIcon(Images.resizeImage("lib/icons/homePressed.png", 25, 25));
-        undoBtnImage = new ImageIcon(Images.resizeImage("lib/icons/undo.png", 25, 25));
-        undoBtnImageE = new ImageIcon(Images.resizeImage("lib/icons/undoEntered.png", 25, 25));
-        undoBtnImageP = new ImageIcon(Images.resizeImage("lib/icons/undoPressed.png", 25, 25));
-        saveBtnImage = new ImageIcon(Images.resizeImage("lib/icons/saveGame.png", 25, 25));
-        saveBtnImageE = new ImageIcon(Images.resizeImage("lib/icons/saveGameEntered.png", 25, 25));
-        saveBtnImageP = new ImageIcon(Images.resizeImage("lib/icons/saveGamePressed.png", 25, 25));
-
+        newGameBtnImage = new ImageIcon(Images.resizeImage("lib/icons/playAgain.png", iconSize, iconSize));
+        newGameBtnImageE = new ImageIcon(Images.resizeImage("lib/icons/playAgainEntered.png", iconSize, iconSize));
+        newGameBtnImageP = new ImageIcon(Images.resizeImage("lib/icons/playAgainPressed.png", iconSize, iconSize));
+        homeBtnImage = new ImageIcon(Images.resizeImage("lib/icons/home.png", iconSize, iconSize));
+        homeBtnImageE = new ImageIcon(Images.resizeImage("lib/icons/homeEntered.png", iconSize, iconSize));
+        homeBtnImageP = new ImageIcon(Images.resizeImage("lib/icons/homePressed.png", iconSize, iconSize));
+        undoBtnImage = new ImageIcon(Images.resizeImage("lib/icons/undo.png", iconSize, iconSize));
+        undoBtnImageE = new ImageIcon(Images.resizeImage("lib/icons/undoEntered.png", iconSize, iconSize));
+        undoBtnImageP = new ImageIcon(Images.resizeImage("lib/icons/undoPressed.png", iconSize, iconSize));
+        saveBtnImage = new ImageIcon(Images.resizeImage("lib/icons/saveGame.png", iconSize, iconSize));
+        saveBtnImageE = new ImageIcon(Images.resizeImage("lib/icons/saveGameEntered.png", iconSize, iconSize));
+        saveBtnImageP = new ImageIcon(Images.resizeImage("lib/icons/saveGamePressed.png", iconSize, iconSize));
+        System.out.format("haaaaa");
     }
 
     static public Image resizeImage(String imgName, int w, int h){

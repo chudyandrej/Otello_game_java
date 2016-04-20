@@ -38,6 +38,7 @@ public class BoardGUI {
     static BoardFieldLabel[][] fields;
 
     static Images I;
+    initImagesInThread T;
 
     BoardGUI(JFrame frame, int boardSize, Player player1, Player player2){
         BoardGUI.frame = frame;
@@ -45,11 +46,18 @@ public class BoardGUI {
         this.player1 = player1;
         this.player2 = player2;
 
-        I = new Images(frame, boardSize);
+        T = new initImagesInThread();          //init images in new thread
+        T.start();
 
         initNewGame();
 
         System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight()); //debug
+    }
+
+    class initImagesInThread extends Thread {
+        public void start (){
+            I = new Images(frame, boardSize);
+        }
     }
 
     private void initNewGame(){
@@ -64,52 +72,23 @@ public class BoardGUI {
         game.addPlayer(player2);
     }
 
+    static public void freezeField(int x, int y){
+        fields[x][y].setBackground(Color.black); //Image will go here
+    }
+
     static public void deleteDisc(int x, int y){
         fields[x][y].pressed = false;
         fields[x][y].setIcon(I.fieldBackground);
     }
 
     static public void changeDisc(int x, int y, boolean isWhite){
-
         fields[x][y].setIcon((isWhite) ? I.whitePlayerFieldDisc : I.blackPlayerFieldDisc );
         if(!fields[x][y].pressed){ fields[x][y].pressed = true; }
     }
 
-    private String createMultiPlayerGameOverMsg(){
-        String msg;
-        if(score1 > score2){        //player1 won
-            msg = player1.name + " won with score: " + score1;
-        }else{                      //player2 won
-            msg = player2.name + " won with score: " + score2;
-        }
-        return msg;
-    }
-
-    private String createSinglePlayerGameOverMsg(){
-        String msg;
-        if(player1.is_pc()) {
-            msg = (score1 > score2) ? "You LOST. Computer won.\n" : "Congratulation!\nYou WON.\n";
-            msg = msg + "Your score: " + score2 + "\n" +player1.name+": "+score1;
-        }
-        else{
-            msg = (score1 < score2) ? "You LOST. Computer won.\n" : "Congratulation!\nYou WON.\n";
-            msg = msg + "Your score: " + score1 + "\n" +player2.name+": "+score2;
-        }
-        return msg;
-    }
-
     private void showGameOverDialog(){
-        String msg = "";
-        if (score1 == score2){      //stalemate
-            msg = msg + "Stalemate! Winners:\n  -"+player1.name+"\n  -"+player2.name+"\nScore: "+score1;
-        }
-        else if(player1.is_pc() || player2.is_pc()){
-            msg = msg + createSinglePlayerGameOverMsg();
-        }else{
-            msg = msg + createMultiPlayerGameOverMsg();
-        }
 
-        msg = msg + "\nWould you like to play again?";
+        String msg  =  new GameOverDialog().getMsg(score1, score2, player1, player2);
 
         int result = JOptionPane.showConfirmDialog(frame, msg, "Game Over", JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
@@ -148,34 +127,38 @@ public class BoardGUI {
         topBar.setPreferredSize(new Dimension(frame.getWidth(), 40));
         board.add(topBar, BorderLayout.NORTH);
 
+        try {
+            T.join();
+        } catch( Exception e) {
+            System.out.println("Interrupted");
+        }
+
         newGameBtn = new JLabel(); // new game button
-        //newGameBtn.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50));
         newGameBtn.setSize(25, 25);
         newGameBtn.setToolTipText("Reload game");
         newGameBtn.addMouseListener(new boardButtonClicked(newGameBtn));
-        newGameBtn.setIcon(new ImageIcon(Images.resizeImage("lib/icons/playAgain.png", 25, 25)));
+        newGameBtn.setIcon(I.newGameBtnImage);
         topBar.add(newGameBtn);
 
         exitGameBtn = new JLabel(); //exit game button
         exitGameBtn.setSize(25, 25);
         exitGameBtn.setToolTipText("Home");
         exitGameBtn.addMouseListener(new boardButtonClicked(exitGameBtn));
-        exitGameBtn.setIcon(new ImageIcon(Images.resizeImage("lib/icons/home.png", 25, 25)));
+        exitGameBtn.setIcon(I.homeBtnImage);
         topBar.add(exitGameBtn);
 
         undoBtn = new JLabel(); //undo button
-        //undoBtn.addActionListener(new undoBtnClicked());
         undoBtn.setSize(25, 25);
         undoBtn.setToolTipText("Undo");
         undoBtn.addMouseListener(new boardButtonClicked(undoBtn));
-        undoBtn.setIcon(new ImageIcon(Images.resizeImage("lib/icons/undo.png", 25, 25)));
+        undoBtn.setIcon(I.undoBtnImage);
         topBar.add(undoBtn);
 
         saveBtn = new JLabel();//save button
         saveBtn.setSize(25, 25);
         saveBtn.setToolTipText("Save game");
         saveBtn.addMouseListener(new boardButtonClicked(saveBtn));
-        saveBtn.setIcon(new ImageIcon(Images.resizeImage("lib/icons/saveGame.png", 25, 25)));
+        saveBtn.setIcon(I.saveBtnImage);
         topBar.add(saveBtn);
 
 
@@ -400,7 +383,6 @@ public class BoardGUI {
                 JOptionPane.showMessageDialog(frame, "Game was successfully saved", "Game Saved",
                         JOptionPane.INFORMATION_MESSAGE, I.whiteDisc);
             }
-
         }
     }
 }
