@@ -41,9 +41,9 @@ public class ReversiRules {
             BoardField tmp;
             for (BoardField.Direction way : BoardField.Direction.values()) {
                 tmp = field.nextField(way);
-                if (tmp != null && !field.isFreeze && tmp.getDisk() != null && tmp.getDisk().isWhite() != playerTurn.isWhite()) {
-                    while (tmp != null && tmp.getDisk() != null) {
-                        if (tmp.getDisk().isWhite() == playerTurn.isWhite() && !field.isFreeze) {
+                if (tmp != null && !tmp.isFreeze && tmp.getDisk() != null && tmp.getDisk().isWhite() != playerTurn.isWhite()) {
+                    while (tmp != null && tmp.getDisk() != null && !tmp.isFreeze) {
+                        if (tmp.getDisk().isWhite() == playerTurn.isWhite() ) {
                             return true;
                         }
                         tmp = tmp.nextField(way);
@@ -58,7 +58,7 @@ public class ReversiRules {
         BoardField  field =  Board.field[x][y];
         List<BoardField> disks_for_turn;
         boolean success = false;
-        if(field.getDisk() == null) {
+        if(field.getDisk() == null && !field.isFreeze) {
             for (BoardField.Direction way : BoardField.Direction.values()) {
                 disks_for_turn = chack_IN_direct(field, way,playerTurn );
                 if (disks_for_turn != null){
@@ -80,7 +80,7 @@ public class ReversiRules {
         field = field.nextField(way);
         if (field != null && !field.isFreeze && field.getDisk() != null  && field.getDisk().isWhite() != playerTurn.isWhite()) {
             List <BoardField> candidate_turn = new ArrayList<BoardField>();
-            while (field != null && field.getDisk() != null) {
+            while (field != null && field.getDisk() != null && !field.isFreeze) {
                 if (field.getDisk().isWhite() == playerTurn.isWhite()) {
                     return candidate_turn ;
                 }
