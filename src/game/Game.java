@@ -22,18 +22,26 @@ public class Game {
     private Player white;
     public boolean gameOver;
     private Backup backupGame;
-    private AtomicBoolean freezRunning;
+    private AtomicBoolean freezeRunning;
     private List<BoardField> frozen;
+    private int discsToFreeze;
+    private int CHTime;
+    private int FTime;
 
-    public Game(int size){
+    public Game(int size, int discsToFreeze, int CHTime, int FTime){
         backupGame = new Backup(size);
         rules = new ReversiRules(size,backupGame);
         sizeBoard = size;
 
-        freezRunning = new AtomicBoolean(false);
+        freezeRunning = new AtomicBoolean(false);
         frozen = new ArrayList<BoardField>();
         gameOver = false;
         currentPlayer = white;
+        this.discsToFreeze = discsToFreeze;
+        this.CHTime = CHTime;
+        this.FTime = FTime;
+
+
     }
 
     public boolean addPlayer(Player newPlayer){
@@ -65,7 +73,7 @@ public class Game {
         backupGame.add_FreezdDisks(frozen);
         backupGame.save_BackupRecord();
         rules.calcScore(currentPlayer);
-        freezFields(2,10,20);
+        freezFields(discsToFreeze,CHTime,FTime);
 
         currentPlayer = (currentPlayer == black) ? white : black;
         if (currentPlayer.is_pc()) {
@@ -95,7 +103,7 @@ public class Game {
             lastTurn = backupGame.backupTurns.get(backupGame.backupTurns.size() - 1);
             lastTurn.base_Point.deleteDisk();
             rules.turn_disks(lastTurn.turned);
-            loadFrezed(lastTurn.freezed);
+            loadFrezed(lastTurn.freeze);
             backupGame.backupTurns.remove(lastTurn);
             currentPlayer = lastTurn.turn_player;
 
@@ -108,22 +116,22 @@ public class Game {
 
     private void loadFrezed(List <BoardField> frozen){
         for(BoardField field :frozen ){
-            field.setFreez();
+            field.setFreeze();
             this.frozen.add(field);
         }
     }
 
     public void freezFields(final int count, final int max_timeFreez, final int max_timeChange){
         ubFreezWhoCan();
-        if(!freezRunning.get()) {
-            freezRunning.set(true);
+        if(!freezeRunning.get()) {
+            freezeRunning.set(true);
             new Thread() {
                 public void run() {
                     int timeChange = (int) (Math.random() * max_timeChange);
                     for (int x = 0; x < count; x++) {
                         int randomX = (int) (Math.random() * (sizeBoard - 1));
                         int randomY = (int) (Math.random() * (sizeBoard - 1));
-                        Board.field[randomX][randomY].freezField(max_timeFreez);
+                        Board.field[randomX][randomY].freezeField(max_timeFreez);
                         frozen.add(Board.field[randomX][randomY]);
                     }
                     try {
@@ -131,7 +139,7 @@ public class Game {
                     }catch (InterruptedException e) {
                         System.out.println("Exception thrown  :" + e);
                     }
-                    freezRunning.set(false);
+                    freezeRunning.set(false);
                 }
             }.start();
         }
@@ -140,7 +148,7 @@ public class Game {
     private void unFreezAll(){
         while(!frozen.isEmpty() ){
             BoardField tmp =  frozen.get(frozen.size()-1);
-            tmp.isFreez = false;
+            tmp.isFreeze = false;
             BoardGUI.unFreezeField(tmp.row,tmp.col);
             frozen.remove(tmp);
         }
@@ -149,8 +157,8 @@ public class Game {
     private void ubFreezWhoCan(){
         for (Iterator<BoardField> iterator = frozen.iterator(); iterator.hasNext();) {
             BoardField field = iterator.next();
-            if (field.getfreezEnd()) {
-                field.isFreez = false;
+            if (field.getFreezeEnd()) {
+                field.isFreeze = false;
                 BoardGUI.unFreezeField(field.row,field.col);
                 iterator.remove();
             }

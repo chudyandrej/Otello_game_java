@@ -40,8 +40,8 @@ public class Backup implements java.io.Serializable{
 
     }
 
-    public void add_FreezdDisks(List<BoardField> freezdDisk){
-        new_turn.add_Stack_freez(freezdDisk);
+    public void add_FreezdDisks(List<BoardField> freezeDisk){
+        new_turn.add_Stack_freez(freezeDisk);
     }
 
     public void save_BackupRecord(){
@@ -79,18 +79,18 @@ public class Backup implements java.io.Serializable{
     public class TurnBackUp implements java.io.Serializable{
         public BoardField base_Point;
         public List<BoardField> turned;
-        public List<BoardField> freezed;
+        public List<BoardField> freeze;
         public Player turn_player;
 
         TurnBackUp(BoardField base_Point, Player turn_palyer){
             turned = new ArrayList<BoardField>();
-            freezed = new ArrayList<BoardField>();
+            freeze = new ArrayList<BoardField>();
             this.base_Point = base_Point;
             this.turn_player = turn_palyer;
         }
 
         public void add_Stack_freez(List<BoardField> freezedDisk){
-            freezed.addAll(freezedDisk);
+            freeze.addAll(freezedDisk);
         }
 
         public void add_Stack_turned(List<BoardField> turnndDisk){

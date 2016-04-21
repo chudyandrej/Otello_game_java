@@ -20,7 +20,7 @@ public class BoardGUI {
     private static JFrame frame;
     private static JLabel board;
     private int boardSize;
-    public static Game game;
+    public Game game;
     static JLabel scoreLabel1;
     static JLabel scoreLabel2;
     static JLabel onTurnLabel;
@@ -39,7 +39,7 @@ public class BoardGUI {
 
     static Images I;
 
-    BoardGUI(JFrame frame, int boardSize, Player player1, Player player2){
+    BoardGUI(JFrame frame, int boardSize, Player player1, Player player2, int discsToFreeze,int CHTime,int FTime){
         BoardGUI.frame = frame;
         this.boardSize = boardSize;
         this.player1 = player1;
@@ -47,12 +47,12 @@ public class BoardGUI {
 
         I = new Images(frame, boardSize);
 
-        initNewGame();
+        initNewGame(discsToFreeze,CHTime,FTime);
 
-        //System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight()); //debug
+        System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight()); //debug
     }
 
-    private void initNewGame(){
+    private void initNewGame(int discsToFreeze,int CHTime,int FTime){
         createBoard();
 
         frame.setContentPane(board);
@@ -172,6 +172,7 @@ public class BoardGUI {
 
     private void setPlayArea(JPanel playArea){
         playArea.setBorder(new LineBorder(Color.black, 5));
+        playArea.setBorder(null);
 
         playArea.setLayout(new GridLayout(boardSize, boardSize));
 
@@ -219,6 +220,7 @@ public class BoardGUI {
         playAreaContent.add(playAreaContent2);
 
         JPanel playArea = new JPanel();
+        playArea.setOpaque(false);
         playAreaContent2.add(playArea);
 
         playAreaContent.add(Box.createVerticalGlue());
@@ -245,8 +247,6 @@ public class BoardGUI {
         BoardGUI.score2 = score2;
     }
 
-
-
     public class boardButtonClicked implements MouseListener {
         private JLabel button;
 
@@ -257,19 +257,6 @@ public class BoardGUI {
         @Override
         public void mouseEntered(MouseEvent e) {
             if(button == newGameBtn){
-                newGameBtn.setIcon(I.newGameBtnImage);
-            }else if (button == exitGameBtn){
-                exitGameBtn.setIcon(I.homeBtnImage);
-            }else if(button == undoBtn){
-                undoBtn.setIcon(I.undoBtnImage);
-            }else if(button == saveBtn){
-                saveBtn.setIcon(I.saveBtnImage);
-            }
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            if(button == newGameBtn){
                 newGameBtn.setIcon(I.newGameBtnImageE);
             }else if (button == exitGameBtn){
                 exitGameBtn.setIcon(I.homeBtnImageE);
@@ -277,6 +264,19 @@ public class BoardGUI {
                 undoBtn.setIcon(I.undoBtnImageE);
             }else if(button == saveBtn){
                 saveBtn.setIcon(I.saveBtnImageE);
+            }
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            if(button == newGameBtn){
+                newGameBtn.setIcon(I.newGameBtnImage);
+            }else if (button == exitGameBtn){
+                exitGameBtn.setIcon(I.homeBtnImage);
+            }else if(button == undoBtn){
+                undoBtn.setIcon(I.undoBtnImage);
+            }else if(button == saveBtn){
+                saveBtn.setIcon(I.saveBtnImage);
             }
         }
 
@@ -292,10 +292,12 @@ public class BoardGUI {
                 saveBtn.setIcon(I.saveBtnImageP);
             }
         }
+
         @Override
         public void mouseReleased(MouseEvent e) {
             mouseEntered(e);
         }
+
         @Override
         public void mouseClicked(MouseEvent e) {
             if(button == newGameBtn){

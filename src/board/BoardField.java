@@ -12,9 +12,9 @@ public class BoardField implements java.io.Serializable {
     public int row;
     public int col;
     public int size;
-    public boolean isFreez;
+    public boolean isFreeze;
 
-    private boolean freezEnd;
+    private boolean freezeEnd;
     private Disk disk;
 
 
@@ -23,7 +23,7 @@ public class BoardField implements java.io.Serializable {
         this.col = col;
         this.size = size;
         this.disk = null;
-        isFreez = false;
+        isFreeze = false;
     }
 
     public BoardField nextField(Direction dirs) {
@@ -78,36 +78,36 @@ public class BoardField implements java.io.Serializable {
         return disk;
     }
 
-    public void freezField(final int time){
+    public void freezeField(final int time){
 
-        freezEnd = false;
-        isFreez = true;
+        freezeEnd = false;
+        isFreeze = true;
         BoardGUI.freezeField(row,col);
 
         new Thread()
         {
             public void run() {
                 try {
-                    int timeFreez = (int) (Math.random() * time);
-                    TimeUnit.SECONDS.sleep(timeFreez);
+                    int timeFreeze = (int) (Math.random() * time);
+                    TimeUnit.SECONDS.sleep(timeFreeze);
                 } catch (InterruptedException e) {
                     System.out.println("Exception thrown  :" + e);
                 }
-                freezEnd = true;
+                freezeEnd = true;
             }
         }.start();
     }
 
-    public boolean getfreezEnd() {
-        return freezEnd;
+    public boolean getFreezeEnd() {
+        return freezeEnd;
     }
 
 
     public enum Direction{D, L, LD, LU, R, RD, RU, U}
 
-    public void setFreez(){
-        isFreez = true;
-        freezEnd = true;
+    public void setFreeze(){
+        isFreeze = true;
+        freezeEnd = true;
         BoardGUI.freezeField(row,col);
 
 
