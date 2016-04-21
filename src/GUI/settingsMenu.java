@@ -125,7 +125,6 @@ public class settingsMenu{
         p.add(back, cs);
         back.addActionListener(new settingsBackClicked());
 
-
         return p;
     }
 

@@ -44,7 +44,15 @@ public class BoardFieldLabel extends JLabel implements MouseListener {
     public void freeze(){
         frozen = true;
         beforeFroze = getIcon();
-        setIcon(I.saveBtnImage);        //just temporary, new image is needed to create
+        if (beforeFroze == I.fieldBackground){
+            setIcon(I.fieldBackgroundFrozen);
+        }
+        else if(beforeFroze == I.whitePlayerFieldDisc){
+            setIcon(I.whitePlayerFieldDiscFrozen);
+        }
+        else{
+            setIcon(I.blackPlayerFieldDiscFrozen);
+        }
     }
 
     public void unFreeze(){

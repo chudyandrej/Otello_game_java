@@ -172,6 +172,7 @@ public class BoardGUI {
 
     private void setPlayArea(JPanel playArea){
         playArea.setBorder(new LineBorder(Color.black, 5));
+        playArea.setBorder(null);
 
         playArea.setLayout(new GridLayout(boardSize, boardSize));
 
@@ -219,6 +220,7 @@ public class BoardGUI {
         playAreaContent.add(playAreaContent2);
 
         JPanel playArea = new JPanel();
+        playArea.setOpaque(false);
         playAreaContent2.add(playArea);
 
         playAreaContent.add(Box.createVerticalGlue());
@@ -255,19 +257,6 @@ public class BoardGUI {
         @Override
         public void mouseEntered(MouseEvent e) {
             if(button == newGameBtn){
-                newGameBtn.setIcon(I.newGameBtnImage);
-            }else if (button == exitGameBtn){
-                exitGameBtn.setIcon(I.homeBtnImage);
-            }else if(button == undoBtn){
-                undoBtn.setIcon(I.undoBtnImage);
-            }else if(button == saveBtn){
-                saveBtn.setIcon(I.saveBtnImage);
-            }
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            if(button == newGameBtn){
                 newGameBtn.setIcon(I.newGameBtnImageE);
             }else if (button == exitGameBtn){
                 exitGameBtn.setIcon(I.homeBtnImageE);
@@ -275,6 +264,19 @@ public class BoardGUI {
                 undoBtn.setIcon(I.undoBtnImageE);
             }else if(button == saveBtn){
                 saveBtn.setIcon(I.saveBtnImageE);
+            }
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            if(button == newGameBtn){
+                newGameBtn.setIcon(I.newGameBtnImage);
+            }else if (button == exitGameBtn){
+                exitGameBtn.setIcon(I.homeBtnImage);
+            }else if(button == undoBtn){
+                undoBtn.setIcon(I.undoBtnImage);
+            }else if(button == saveBtn){
+                saveBtn.setIcon(I.saveBtnImage);
             }
         }
 

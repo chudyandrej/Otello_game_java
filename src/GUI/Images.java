@@ -17,6 +17,9 @@ public class Images {
     ImageIcon whitePlayerFieldDisc;
     ImageIcon blackPlayerFieldDisc;
     ImageIcon fieldBackground;
+    ImageIcon whitePlayerFieldDiscFrozen;
+    ImageIcon blackPlayerFieldDiscFrozen;
+    ImageIcon fieldBackgroundFrozen;
     ImageIcon fieldCanPutDisc;
     ImageIcon whiteDisc;
     ImageIcon blackDisc;
@@ -67,6 +70,9 @@ public class Images {
         blackPlayerFieldDisc = new ImageIcon(resizeImage("lib/black2.png", w, h));
         fieldBackground = new ImageIcon(resizeImage("lib/field.png", w, h));
         fieldCanPutDisc = new ImageIcon(resizeImage("lib/fieldCanPut.png", w, h));
+        whitePlayerFieldDiscFrozen = new ImageIcon(resizeImage("lib/white2frozen.png", w, h));
+        blackPlayerFieldDiscFrozen = new ImageIcon(resizeImage("lib/black2frozen.png", w, h));
+        fieldBackgroundFrozen = new ImageIcon(resizeImage("lib/fieldFrozen.png", w, h));
         arrowL = new ImageIcon(resizeImage("lib/arrow_l.png", iconSize, iconSize));
         arrowR = new ImageIcon(resizeImage("lib/arrow_r.png", iconSize, iconSize));
         whiteDisc = new ImageIcon(resizeImage("lib/whiteDisc.png", iconSize, iconSize));
