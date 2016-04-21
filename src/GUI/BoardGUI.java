@@ -27,6 +27,9 @@ public class BoardGUI {
 
     private Player player1;
     private Player player2;
+    private int discsToFreeze;
+    private int CHTime;
+    private int FTime;
     private static int score1;
     private static int score2;
 
@@ -34,6 +37,7 @@ public class BoardGUI {
     JLabel exitGameBtn;
     JLabel undoBtn;
     JLabel saveBtn;
+
 
     static BoardFieldLabel[][] fields;
 
@@ -44,22 +48,25 @@ public class BoardGUI {
         this.boardSize = boardSize;
         this.player1 = player1;
         this.player2 = player2;
+        this.discsToFreeze = discsToFreeze;
+        this.CHTime = CHTime;
+        this.FTime = FTime;
 
         I = new Images(frame, boardSize);
 
-        initNewGame(discsToFreeze,CHTime,FTime);
+        initNewGame();
 
-        System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight()); //debug
+        //System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight()); //debug
     }
 
-    private void initNewGame(int discsToFreeze,int CHTime,int FTime){
+    private void initNewGame(){
         createBoard();
 
         frame.setContentPane(board);
         frame.validate();
         frame.repaint();
 
-        game = new Game(boardSize);
+        game = new Game(boardSize, discsToFreeze, CHTime, FTime);
         game.addPlayer(player1);
         game.addPlayer(player2);
     }

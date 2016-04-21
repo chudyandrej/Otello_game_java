@@ -25,7 +25,7 @@ public class OthelloGUI {
     private String player1Name = "Player1";
     private String player2Name = "Player2";
     private String computerName = "Computer";
-    private double discsToFreeze = 0;
+    private int discsToFreeze = 0;
     private int CHTime = 0;
     private int FTime = 0;
 
@@ -234,6 +234,16 @@ public class OthelloGUI {
         backBtn.addActionListener(new backExitBtnClicked(chooseBoardSize));
     }
 
+    private void updateSettings(){
+        player1Name = settings.player1Name;
+        player2Name = settings.player2Name;
+        computerName = settings.computerName;
+        discsToFreeze = (int) ((settings.FDisc/100) *boardSize);
+        CHTime = settings.CHTime;
+        FTime = settings.FTime;
+        System.out.format("update: %d\n", discsToFreeze);
+    }
+
 
     private class boardSizeBtnClicked implements ActionListener {
         private JButton button;
@@ -249,13 +259,9 @@ public class OthelloGUI {
             else if(this.button == size12x12Btn) { boardSize = 12; }
 
             if(settings != null){           //default settings has been changed
-                player1Name = settings.player1Name;
-                player2Name = settings.player2Name;
-                computerName = settings.computerName;
-                discsToFreeze = settings.FDisc;
-                CHTime = settings.CHTime;
-                FTime = settings.FTime;
+                updateSettings();
             }
+
             Player player1 = new Player(true,player1Name);
             Player player2;
             if(singlePlayer){player2 = new Player(false, mode, computerName);}
@@ -316,7 +322,9 @@ public class OthelloGUI {
                     c.printStackTrace();
                 }
                 if (backup_game != null){
-                    BoardGUI boardGUI = new BoardGUI(frame, backup_game.getBoardSize(), backup_game.getPlayer1(), backup_game.getPlayer2(),(int) discsToFreeze ,CHTime ,FTime );
+                    if(settings != null) { updateSettings(); }
+                    BoardGUI boardGUI = new BoardGUI(frame, backup_game.getBoardSize(), backup_game.getPlayer1(),
+                                                    backup_game.getPlayer2(),(int) discsToFreeze ,CHTime ,FTime );
                     frame.remove(mainMenu);
 
                     backup_game.load();
