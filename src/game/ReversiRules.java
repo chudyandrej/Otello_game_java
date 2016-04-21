@@ -1,5 +1,6 @@
 package game;
 
+import GUI.BoardGUI;
 import board.Board;
 import board.BoardField;
 
@@ -8,7 +9,6 @@ import board.Disk;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * Created by andrejchudy on 15/04/16.
@@ -28,26 +28,16 @@ public class ReversiRules {
 
         //starting position
         Board.field[ (size/2)-1][(size/2)-1].putDisk(new Disk(true));
-        backupGame.create_NewTurn(Board.field[ (size/2)-1][(size/2)-1], null);
-        backupGame.save_BackupRecord();
-
         Board.field[(size/2)][(size/2)].putDisk(new Disk(true));
-        backupGame.create_NewTurn(Board.field[(size/2)][(size/2)],null);
-        backupGame.save_BackupRecord();
-
         Board.field[(size/2)-1][(size/2)].putDisk(new Disk(false));
-        backupGame.create_NewTurn(Board.field[(size/2)-1][(size/2)],null);
-        backupGame.save_BackupRecord();
-
         Board.field[(size/2)][(size/2)-1].putDisk(new Disk(false));
-        backupGame.create_NewTurn(Board.field[(size/2)][(size/2)-1],null);
-        backupGame.save_BackupRecord();
+
 
     }
 
     public boolean canPutDisk(int x, int y, Player playerTurn){
         BoardField  field =  Board.field[x][y];
-        if(field.getDisk() == null) {
+        if(field.getDisk() == null && !field.isFreeze) {
             BoardField tmp;
             for (BoardField.Direction way : BoardField.Direction.values()) {
                 tmp = field.nextField(way);
@@ -66,7 +56,7 @@ public class ReversiRules {
 
     public boolean putDisk(int x, int y, Player playerTurn){
         BoardField  field =  Board.field[x][y];
-        List disks_for_turn;
+        List<BoardField> disks_for_turn;
         boolean success = false;
         if(field.getDisk() == null) {
             for (BoardField.Direction way : BoardField.Direction.values()) {
@@ -80,15 +70,15 @@ public class ReversiRules {
             }
             if (success){
                 field.putDisk(new Disk(playerTurn.isWhite()));
-                backupGame.save_BackupRecord();
+
             }
         }
         return success;
     }
 
-    private List chack_IN_direct(BoardField  field, BoardField.Direction way, Player playerTurn){
+    private List<BoardField> chack_IN_direct(BoardField  field, BoardField.Direction way, Player playerTurn){
         field = field.nextField(way);
-        if (field != null && field.getDisk() != null && field.getDisk().isWhite() != playerTurn.isWhite()) {
+        if (field != null && !field.isFreeze && field.getDisk() != null  && field.getDisk().isWhite() != playerTurn.isWhite()) {
             List <BoardField> candidate_turn = new ArrayList<BoardField>();
             while (field != null && field.getDisk() != null) {
                 if (field.getDisk().isWhite() == playerTurn.isWhite()) {
@@ -101,11 +91,10 @@ public class ReversiRules {
         return null;
     }
 
-    public void turn_disks(List st){
+    public void turn_disks(List<BoardField> st){
         BoardField tmp;
-       // System.out.printf("turnDisk : %d\n",st.size());
         while (!st.isEmpty()){
-            tmp = (BoardField) st.get(st.size()-1);
+            tmp = st.get(st.size()-1);
             tmp.getDisk().turn();
             st.remove(tmp);
         }
@@ -129,8 +118,8 @@ public class ReversiRules {
     }
 
     public void uiAlgorithmLevel2(Player UI){
-        List disksForTurn;
-        List maxTurns = new ArrayList<BoardField>();
+        List<BoardField> disksForTurn;
+        List<BoardField> maxTurns = new ArrayList<BoardField>();
         BoardField  best_field = null;
         int size = Game.rules.getSize();
         for (int i = 0; i < size; i++) {
@@ -153,8 +142,37 @@ public class ReversiRules {
             assert best_field != null;
             best_field.putDisk(new Disk(UI.isWhite()));
             turn_disks(maxTurns);
-            backupGame.save_BackupRecord();
+
         }
+    }
+
+    public void calcScore(Player currentPlayer){
+        int white_Disk = 0;
+        int blac_Dsik = 0;
+        int size = Game.rules.getSize();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                Disk tmp = Board.field[i][j].getDisk();
+                if (tmp == null){
+                    continue;
+                }
+                else if(tmp.isWhite()){ white_Disk++; }
+                else if(!tmp.isWhite()){ blac_Dsik++; }
+            }
+        }
+        BoardGUI.setGameState(white_Disk, blac_Dsik, currentPlayer.isWhite());
+    }
+
+    public boolean isExitsingTurn(Player currentPlayer) {
+        int size = Game.rules.getSize();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (currentPlayer.canPutDisk(i,j)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 

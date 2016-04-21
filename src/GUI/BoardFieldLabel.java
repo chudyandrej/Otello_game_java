@@ -62,7 +62,7 @@ public class BoardFieldLabel extends JLabel implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        if (boardGUI.game.currentPlayer().canPutDisk(row, col)) {
+        if (boardGUI.game.getCurrentPlayer().canPutDisk(row, col)) {
             setIcon(I.fieldCanPutDisc);
         }
     }
@@ -76,7 +76,7 @@ public class BoardFieldLabel extends JLabel implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        Player tmp  = boardGUI.game.currentPlayer();
+        Player tmp  = boardGUI.game.getCurrentPlayer();
 
         if (tmp.putDisk(row, col)) {
             pressed = true;

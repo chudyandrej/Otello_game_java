@@ -27,6 +27,9 @@ public class BoardGUI {
 
     private Player player1;
     private Player player2;
+    private int discsToFreeze;
+    private int CHTime;
+    private int FTime;
     private static int score1;
     private static int score2;
 
@@ -35,21 +38,25 @@ public class BoardGUI {
     JLabel undoBtn;
     JLabel saveBtn;
 
+
     static BoardFieldLabel[][] fields;
 
     static Images I;
 
-    BoardGUI(JFrame frame, int boardSize, Player player1, Player player2){
+    BoardGUI(JFrame frame, int boardSize, Player player1, Player player2, int discsToFreeze,int CHTime,int FTime){
         BoardGUI.frame = frame;
         this.boardSize = boardSize;
         this.player1 = player1;
         this.player2 = player2;
+        this.discsToFreeze = discsToFreeze;
+        this.CHTime = CHTime;
+        this.FTime = FTime;
 
         I = new Images(frame, boardSize);
 
         initNewGame();
 
-        System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight()); //debug
+        //System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight()); //debug
     }
 
     private void initNewGame(){
@@ -59,7 +66,7 @@ public class BoardGUI {
         frame.validate();
         frame.repaint();
 
-        game = new Game(boardSize);
+        game = new Game(boardSize, discsToFreeze, CHTime, FTime);
         game.addPlayer(player1);
         game.addPlayer(player2);
     }
@@ -320,7 +327,7 @@ public class BoardGUI {
                 try {
                     FileOutputStream fileOut = new FileOutputStream("employee.ser");
                     ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                    out.writeObject(game.backupGame);
+                    out.writeObject(game.getBackupGame());
                     out.close();
                     fileOut.close();
                 }

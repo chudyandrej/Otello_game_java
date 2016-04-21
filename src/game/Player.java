@@ -1,6 +1,10 @@
 package game;
 
 
+import board.Board;
+
+import java.lang.reflect.Field;
+
 /**
  * Created by andrejchudy on 15/04/16.
  */
@@ -39,8 +43,6 @@ public class Player  implements java.io.Serializable{
     public boolean putDisk(int x, int y){
         return Game.rules.putDisk(x, y, this);
     }
-
-
 
     public void uiTurn(Game game) {
         if (level == 1) {
