@@ -155,12 +155,14 @@ public class Game {
     }
 
     private void ubFreezWhoCan(){
-        for (Iterator<BoardField> iterator = frozen.iterator(); iterator.hasNext();) {
-            BoardField field = iterator.next();
-            if (field.getFreezeEnd()) {
-                field.isFreeze = false;
-                BoardGUI.unFreezeField(field.row,field.col);
-                iterator.remove();
+
+        Iterator<BoardField> iter = frozen.iterator();
+        while (iter.hasNext()) {
+            BoardField now = iter.next();
+            if (now.getFreezeEnd()) {
+                now.isFreeze = false;
+                BoardGUI.unFreezeField(now.row,now.col);
+                iter.remove();
             }
         }
     }

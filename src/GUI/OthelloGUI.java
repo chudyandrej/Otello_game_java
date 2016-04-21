@@ -78,11 +78,13 @@ public class OthelloGUI {
     }
 
     public static void initMenuAgain(JFrame frame){
+        frame.setMinimumSize(new Dimension(500, 550));
         bg.removeAll();
         bg.add(mainMenu);
         frame.setContentPane(bg);
         frame.validate();
         frame.repaint();
+        frame.pack();
         previousPage = null;
     }
 
@@ -241,7 +243,6 @@ public class OthelloGUI {
         discsToFreeze = (int) ((settings.FDisc/100) *boardSize);
         CHTime = settings.CHTime;
         FTime = settings.FTime;
-        System.out.format("update: %d\n", discsToFreeze);
     }
 
 
