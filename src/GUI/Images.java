@@ -51,8 +51,8 @@ public class Images {
                 frame.setMinimumSize(new Dimension(500, 480));
                 break;
             case 8:
-                w = 46;
-                h = 43;
+                w = 49;
+                h = 46;
                 frame.setMinimumSize(new Dimension(500, 480));
                 break;
             case 10:

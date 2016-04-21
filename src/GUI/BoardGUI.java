@@ -49,7 +49,7 @@ public class BoardGUI {
 
         initNewGame();
 
-        //System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight()); //debug
+        System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight()); //debug
     }
 
     private void initNewGame(){

@@ -285,8 +285,8 @@ public class OthelloGUI {
             }
             else if(button == settingsBtn){
                 bg.remove(mainMenu);
-                settingsMenu settingsMenu = new settingsMenu();
-                bg.add(settingsMenu.getMenu(frame, bg, mainMenu));
+                settings = new settingsMenu();
+                bg.add(settings.getMenu(frame, bg, mainMenu));
                 bg.validate();
                 bg.repaint();
                 previousPage = mainMenu;
