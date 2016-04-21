@@ -15,14 +15,18 @@ import java.util.List;
 
 public class Backup implements java.io.Serializable{
 
-    private TurnBackUp new_turn;
     public List<TurnBackUp> backupTurns;
-    public Player player1;
-    public Player player2;
-    public int boardSize;
+
+    private TurnBackUp new_turn;
+    private Player player1;
+    private Player player2;
 
 
-    public Backup(){
+    private int boardSize;
+
+
+    public Backup(int size){
+        boardSize = size;
         backupTurns = new ArrayList<TurnBackUp>();
 
     }
@@ -36,6 +40,10 @@ public class Backup implements java.io.Serializable{
 
     }
 
+    public void add_FreezdDisks(List<BoardField> freezdDisk){
+        new_turn.add_Stack_freez(freezdDisk);
+    }
+
     public void save_BackupRecord(){
         backupTurns.add(new_turn);
     }
@@ -46,15 +54,43 @@ public class Backup implements java.io.Serializable{
         }
     }
 
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public void setPlayer1(Player player1) {
+        this.player1 = player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+
+    public void setPlayer2(Player player2) {
+        this.player2 = player2;
+    }
+
+
+    public int getBoardSize() {
+        return boardSize;
+    }
+
+
     public class TurnBackUp implements java.io.Serializable{
         public BoardField base_Point;
         public List<BoardField> turned;
+        public List<BoardField> freezed;
         public Player turn_player;
 
         TurnBackUp(BoardField base_Point, Player turn_palyer){
             turned = new ArrayList<BoardField>();
+            freezed = new ArrayList<BoardField>();
             this.base_Point = base_Point;
             this.turn_player = turn_palyer;
+        }
+
+        public void add_Stack_freez(List<BoardField> freezedDisk){
+            freezed.addAll(freezedDisk);
         }
 
         public void add_Stack_turned(List<BoardField> turnndDisk){

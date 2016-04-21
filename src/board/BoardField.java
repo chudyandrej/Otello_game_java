@@ -104,5 +104,13 @@ public class BoardField implements java.io.Serializable {
 
 
     public enum Direction{D, L, LD, LU, R, RD, RU, U}
+
+    public void setFreez(){
+        isFreez = true;
+        freezEnd = true;
+        BoardGUI.freezeField(row,col);
+
+
+    }
     
 }

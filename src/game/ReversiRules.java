@@ -1,5 +1,6 @@
 package game;
 
+import GUI.BoardGUI;
 import board.Board;
 import board.BoardField;
 
@@ -61,7 +62,7 @@ public class ReversiRules {
         BoardField  field =  Board.field[x][y];
         List disks_for_turn;
         boolean success = false;
-        if(field.getDisk() == null && !field.isFreez) {
+        if(field.getDisk() == null) {
             for (BoardField.Direction way : BoardField.Direction.values()) {
                 disks_for_turn = chack_IN_direct(field, way,playerTurn );
                 if (disks_for_turn != null){
@@ -73,7 +74,7 @@ public class ReversiRules {
             }
             if (success){
                 field.putDisk(new Disk(playerTurn.isWhite()));
-                backupGame.save_BackupRecord();
+                //backupGame.save_BackupRecord();
             }
         }
         return success;
@@ -146,8 +147,37 @@ public class ReversiRules {
             assert best_field != null;
             best_field.putDisk(new Disk(UI.isWhite()));
             turn_disks(maxTurns);
-            backupGame.save_BackupRecord();
+
         }
+    }
+
+    public void calcScore(Player currentPlayer){
+        int white_Disk = 0;
+        int blac_Dsik = 0;
+        int size = Game.rules.getSize();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                Disk tmp = Board.field[i][j].getDisk();
+                if (tmp == null){
+                    continue;
+                }
+                else if(tmp.isWhite()){ white_Disk++; }
+                else if(!tmp.isWhite()){ blac_Dsik++; }
+            }
+        }
+        BoardGUI.setGameState(white_Disk, blac_Dsik, currentPlayer.isWhite());
+    }
+
+    public boolean isExitsingTurn(Player currentPlayer) {
+        int size = Game.rules.getSize();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (currentPlayer.canPutDisk(i,j)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 

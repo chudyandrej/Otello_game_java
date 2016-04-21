@@ -318,7 +318,7 @@ public class BoardGUI {
                 try {
                     FileOutputStream fileOut = new FileOutputStream("employee.ser");
                     ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                    out.writeObject(game.backupGame);
+                    out.writeObject(game.getBackupGame());
                     out.close();
                     fileOut.close();
                 }

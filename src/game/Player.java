@@ -44,7 +44,6 @@ public class Player  implements java.io.Serializable{
         return Game.rules.putDisk(x, y, this);
     }
 
-
     public void uiTurn(Game game) {
         if (level == 1) {
             Game.rules.uiAlgorithmLevel1(this);
