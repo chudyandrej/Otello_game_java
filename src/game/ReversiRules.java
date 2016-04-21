@@ -41,9 +41,9 @@ public class ReversiRules {
             BoardField tmp;
             for (BoardField.Direction way : BoardField.Direction.values()) {
                 tmp = field.nextField(way);
-                if (tmp != null && tmp.getDisk() != null && tmp.getDisk().isWhite() != playerTurn.isWhite()) {
+                if (tmp != null && !field.isFreeze && tmp.getDisk() != null && tmp.getDisk().isWhite() != playerTurn.isWhite()) {
                     while (tmp != null && tmp.getDisk() != null) {
-                        if (tmp.getDisk().isWhite() == playerTurn.isWhite()) {
+                        if (tmp.getDisk().isWhite() == playerTurn.isWhite() && !field.isFreeze) {
                             return true;
                         }
                         tmp = tmp.nextField(way);
