@@ -22,14 +22,20 @@ public class OthelloGUI {
     private boolean singlePlayer = false;
     private byte mode;
     public int boardSize;
+    private String player1Name = "Player1";
+    private String player2Name = "Player2";
+    private String computerName = "Computer";
+    private double discsToFreeze = 0;
+    private int CHTime = 0;
+    private int FTime = 0;
 
-    private JFrame frame;
+    public JFrame frame;
+    public settingsMenu settings = null;
 
     public static Box mainMenu;
     public static Box chooseMode;
     public static Box chooseBoardSize;
     public static Box previousPage = null;
-    public static JPanel settingsMenu;
     public static BackgroundPane bg;
 
     Dimension buttonDimension = new Dimension(150, 40);
@@ -58,7 +64,6 @@ public class OthelloGUI {
         createMainPage();
         createChooseGameModePage();
         createChooseSizeOfBoardPage();
-        createSettingsMenu();
 
         bg = new BackgroundPane();
         bg.setLayout(new GridLayout());
@@ -228,22 +233,7 @@ public class OthelloGUI {
         size12x12Btn.addActionListener(new boardSizeBtnClicked(size12x12Btn));
         backBtn.addActionListener(new backExitBtnClicked(chooseBoardSize));
     }
-    private void createSettingsMenu(){
-        settingsMenu = new JPanel(new SpringLayout());
-        
 
-        JLabel l = new JLabel("Name", JLabel.TRAILING);
-        settingsMenu.add(l);
-        JTextField textField = new JTextField(10);
-        l.setLabelFor(textField);
-        settingsMenu.add(textField);
-
-        textField.setText("Anurag");
-        settingsMenu.add(Box.createVerticalGlue());
-        settingsMenu.add(textField);
-
-        settingsMenu.add(Box.createVerticalGlue());
-    }
 
     private class boardSizeBtnClicked implements ActionListener {
         private JButton button;
@@ -258,10 +248,18 @@ public class OthelloGUI {
             else if(this.button == size10x10Btn) { boardSize = 10; }
             else if(this.button == size12x12Btn) { boardSize = 12; }
 
-            Player player1 = new Player(true,"Player1");
+            if(settings != null){           //default settings has been changed
+                player1Name = settings.player1Name;
+                player2Name = settings.player2Name;
+                computerName = settings.computerName;
+                discsToFreeze = settings.FDisc;
+                CHTime = settings.CHTime;
+                FTime = settings.FTime;
+            }
+            Player player1 = new Player(true,player1Name);
             Player player2;
-            if(singlePlayer){player2 = new Player(false, mode, "Computer");}
-            else{player2 = new Player(false, "Player2");}
+            if(singlePlayer){player2 = new Player(false, mode, computerName);}
+            else{player2 = new Player(false, player2Name);}
 
             BoardGUI boardGUI = new BoardGUI(frame, boardSize,player1, player2);
             frame.remove(chooseBoardSize);
@@ -287,7 +285,8 @@ public class OthelloGUI {
             }
             else if(button == settingsBtn){
                 bg.remove(mainMenu);
-                bg.add(settingsMenu);
+                settingsMenu settingsMenu = new settingsMenu();
+                bg.add(settingsMenu.getMenu(frame, bg, mainMenu));
                 bg.validate();
                 bg.repaint();
                 previousPage = mainMenu;
