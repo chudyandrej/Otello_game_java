@@ -1,5 +1,5 @@
 /**
-* BoardGUI creates board, top bar with game controll icons,
+* BoardGUI creates board, top bar with game control icons,
 * bottom bar showing game state information and initializes game
 * 
 * @author  Andrej Chudý
@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 /**
- * BoardGUI class creates board and initilizes game
+ * BoardGUI class creates board and initializes game
  */
 public class BoardGUI {
     private static JFrame frame;
@@ -51,7 +51,7 @@ public class BoardGUI {
 
     /**
      * Initializes game with all parameters such as players, board size and time intervals
-     * for controll of frozen discs
+     * for control of frozen discs
      * 
      * @param JFrame frame - window, where the board will be shown
      * @param int boardSize - Size of board (6/8/10/12)
@@ -62,7 +62,7 @@ public class BoardGUI {
      * @param int FTime - max time in seconds after wchich will be the discs made unfrozen
      */
 
-    BoardGUI(JFrame frame, int boardSize, Player player1, Player player2, int discsToFreeze,int CHTime,int FTime){
+    public BoardGUI(JFrame frame, int boardSize, Player player1, Player player2, int discsToFreeze,int CHTime,int FTime){
         BoardGUI.frame = frame;
         this.boardSize = boardSize;
         this.player1 = player1;
@@ -152,7 +152,7 @@ public class BoardGUI {
     }
     /**
      * Method creates and sets elements on top bar in play area page
-     * @param JToolBar topBar - bar where the elemnents will be sets
+     * @param JToolBar topBar - bar where the elements will be sets
      * @return  void
      */
     private void setTopBar(JToolBar topBar){

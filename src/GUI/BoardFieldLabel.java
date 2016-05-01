@@ -33,10 +33,10 @@ public class BoardFieldLabel extends JLabel implements MouseListener {
      * Constructor method initialize one board field
      * @param int row - number of row, where field is placed
      * @param int col - number of col, where field is placed
-     * @param Images I - instance of Images class containg all images needed for field
+     * @param Images I - instance of Images class containing all images needed for field
      * @param BoardGUI boardGUI - instance of BoardGUI for access to game and Game method
      */
-    BoardFieldLabel(int row, int col, Images I, BoardGUI boardGUI){
+    public BoardFieldLabel(int row, int col, Images I, BoardGUI boardGUI){
         this.row = row;
         this.col = col;
         this.I = I;

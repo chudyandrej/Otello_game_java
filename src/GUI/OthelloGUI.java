@@ -1,5 +1,7 @@
 /**
- *  
+ * This class creates main window, menu and controls switching of menu pages,
+ * contains listeners for each button in menu and provides actions when
+ * event occurs.
  * 
  * @author  Andrej Chudý
  * @author  Martin Kopec
@@ -90,6 +92,11 @@ public class OthelloGUI {
         frame.setResizable(false);
     }
 
+    /**
+     * Method removes everything on frame and
+     * initializes menu menu.
+     * @param JFrame frame - main window
+     */
     public static void initMenuAgain(JFrame frame){
         frame.setMinimumSize(new Dimension(500, 550));
         bg.removeAll();
@@ -101,26 +108,12 @@ public class OthelloGUI {
         previousPage = null;
     }
 
-    public class BackgroundPane extends JPanel {
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            BufferedImage bg=null;
-            try {
-                bg = ImageIO.read(new File("lib/background.jpg"));
-            }catch(IOException ex){
-                System.err.println(ex.getMessage());
-                ex.printStackTrace();
-            }
-            if (bg != null) {
-                int x = (getWidth() - bg.getWidth()) / 2;
-                int y = (getHeight() - bg.getHeight()) / 2;
-                g.drawImage(bg, x, y, this);
-            }
-        }
-    }
-
+    /**
+     * Method switches one menu page to other
+     * @param Box fromScene - current scene
+     * @param Box toScene - next scene
+     * @return void
+     */
     private void changeScene(Box fromScene, Box toScene){
         bg.remove(fromScene);
         bg.add(toScene);
@@ -129,6 +122,10 @@ public class OthelloGUI {
         previousPage = fromScene;
     }
 
+    /**
+     * Methods creates panel, sets its size and layout
+     * @return JPanel - created panel
+     */
     private JPanel createPanelBtn(){
         JPanel panelBtn = new JPanel();
         panelBtn.setPreferredSize(buttonDimension);
@@ -138,6 +135,12 @@ public class OthelloGUI {
         return panelBtn;
     }
 
+    /**
+     * Method sets background image of given button, position
+     * and color of button text
+     * @param JButton button - button to be set up
+     * @return void
+     */
     private void setButton(JButton button){
         button.setIcon(buttonImage);
         button.setForeground(Color.white);
@@ -145,6 +148,11 @@ public class OthelloGUI {
         button.setHorizontalTextPosition(SwingConstants.CENTER);
     }
 
+    /**
+     * Method creates main page into global attribute,
+     * sets dimensions of containing elements and sets
+     * buttons
+     */
     private void createMainPage(){
         mainMenu = new Box(BoxLayout.Y_AXIS);
         mainMenu.add(Box.createVerticalGlue());
@@ -183,6 +191,11 @@ public class OthelloGUI {
         settingsBtn.addActionListener(new buttonClicked(settingsBtn));
         exitBtn.addActionListener(new backExitBtnClicked(mainMenu));
     }
+
+    /**
+     * Method creates page, where user can choose
+     * game mode, sets elements and buttons
+     */
     private void createChooseGameModePage(){
         chooseMode = new Box(BoxLayout.Y_AXIS);
         chooseMode.add(Box.createVerticalGlue());
@@ -210,6 +223,11 @@ public class OthelloGUI {
         advancedModeBtn.addActionListener(new buttonClicked(advancedModeBtn));
         backBtn.addActionListener(new backExitBtnClicked(chooseMode));
     }
+
+    /**
+     * Method creates page, where user can choose
+     * size of board, sets elements and buttons
+     */
     private void createChooseSizeOfBoardPage(){
         //set choose size of board page
         chooseBoardSize = new Box(BoxLayout.Y_AXIS);
@@ -249,16 +267,47 @@ public class OthelloGUI {
         backBtn.addActionListener(new backExitBtnClicked(chooseBoardSize));
     }
 
+    /**
+     * Method updates default values important for game
+     * (players' names,..) obtained in settings menu
+     */
     private void updateSettings(){
         player1Name = settings.player1Name;
         player2Name = settings.player2Name;
         computerName = settings.computerName;
-        discsToFreeze = (int) ((settings.FDisc/100) *boardSize);
+        discsToFreeze = (int) ((settings.FDisc/100) *boardSize*boardSize);
         CHTime = settings.CHTime;
         FTime = settings.FTime;
     }
 
+    /**
+     * Background panel class, sets background image,
+     * all menu pages are set on the panel.
+     */
+    public class BackgroundPane extends JPanel {
 
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            BufferedImage bg=null;
+            try {
+                bg = ImageIO.read(new File("lib/background.jpg"));
+            }catch(IOException ex){
+                System.err.println(ex.getMessage());
+                ex.printStackTrace();
+            }
+            if (bg != null) {
+                int x = (getWidth() - bg.getWidth()) / 2;
+                int y = (getHeight() - bg.getHeight()) / 2;
+                g.drawImage(bg, x, y, this);
+            }
+        }
+    }
+
+    /**
+     * Class implements action listener for buttons in choose-game-mode page
+     * and provides actions when action event occurs
+     */
     private class boardSizeBtnClicked implements ActionListener {
         private JButton button;
 
@@ -287,6 +336,11 @@ public class OthelloGUI {
             previousPage = chooseBoardSize;
         }
     }
+
+    /**
+     * Class implements action listener for buttons in main menu page
+     * and choose-game-mode page and provides actions when event occurs
+     */
     private class buttonClicked implements ActionListener {
         private JButton button;
 
@@ -338,7 +392,7 @@ public class OthelloGUI {
                 if (backup_game != null){
                     if(settings != null) { updateSettings(); }
                     BoardGUI boardGUI = new BoardGUI(frame, backup_game.getBoardSize(), backup_game.getPlayer1(),
-                                                    backup_game.getPlayer2(),(int) discsToFreeze ,CHTime ,FTime );
+                                                    backup_game.getPlayer2(), discsToFreeze ,CHTime ,FTime );
                     frame.remove(mainMenu);
 
                     backup_game.load();
@@ -348,7 +402,11 @@ public class OthelloGUI {
             }
         }
     }
-    // Back - exit button
+
+    /**
+     * Class implements action listener for back/exit buttons
+     * and provides actions when event occurs
+     */
     private class backExitBtnClicked implements ActionListener {
         private Box currentPage;
 

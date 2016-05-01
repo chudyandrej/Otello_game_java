@@ -1,6 +1,6 @@
 /**
  * The class creates settings page and collects data such as players' names
- * and times for frozen discs controll
+ * and times for frozen discs control
  * 
  * @author  Andrej Chudý
  * @author  Martin Kopec
@@ -52,7 +52,7 @@ public class settingsMenu{
     /**
      * Method creates and sets elements in settings menu
      * @param JFrame frame - main window, used for pop up window informing about wrong 
-     *                       values in settins formular
+     *                       values in settings form
      * @param GUI.OthelloGUI.BackgroundPane bg - background page to show when back button clicked
      * @param Box mainMenu - mainMenu show on bg when back button clicked
      * @return JPanel - created settings menu
