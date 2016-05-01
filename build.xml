@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<project name="Othello" default="compile" basedir=".">
+    <description>
+        Othello - Java project
+    </description>
+
+    <property name="src" location="."/>
+    <property name="build" location="build"/>
+    <property name="lib" location="lib"/>
+    <property name="doc" location="doc"/>
+    <property name="dest-client"  location="dest-client"/>
+
+
+    <path id="_classpath">
+        <pathelement location="${build}"/>
+    </path>
+
+
+    <target name="clean">
+        <delete dir="${build}"/>
+		<delete dir="${doc}"/>
+		<delete dir="${dest-client}"/>
+    </target>
+
+
+    <target name="compile-source" depends="clean" description="Compilation of project Othello">
+       
+		<mkdir dir="${build}" />
+        <javac srcdir="${src}" includeantruntime="true" destdir="${build}">
+            <classpath refid="_classpath" />
+        </javac>
+        <mkdir dir="${dest-client}"/>
+        <jar destfile="${dest-client}/othello-client.jar" basedir="${build}">
+            <fileset dir="${lib}"/>
+            <include name="**/*.png"/>
+            <include name="**/*.jpg"/>
+            <include name="**/*.class"/>
+			<manifest>
+				<attribute name="Main-Class" value="Main"/>
+			</manifest>			
+        </jar>
+
+    </target>
+
+
+	<target name="doc" depends="compile-source" description="Generating of documentation">        
+        <javadoc packagenames="*.*"
+                 access='package' 
+                 sourcepath="src"
+                 destdir="${doc}"
+                 author="true"
+                 version="true"
+                 use="true"
+                 windowtitle="Othello - documentation"
+           />
+                    
+        <echo message = "Documentation has been generated" />
+    </target>
+     
+    <target name="compile" depends="compile-source,doc" description="Compile whole project with documentation">        
+        <echo message = "Project has been compiled and documentation has been generated" />
+    </target>
+
+
+    <target name="run">        
+        <java jar="${dest-client}/othello-client.jar" fork="true">
+            
+        </java>
+    </target>
+</project>
