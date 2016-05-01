@@ -16,7 +16,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-
+/**
+ * The class loads, resized images and sets dimensions of
+ * main window depending on size of board
+ */
 public class Images {
 
     private int iconSize = 25;
@@ -49,8 +52,8 @@ public class Images {
 
     /**
      * Method sets dimensions of window (frame) according to board size
-     * @param  JFrame frame - window to sets the dimensions of
-     * @param  int boardSize - size of board
+     * @param  frame window to sets the dimensions of
+     * @param  boardSize size of board
      */
     public Images(JFrame frame, int boardSize){
 
@@ -106,9 +109,9 @@ public class Images {
 
     /**
      * Static function, which resizes an image
-     * @param  String imgName - path to image
-     * @param  int w - wanted width
-     * @param  int h - wanted height
+     * @param  imgName path to image
+     * @param  w wanted width
+     * @param  h wanted height
      * @return  Image - resized image
      */
     static public Image resizeImage(String imgName, int w, int h){

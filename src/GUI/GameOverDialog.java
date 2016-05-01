@@ -9,15 +9,17 @@
 package GUI;
 import game.Player;
 
-
+/**
+ * This class creates content of game over dialog according to scores
+ */
 public final class GameOverDialog {
 
     /**
      * Method decides which player won and creates message for him
-     * @param  int score1 - player 1 score
-     * @param  int score2 - player 2 score
-     * @param  Player player1
-     * @param  Player player2
+     * @param  score1 player 1 score
+     * @param  score2 player 2 score
+     * @param  player1 instance of Player class
+     * @param  player2 instance of Player class
      * @return  String msg - summary message
      */
     public static String getMsg(int score1, int score2, Player player1, Player player2){

@@ -22,7 +22,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 /**
- * BoardGUI class creates board and initializes game
+ * BoardGUI class creates board, top bar with game control icons,
+ * bottom bar showing game state information and initializes game
  */
 public class BoardGUI {
     private static JFrame frame;
@@ -53,15 +54,14 @@ public class BoardGUI {
      * Initializes game with all parameters such as players, board size and time intervals
      * for control of frozen discs
      * 
-     * @param JFrame frame - window, where the board will be shown
-     * @param int boardSize - Size of board (6/8/10/12)
-     * @param Player player1 
-     * @param Player player2
-     * @param int discsToFreeze - max number of discs, which will be considered (randomly) to be frozen at each turn
-     * @param int CHTime - max time in seconds after which will be random discs made frozen
-     * @param int FTime - max time in seconds after wchich will be the discs made unfrozen
+     * @param frame window, where the board will be shown
+     * @param boardSize Size of board (6/8/10/12)
+     * @param player1 instance of Player class
+     * @param player2 instance of Player class
+     * @param discsToFreeze max number of discs, which will be considered (randomly) to be frozen at each turn
+     * @param CHTime max time in seconds after which will be random discs made frozen
+     * @param FTime max time in seconds after wchich will be the discs made unfrozen
      */
-
     public BoardGUI(JFrame frame, int boardSize, Player player1, Player player2, int discsToFreeze,int CHTime,int FTime){
         BoardGUI.frame = frame;
         this.boardSize = boardSize;
@@ -79,9 +79,7 @@ public class BoardGUI {
 
     /**
      * Method initializes new game, creates board and repaint content of frame
-     * @return  void
      */
-
     private void initNewGame(){
         createBoard();
 
@@ -96,27 +94,24 @@ public class BoardGUI {
 
     /**
      * Static method freezes disc on x,y coordinates
-     * @param int x - row number
-     * @param int y - column number
-     * @return void
+     * @param x row number
+     * @param y column number
      */
     static public void freezeField(int x, int y){
         fields[x][y].freeze();
     }
     /**
      * Static method unfreezes disc on x,y coordinates
-     * @param int x - row number
-     * @param int y - column number
-     * @return void
+     * @param x row number
+     * @param y column number
      */
     static public void unFreezeField(int x, int y){
         fields[x][y].unFreeze();
     }
     /**
      * Static method deletes disc on x,y coordinates
-     * @param int x - row number
-     * @param int y - column number
-     * @return void
+     * @param x row number
+     * @param y column number
      */
     static public void deleteDisc(int x, int y){
         fields[x][y].deleteDisc();
@@ -124,16 +119,15 @@ public class BoardGUI {
     /**
      * Static method changes disc on x,y coordinates
      * according to color of player
-     * @param int x - row number
-     * @param int y - column number
-     * @return  void
+     * @param x row number
+     * @param y column number
+     * @param isWhite boolean value
      */
     static public void changeDisc(int x, int y, boolean isWhite){
         fields[x][y].setDisc(isWhite);
     }
     /**
      * Method creates pop up windows with game summary
-     * @return void
      */
     public void showGameOverDialog(){
 
@@ -152,8 +146,7 @@ public class BoardGUI {
     }
     /**
      * Method creates and sets elements on top bar in play area page
-     * @param JToolBar topBar - bar where the elements will be sets
-     * @return  void
+     * @param topBar bar where the elements will be sets
      */
     private void setTopBar(JToolBar topBar){
         topBar.setBorder(BorderFactory.createEmptyBorder());
@@ -192,8 +185,7 @@ public class BoardGUI {
     }
     /**
      * Method creates and sets elements on bottom bar of play area page
-     * @param JToolBar bottomBar - bar where elements will be sets
-     * @return  void
+     * @param bottomBar bar where elements will be sets
      */
     private void setBottomBar(JToolBar bottomBar){
         bottomBar.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -234,8 +226,7 @@ public class BoardGUI {
     }
     /**
      * Method creates board and sets its dimensions according to board size
-     * @param JPanel playArea - area to set dimensions and create board fields to
-     * @return  void
+     * @param playArea area to set dimensions and create board fields to
      */
     private void setPlayArea(JPanel playArea){
         playArea.setBorder(new LineBorder(Color.black, 5));
@@ -310,9 +301,9 @@ public class BoardGUI {
     }
     /**
      * Static method which changes scores on bottom bar and shows which player is on turn
-     * @param int score1 - player1 score
-     * @param int score2 - player2 score
-     * @param boolean isWhite - color of player
+     * @param score1 player1 score
+     * @param score2 player2 score
+     * @param isWhite color of player
      */
     static public void setGameState(int score1, int score2, boolean isWhite){
         onTurnLabel.setIcon( (isWhite)? I.arrowR : I.arrowL);

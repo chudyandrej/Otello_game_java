@@ -25,7 +25,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.nio.file.Paths;
 
-
+/**
+ * This class creates main window, menu and controls switching of menu pages,
+ * contains listeners for each button in menu and provides actions when
+ * event occurs.
+ */
 public class OthelloGUI {
 
     private boolean singlePlayer = false;
@@ -94,8 +98,8 @@ public class OthelloGUI {
 
     /**
      * Method removes everything on frame and
-     * initializes menu menu.
-     * @param JFrame frame - main window
+     * initializes menu.
+     * @param frame - main window
      */
     public static void initMenuAgain(JFrame frame){
         frame.setMinimumSize(new Dimension(500, 550));
@@ -110,8 +114,8 @@ public class OthelloGUI {
 
     /**
      * Method switches one menu page to other
-     * @param Box fromScene - current scene
-     * @param Box toScene - next scene
+     * @param fromScene current scene
+     * @param toScene next scene
      * @return void
      */
     private void changeScene(Box fromScene, Box toScene){
@@ -124,7 +128,7 @@ public class OthelloGUI {
 
     /**
      * Methods creates panel, sets its size and layout
-     * @return JPanel - created panel
+     * @return JPanel created panel
      */
     private JPanel createPanelBtn(){
         JPanel panelBtn = new JPanel();
@@ -138,7 +142,7 @@ public class OthelloGUI {
     /**
      * Method sets background image of given button, position
      * and color of button text
-     * @param JButton button - button to be set up
+     * @param button button to be set up
      * @return void
      */
     private void setButton(JButton button){

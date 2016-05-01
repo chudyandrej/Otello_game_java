@@ -15,7 +15,7 @@ public class Board {
 
     /**
      * Created array of BoardField objects
-     * @param  int size - size of board
+     * @param size size of board
      */
     public Board(int size) {
         this.size = size;
@@ -28,8 +28,8 @@ public class Board {
     }
     /**
      * Returns field specified by row and col
-     * @param int row - number of row where field is placed
-     * @param int col - number of col where field is placed
+     * @param row number of row where field is placed
+     * @param col number of col where field is placed
      * @return BoardField - wanted field
      */
     public BoardField getField(int row, int col){
@@ -37,16 +37,16 @@ public class Board {
     }
     /**
      * Method puts field to wanted coordinates
-     * @param int row - row coordinate
-     * @param int col - column coordinate
-     * @param BoardField field - field to be inserted to field array
+     * @param row row coordinate
+     * @param col column coordinate
+     * @param field field to be inserted to field array
      */
     public void putField(int row, int col, BoardField field){
         this.field[row][col] = field;
     }
 
     /**
-     * @return int size - size of board
+     * @return int size of board
      */
     public int getSize(){
         return size;

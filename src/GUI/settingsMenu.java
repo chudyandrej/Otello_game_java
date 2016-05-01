@@ -14,7 +14,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+/**
+ * The class creates settings page and collects data such as players' names
+ * and times for frozen discs control
+ */
 public class settingsMenu{
 
     JPanel p;
@@ -51,11 +54,11 @@ public class settingsMenu{
 
     /**
      * Method creates and sets elements in settings menu
-     * @param JFrame frame - main window, used for pop up window informing about wrong 
+     * @param frame main window, used for pop up window informing about wrong
      *                       values in settings form
-     * @param GUI.OthelloGUI.BackgroundPane bg - background page to show when back button clicked
-     * @param Box mainMenu - mainMenu show on bg when back button clicked
-     * @return JPanel - created settings menu
+     * @param bg background page to show when back button clicked
+     * @param mainMenu mainMenu show on bg when back button clicked
+     * @return JPanel created settings menu
      */
     public JPanel getMenu(JFrame frame, GUI.OthelloGUI.BackgroundPane bg, Box mainMenu){
         this.frame = frame;
