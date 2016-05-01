@@ -88,23 +88,23 @@ public class Images {
         whitePlayerFieldDiscFrozen = new ImageIcon(resizeImage("lib/white2frozen.png", w, h));
         blackPlayerFieldDiscFrozen = new ImageIcon(resizeImage("lib/black2frozen.png", w, h));
         fieldBackgroundFrozen = new ImageIcon(resizeImage("lib/fieldFrozen.png", w, h));
-        arrowL = new ImageIcon(resizeImage("lib/arrow_l.png", iconSize, iconSize));
-        arrowR = new ImageIcon(resizeImage("lib/arrow_r.png", iconSize, iconSize));
         whiteDisc = new ImageIcon(resizeImage("lib/whiteDisc.png", iconSize, iconSize));
         blackDisc = new ImageIcon(resizeImage("lib/blackDisc.png", iconSize, iconSize));
+        arrowL = new ImageIcon(Images.openImage("lib/arrow_l.png"));
+        arrowR = new ImageIcon(Images.openImage("lib/arrow_r.png"));
 
-        newGameBtnImage = new ImageIcon(Images.resizeImage("lib/icons/playAgain.png", iconSize, iconSize));
-        newGameBtnImageE = new ImageIcon(Images.resizeImage("lib/icons/playAgainEntered.png", iconSize, iconSize));
-        newGameBtnImageP = new ImageIcon(Images.resizeImage("lib/icons/playAgainPressed.png", iconSize, iconSize));
-        homeBtnImage = new ImageIcon(Images.resizeImage("lib/icons/home.png", iconSize, iconSize));
-        homeBtnImageE = new ImageIcon(Images.resizeImage("lib/icons/homeEntered.png", iconSize, iconSize));
-        homeBtnImageP = new ImageIcon(Images.resizeImage("lib/icons/homePressed.png", iconSize, iconSize));
-        undoBtnImage = new ImageIcon(Images.resizeImage("lib/icons/undo.png", iconSize, iconSize));
-        undoBtnImageE = new ImageIcon(Images.resizeImage("lib/icons/undoEntered.png", iconSize, iconSize));
-        undoBtnImageP = new ImageIcon(Images.resizeImage("lib/icons/undoPressed.png", iconSize, iconSize));
-        saveBtnImage = new ImageIcon(Images.resizeImage("lib/icons/saveGame.png", iconSize, iconSize));
-        saveBtnImageE = new ImageIcon(Images.resizeImage("lib/icons/saveGameEntered.png", iconSize, iconSize));
-        saveBtnImageP = new ImageIcon(Images.resizeImage("lib/icons/saveGamePressed.png", iconSize, iconSize));
+        newGameBtnImage = new ImageIcon(Images.openImage("lib/icons/playAgain.png"));
+        newGameBtnImageE = new ImageIcon(Images.openImage("lib/icons/playAgainEntered.png"));
+        newGameBtnImageP = new ImageIcon(Images.openImage("lib/icons/playAgainPressed.png"));
+        homeBtnImage = new ImageIcon(Images.openImage("lib/icons/home.png"));
+        homeBtnImageE = new ImageIcon(Images.openImage("lib/icons/homeEntered.png"));
+        homeBtnImageP = new ImageIcon(Images.openImage("lib/icons/homePressed.png"));
+        undoBtnImage = new ImageIcon(Images.openImage("lib/icons/undo.png"));
+        undoBtnImageE = new ImageIcon(Images.openImage("lib/icons/undoEntered.png"));
+        undoBtnImageP = new ImageIcon(Images.openImage("lib/icons/undoPressed.png"));
+        saveBtnImage = new ImageIcon(Images.openImage("lib/icons/saveGame.png"));
+        saveBtnImageE = new ImageIcon(Images.openImage("lib/icons/saveGameEntered.png"));
+        saveBtnImageP = new ImageIcon(Images.openImage("lib/icons/saveGamePressed.png"));
     }
 
     /**
@@ -118,6 +118,12 @@ public class Images {
         BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB); //TYPE_INT_ARGB makes parts of transparent image be transparent
         Graphics2D g = resizedImage.createGraphics();
         //g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.drawImage(Images.openImage(imgName), 0, 0, w, h, null);
+        g.dispose();
+        return resizedImage;
+    }
+
+    static public Image openImage(String imgName){
         Image img = null;
         try{
             img = ImageIO.read(new File(imgName));
@@ -125,8 +131,6 @@ public class Images {
             System.err.println(ex.getMessage());
             ex.printStackTrace();
         }
-        g.drawImage(img, 0, 0, w, h, null);
-        g.dispose();
-        return resizedImage;
+        return img;
     }
 }
