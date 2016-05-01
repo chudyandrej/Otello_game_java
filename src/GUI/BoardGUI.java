@@ -1,3 +1,12 @@
+/**
+* BoardGUI creates board, top bar with game controll icons,
+* bottom bar showing game state information and initializes game
+* 
+* @author  Andrej Chudý
+* @author  Martin Kopec
+* @date 01.05.2016
+*/
+
 package GUI;
 
 import game.Game;
@@ -12,9 +21,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-
 /**
- * Created by martin on 16/04/16.
+ * BoardGUI class creates board and initilizes game
  */
 public class BoardGUI {
     private static JFrame frame;
@@ -38,10 +46,21 @@ public class BoardGUI {
     JLabel undoBtn;
     JLabel saveBtn;
 
-
     static BoardFieldLabel[][] fields;
-
     static Images I;
+
+    /**
+     * Initializes game with all parameters such as players, board size and time intervals
+     * for controll of frozen discs
+     * 
+     * @param JFrame frame - window, where the board will be shown
+     * @param int boardSize - Size of board (6/8/10/12)
+     * @param Player player1 
+     * @param Player player2
+     * @param int discsToFreeze - max number of discs, which will be considered (randomly) to be frozen at each turn
+     * @param int CHTime - max time in seconds after which will be random discs made frozen
+     * @param int FTime - max time in seconds after wchich will be the discs made unfrozen
+     */
 
     BoardGUI(JFrame frame, int boardSize, Player player1, Player player2, int discsToFreeze,int CHTime,int FTime){
         BoardGUI.frame = frame;
@@ -53,11 +72,15 @@ public class BoardGUI {
         this.FTime = FTime;
 
         I = new Images(frame, boardSize);
-
         initNewGame();
 
-        //System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight()); //debug
+        System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight()); //debug
     }
+
+    /**
+     * Method initializes new game, creates board and repaint content of frame
+     * @return  void
+     */
 
     private void initNewGame(){
         createBoard();
@@ -71,22 +94,47 @@ public class BoardGUI {
         game.addPlayer(player2);
     }
 
+    /**
+     * Static method freezes disc on x,y coordinates
+     * @param int x - row number
+     * @param int y - column number
+     * @return void
+     */
     static public void freezeField(int x, int y){
         fields[x][y].freeze();
     }
-
+    /**
+     * Static method unfreezes disc on x,y coordinates
+     * @param int x - row number
+     * @param int y - column number
+     * @return void
+     */
     static public void unFreezeField(int x, int y){
         fields[x][y].unFreeze();
     }
-
+    /**
+     * Static method deletes disc on x,y coordinates
+     * @param int x - row number
+     * @param int y - column number
+     * @return void
+     */
     static public void deleteDisc(int x, int y){
         fields[x][y].deleteDisc();
     }
-
+    /**
+     * Static method changes disc on x,y coordinates
+     * according to color of player
+     * @param int x - row number
+     * @param int y - column number
+     * @return  void
+     */
     static public void changeDisc(int x, int y, boolean isWhite){
         fields[x][y].setDisc(isWhite);
     }
-
+    /**
+     * Method creates pop up windows with game summary
+     * @return void
+     */
     public void showGameOverDialog(){
 
         String msg  = GameOverDialog.getMsg(score1, score2, player1, player2);
@@ -102,7 +150,11 @@ public class BoardGUI {
             OthelloGUI.initMenuAgain(frame);
         }
     }
-
+    /**
+     * Method creates and sets elements on top bar in play area page
+     * @param JToolBar topBar - bar where the elemnents will be sets
+     * @return  void
+     */
     private void setTopBar(JToolBar topBar){
         topBar.setBorder(BorderFactory.createEmptyBorder());
         topBar.setLayout(new FlowLayout(FlowLayout.RIGHT,10,15));
@@ -138,7 +190,11 @@ public class BoardGUI {
         saveBtn.setIcon(I.saveBtnImage);
         topBar.add(saveBtn);
     }
-
+    /**
+     * Method creates and sets elements on bottom bar of play area page
+     * @param JToolBar bottomBar - bar where elements will be sets
+     * @return  void
+     */
     private void setBottomBar(JToolBar bottomBar){
         bottomBar.setLayout(new FlowLayout(FlowLayout.CENTER));
         bottomBar.setBorder(BorderFactory.createEmptyBorder());
@@ -176,7 +232,11 @@ public class BoardGUI {
         player2Disc.setIcon(I.blackDisc);
         bottomBar.add(player2Disc);
     }
-
+    /**
+     * Method creates board and sets its dimensions according to board size
+     * @param JPanel playArea - area to set dimensions and create board fields to
+     * @return  void
+     */
     private void setPlayArea(JPanel playArea){
         playArea.setBorder(new LineBorder(Color.black, 5));
         playArea.setBorder(null);
@@ -206,7 +266,10 @@ public class BoardGUI {
             }
         }
     }
-
+    /**
+     * Method creates tool bars (top and bottom) sets them
+     * and initializes game state
+     */
     private void createBoard(){
         board = new JLabel();
         board.setLayout(new BorderLayout());
@@ -219,7 +282,7 @@ public class BoardGUI {
 
         Box playAreaContent = new Box(BoxLayout.Y_AXIS);
         Box playAreaContent2 = new Box(BoxLayout.X_AXIS);
-        //playAreaContent.setBorder(BorderFactory.createEmptyBorder());
+       
         playAreaContent.add(Box.createVerticalGlue());
         playAreaContent2.add(Box.createHorizontalGlue());
 
@@ -245,7 +308,12 @@ public class BoardGUI {
 
         setGameState(2, 2, false); //initialize
     }
-
+    /**
+     * Static method which changes scores on bottom bar and shows which player is on turn
+     * @param int score1 - player1 score
+     * @param int score2 - player2 score
+     * @param boolean isWhite - color of player
+     */
     static public void setGameState(int score1, int score2, boolean isWhite){
         onTurnLabel.setIcon( (isWhite)? I.arrowR : I.arrowL);
         scoreLabel1.setText("<html><font size='6' color='white' face='League Gothic'><b>"+score1+"</b></font></html>");
@@ -253,7 +321,12 @@ public class BoardGUI {
         BoardGUI.score1 = score1;
         BoardGUI.score2 = score2;
     }
-
+    /**
+     * Class implements MouseListener for icons on top bar menu
+     * methods provides change of icons according to mouse events
+     * (hover, pressed) and also implements actions to the icons
+     * (save game, reload game, home button, undo button) 
+     */
     public class boardButtonClicked implements MouseListener {
         private JLabel button;
 

@@ -1,12 +1,25 @@
-package GUI;
+/**
+ * This class creates content of game over dialog according to scores
+ * 
+ * @author  Andrej Chudý
+ * @author  Martin Kopec
+ * @date 01.05.2016
+ */
 
+package GUI;
 import game.Player;
 
-/**
- * Created by martin on 20/04/16.
- */
+
 public final class GameOverDialog {
 
+    /**
+     * Method decides which player won and creates message for him
+     * @param  int score1 - player 1 score
+     * @param  int score2 - player 2 score
+     * @param  Player player1
+     * @param  Player player2
+     * @return  String msg - summary message
+     */
     public static String getMsg(int score1, int score2, Player player1, Player player2){
 
         String msg;

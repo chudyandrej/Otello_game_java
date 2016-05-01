@@ -1,12 +1,18 @@
+/**
+ * This class 
+ * 
+ * @author  Andrej Chudý
+ * @author  Martin Kopec
+ * @date 15.04.2016
+ */
+
 package board;
 
 import GUI.BoardGUI;
 
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by andrejchudy on 15/04/16.
- */
+
 public class BoardField implements java.io.Serializable {
 
     public int row;

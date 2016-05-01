@@ -1,3 +1,12 @@
+/**
+ * The class loads, resized images and sets dimensions of 
+ * main window depending on size of board
+ * 
+ * @author  Andrej Chudý
+ * @author  Martin Kopec
+ * @date 01.05.2016
+ */
+
 package GUI;
 
 import javax.imageio.ImageIO;
@@ -7,9 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created by martin on 20/04/16.
- */
+
 public class Images {
 
     private int iconSize = 25;
@@ -40,6 +47,11 @@ public class Images {
     ImageIcon arrowL;
     ImageIcon arrowR;
 
+    /**
+     * Method sets dimensions of window (frame) according to board size
+     * @param  JFrame frame - window to sets the dimensions of
+     * @param  int boardSize - size of board
+     */
     public Images(JFrame frame, int boardSize){
 
         int w = 0;
@@ -92,6 +104,13 @@ public class Images {
         saveBtnImageP = new ImageIcon(Images.resizeImage("lib/icons/saveGamePressed.png", iconSize, iconSize));
     }
 
+    /**
+     * Static function, which resizes an image
+     * @param  String imgName - path to image
+     * @param  int w - wanted width
+     * @param  int h - wanted height
+     * @return  Image - resized image
+     */
     static public Image resizeImage(String imgName, int w, int h){
         BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB); //TYPE_INT_ARGB makes parts of transparent image be transparent
         Graphics2D g = resizedImage.createGraphics();

@@ -1,3 +1,15 @@
+/**
+ * This class implements methods of board field such as:
+ * set or delete disc, froze or unfroze field according to its
+ * content
+ * The class also provides board field features such as changing background
+ * of field, when mouse hovers and player can put disc to the field 
+ * 
+ * @author  Andrej Chudý
+ * @author  Martin Kopec
+ * @date 01.05.2016
+ */
+
 package GUI;
 
 import game.Player;
@@ -7,9 +19,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-/**
- * Created by martin on 20/04/16.
- */
+
 public class BoardFieldLabel extends JLabel implements MouseListener {
     private int row;
     private int col;
@@ -19,6 +29,13 @@ public class BoardFieldLabel extends JLabel implements MouseListener {
     private Images I;
     private BoardGUI boardGUI;
 
+    /**
+     * Constructor method initialize one board field
+     * @param int row - number of row, where field is placed
+     * @param int col - number of col, where field is placed
+     * @param Images I - instance of Images class containg all images needed for field
+     * @param BoardGUI boardGUI - instance of BoardGUI for access to game and Game method
+     */
     BoardFieldLabel(int row, int col, Images I, BoardGUI boardGUI){
         this.row = row;
         this.col = col;
@@ -40,8 +57,9 @@ public class BoardFieldLabel extends JLabel implements MouseListener {
         pressed = false;
         setIcon(I.fieldBackground);
     }
-
+   
     public void freeze(){
+        if(frozen){ return; }
         frozen = true;
         beforeFroze = getIcon();
         if (beforeFroze == I.fieldBackground){

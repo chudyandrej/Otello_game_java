@@ -1,3 +1,11 @@
+/**
+ *  
+ * 
+ * @author  Andrej Chudý
+ * @author  Martin Kopec
+ * @date 01.05.2016
+ */
+
 package GUI;
 
 import game.Backup;
@@ -13,10 +21,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.nio.file.Paths;
 
-/**
- * Created by martin on 16/04/16.
- */
+
 public class OthelloGUI {
 
     private boolean singlePlayer = false;
@@ -55,9 +62,15 @@ public class OthelloGUI {
 
     ImageIcon background;
     ImageIcon buttonImage;
+    static final ClassLoader loader = OthelloGUI.class.getClassLoader();
 
     public OthelloGUI(){
         frame = new JFrame("Othello");
+       // ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        //classLoader.getResource("/images/logo.jpg").getPath();
+        System.out.format("test: %s", Paths.get("./"));
+
+
         background = new ImageIcon(Images.resizeImage("lib/background.jpg", 500, 550));
         buttonImage = new ImageIcon(Images.resizeImage("lib/button.jpg", 170, 40));
 
@@ -78,11 +91,13 @@ public class OthelloGUI {
     }
 
     public static void initMenuAgain(JFrame frame){
+        frame.setMinimumSize(new Dimension(500, 550));
         bg.removeAll();
         bg.add(mainMenu);
         frame.setContentPane(bg);
         frame.validate();
         frame.repaint();
+        frame.pack();
         previousPage = null;
     }
 
@@ -241,7 +256,6 @@ public class OthelloGUI {
         discsToFreeze = (int) ((settings.FDisc/100) *boardSize);
         CHTime = settings.CHTime;
         FTime = settings.FTime;
-        System.out.format("update: %d\n", discsToFreeze);
     }
 
 

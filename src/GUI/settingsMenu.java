@@ -1,3 +1,12 @@
+/**
+ * The class creates settings page and collects data such as players' names
+ * and times for frozen discs controll
+ * 
+ * @author  Andrej Chudý
+ * @author  Martin Kopec
+ * @date 01.05.2016
+ */
+
 package GUI;
 
 import javax.swing.*;
@@ -5,14 +14,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * Created by martin on 21/04/16.
- */
+
 public class settingsMenu{
 
     JPanel p;
 
-    JLabel p1Name = new JLabel("Player1 name");//, JLabel.TRAILING ?
+    JLabel p1Name = new JLabel("Player1 name");
     JTextField p1Field = new JTextField("Player1", 10);
     public String player1Name = "Player1";
 
@@ -42,6 +49,14 @@ public class settingsMenu{
     private GUI.OthelloGUI.BackgroundPane bg;
     private Box mainMenu;
 
+    /**
+     * Method creates and sets elements in settings menu
+     * @param JFrame frame - main window, used for pop up window informing about wrong 
+     *                       values in settins formular
+     * @param GUI.OthelloGUI.BackgroundPane bg - background page to show when back button clicked
+     * @param Box mainMenu - mainMenu show on bg when back button clicked
+     * @return JPanel - created settings menu
+     */
     public JPanel getMenu(JFrame frame, GUI.OthelloGUI.BackgroundPane bg, Box mainMenu){
         this.frame = frame;
         this.bg = bg;
