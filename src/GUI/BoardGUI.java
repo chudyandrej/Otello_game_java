@@ -73,8 +73,6 @@ public class BoardGUI {
 
         I = new Images(frame, boardSize);
         initNewGame();
-
-        System.out.format("%d %d \n", fields[0][0].getWidth(),fields[0][0].getHeight()); //debug
     }
 
     /**

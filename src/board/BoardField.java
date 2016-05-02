@@ -1,5 +1,5 @@
 /**
- * This class 
+ * This class creates board field and implements methods over them.
  * 
  * @author  Andrej Chudý
  * @author  Martin Kopec
@@ -9,10 +9,11 @@
 package board;
 
 import GUI.BoardGUI;
-
 import java.util.concurrent.TimeUnit;
 
-
+/**
+ * This class creates board field and implements methods over them.
+ */
 public class BoardField implements java.io.Serializable {
 
     public int row;
@@ -21,17 +22,27 @@ public class BoardField implements java.io.Serializable {
     public boolean isFreeze;
 
     private boolean freezeEnd;
-    private Disk disk;
+    private Disc disc;
 
-
+    /**
+     * Constructor method for board field initialization.
+     * @param row number of row where is object placed
+     * @param col number of col where is object placed
+     * @param size board size
+     */
     public BoardField(int row, int col, int size) {
         this.row = row;
         this.col = col;
         this.size = size;
-        this.disk = null;
+        this.disc = null;
         isFreeze = false;
     }
 
+    /**
+     * Method knows about surrounding fields.
+     * @param dirs enum, direction
+     * @return field in given direction
+     */
     public BoardField nextField(Direction dirs) {
         switch (dirs) {
             case D:
@@ -62,61 +73,81 @@ public class BoardField implements java.io.Serializable {
         return null;
     }
 
-
-    public boolean putDisk(Disk disk) {
+    /**
+     * Methods puts given disc to the field.
+     * @param disc disc to be put on field
+     * @return true if operation is successful
+     */
+    public boolean putDisk(Disc disc) {
         Boolean ret_val = false;
-        if (this.disk == null){
-            disk.setY(row,col);
-            this.disk = disk;
+        if (this.disc == null){
+            disc.setY(row,col);
+            this.disc = disc;
             ret_val = true;
         }
         return ret_val;
     }
 
+    /**
+     * Method deletes disc from the field.
+     */
     public void deleteDisk(){
-        if(disk != null){
-            disk.delete();
+        if(disc != null){
+            disc.delete();
         }
-        this.disk = null;
+        this.disc = null;
     }
 
-    public Disk getDisk(){
-        return disk;
+    /**
+     * Method returns object placed on the field.
+     * @return disc or null
+     */
+    public Disc getDisc(){
+        return disc;
     }
 
+    /**
+     * Method makes the disc frozen for random time from time interval.
+     * @param time time interval
+     */
     public void freezeField(final int time){
 
         freezeEnd = false;
         isFreeze = true;
         BoardGUI.freezeField(row,col);
 
-        new Thread()
-        {
+        new Thread(){
+
             public void run() {
                 try {
                     int timeFreeze = (int) (Math.random() * time);
                     TimeUnit.SECONDS.sleep(timeFreeze);
                 } catch (InterruptedException e) {
-                    System.out.println("Exception thrown  :" + e);
+                    System.err.println("Exception thrown  :" + e);
                 }
                 freezeEnd = true;
             }
         }.start();
     }
 
+    /**
+     * @return true or false
+     */
     public boolean getFreezeEnd() {
         return freezeEnd;
     }
 
-
+    /**
+     * Direction enum
+     */
     public enum Direction{D, L, LD, LU, R, RD, RU, U}
 
+    /**
+     * Method makes the field frozen.
+     */
     public void setFreeze(){
         isFreeze = true;
         freezeEnd = true;
         BoardGUI.freezeField(row,col);
-
-
     }
-    
 }

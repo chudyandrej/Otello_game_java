@@ -108,7 +108,7 @@ public class Images {
     }
 
     /**
-     * Static function, which resizes an image
+     * Static method, which resizes an image
      * @param  imgName path to image
      * @param  w wanted width
      * @param  h wanted height
@@ -123,6 +123,11 @@ public class Images {
         return resizedImage;
     }
 
+    /**
+     * Static method which reads the image from the hard disc.
+     * @param imgName path to the image
+     * @return image
+     */
     static public Image openImage(String imgName){
         Image img = null;
         try{

@@ -39,6 +39,14 @@ public final class GameOverDialog {
         return msg;
     }
 
+    /**
+     * Method creates message for multiplayer game over.
+     * @param score1 player1's score
+     * @param score2 player2's score
+     * @param player1 instance of player1
+     * @param player2 instance of player2
+     * @return the message
+     */
     public static String createMultiPlayerGameOverMsg(int score1, int score2, Player player1, Player player2){
         String msg;
         if(score1 > score2){        //player1 won
@@ -49,6 +57,14 @@ public final class GameOverDialog {
         return msg;
     }
 
+    /**
+     * Method creates message for single player game over.
+     * @param score1 player1's score
+     * @param score2 player2's score
+     * @param player1 instance of player1
+     * @param player2 instance of player2
+     * @return the message
+     */
     public static String createSinglePlayerGameOverMsg(int score1, int score2, Player player1, Player player2){
         String msg;
         if(player1.is_pc()) {

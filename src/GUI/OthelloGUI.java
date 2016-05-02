@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.nio.file.Paths;
 
 /**
  * This class creates main window, menu and controls switching of menu pages,
@@ -68,14 +67,12 @@ public class OthelloGUI {
 
     ImageIcon background;
     ImageIcon buttonImage;
-    static final ClassLoader loader = OthelloGUI.class.getClassLoader();
 
+    /**
+     * GUI constructor, crates main frame and initializes menu.
+     */
     public OthelloGUI(){
         frame = new JFrame("Othello");
-       // ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        //classLoader.getResource("/images/logo.jpg").getPath();
-        System.out.format("test: %s", Paths.get("./"));
-
 
         background = new ImageIcon(Images.resizeImage("lib/background.jpg", 500, 550));
         buttonImage = new ImageIcon(Images.resizeImage("lib/button.jpg", 170, 40));
@@ -116,7 +113,6 @@ public class OthelloGUI {
      * Method switches one menu page to other
      * @param fromScene current scene
      * @param toScene next scene
-     * @return void
      */
     private void changeScene(Box fromScene, Box toScene){
         bg.remove(fromScene);
@@ -143,7 +139,6 @@ public class OthelloGUI {
      * Method sets background image of given button, position
      * and color of button text
      * @param button button to be set up
-     * @return void
      */
     private void setButton(JButton button){
         button.setIcon(buttonImage);
@@ -390,7 +385,7 @@ public class OthelloGUI {
                     i.printStackTrace();
 
                 }catch(ClassNotFoundException c) {
-                    System.out.println("Employee class not found");
+                    System.err.println("Employee class not found");
                     c.printStackTrace();
                 }
                 if (backup_game != null){

@@ -146,6 +146,9 @@ public class settingsMenu{
         return p;
     }
 
+    /**
+     * This class implements listener for confirm button in setting page.
+     */
     private class settingsBackClicked implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {

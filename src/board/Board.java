@@ -8,9 +8,11 @@
 
 package board;
 
+/**
+ * This class creates board and implements methods over it
+ */
 public class Board {
 
-    private int size;
     static public  BoardField[][] field;
 
     /**
@@ -18,37 +20,12 @@ public class Board {
      * @param size size of board
      */
     public Board(int size) {
-        this.size = size;
+
         field = new BoardField[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 field[i][j] = new BoardField(i,j,size);
             }
         }
-    }
-    /**
-     * Returns field specified by row and col
-     * @param row number of row where field is placed
-     * @param col number of col where field is placed
-     * @return BoardField - wanted field
-     */
-    public BoardField getField(int row, int col){
-        return field[row][col];
-    }
-    /**
-     * Method puts field to wanted coordinates
-     * @param row row coordinate
-     * @param col column coordinate
-     * @param field field to be inserted to field array
-     */
-    public void putField(int row, int col, BoardField field){
-        this.field[row][col] = field;
-    }
-
-    /**
-     * @return int size of board
-     */
-    public int getSize(){
-        return size;
     }
 }

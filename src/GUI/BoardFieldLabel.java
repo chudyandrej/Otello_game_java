@@ -52,16 +52,26 @@ public class BoardFieldLabel extends JLabel implements MouseListener {
         addMouseListener(this);
     }
 
+    /**
+     * Method sets background to background with disc according to color of a player.
+     * @param isWhite color of a player
+     */
     public void setDisc(boolean isWhite){
         pressed = true;
         setIcon( (isWhite) ? I.whitePlayerFieldDisc : I.blackPlayerFieldDisc );
     }
 
+    /**
+     * Deletes disc, so changes background to the one without a disc.
+     */
     public void deleteDisc(){
         pressed = false;
         setIcon(I.fieldBackground);
     }
-   
+
+    /**
+     * Freeze the field.
+     */
     public void freeze(){
         if(frozen){ return; }
         frozen = true;
@@ -77,6 +87,9 @@ public class BoardFieldLabel extends JLabel implements MouseListener {
         }
     }
 
+    /**
+     * Unfreeze the field.
+     */
     public void unFreeze(){
         frozen = false;
         setIcon(beforeFroze);

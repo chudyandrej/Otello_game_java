@@ -1,4 +1,7 @@
+
 import GUI.OthelloGUI;
+import game.Game;
+import game.Player;
 
 public class Main {
 
