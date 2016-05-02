@@ -40,18 +40,18 @@
 				<attribute name="Main-Class" value="Main"/>
 			</manifest>			
         </jar>
-
+	<echo message = "Jar has been generated" />
     </target>
 
 
 	<target name="doc" depends="compile-source" description="Generating of documentation">        
         <javadoc packagenames="*.*"
-                 access='package' 
                  sourcepath="src"
                  destdir="${doc}"
                  author="true"
                  version="true"
                  use="true"
+		 access="private"
                  windowtitle="Othello - documentation"
            />
                     
@@ -59,13 +59,11 @@
     </target>
      
     <target name="compile" depends="compile-source,doc" description="Compile whole project with documentation">        
-        <echo message = "Project has been compiled and documentation has been generated" />
+        <echo message = "Compilation successful" />
     </target>
 
 
     <target name="run">        
-        <java jar="${dest-client}/othello-client.jar" fork="true">
-            
-        </java>
+        <java jar="${dest-client}/othello-client.jar" fork="true" />
     </target>
 </project>
