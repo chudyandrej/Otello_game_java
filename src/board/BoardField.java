@@ -20,7 +20,6 @@ public class BoardField implements java.io.Serializable {
     public int col;
     public int size;
     public boolean isFreeze;
-
     private boolean freezeEnd;
     private Disc disc;
 

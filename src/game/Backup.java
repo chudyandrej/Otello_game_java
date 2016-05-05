@@ -37,46 +37,45 @@ public class Backup implements java.io.Serializable{
     }
 
     /**
-     *
-     * @param basePoint
-     * @param turnPlayer
+     * Create new record into backup
+     * @param basePoint Point of click
+     * @param turnPlayer Player who made turn
      */
     public void createNewTurn(BoardField basePoint, Player turnPlayer){
         newTurn = new TurnBackUp(basePoint, turnPlayer);
     }
 
     /**
-     *
-     * @param turnedDisc
+     * Adds turned discs to backup
+     * @param turnedDisc list of fields
      */
     public void addTurnedDiscs(List<BoardField> turnedDisc){
         newTurn.add_Stack_turned(turnedDisc);
     }
 
     /**
-     *
-     * @param frozenDisc
+     * Adds frozen discs to backup
+     * @param frozenDisc list of fields
      */
     public void addFrozenDiscs(List<BoardField> frozenDisc){
         newTurn.add_Stack_freeze(frozenDisc);
     }
 
     /**
-     *
+     * Save turn to list
      */
     public void saveBackupRecord(){
         backupTurns.add(newTurn);
     }
 
     /**
-     *
+     * Magic
      */
     public void load(){
         for(TurnBackUp turn  : backupTurns) {
             turn.turn_player.putDisk(turn.base_Point.row,turn.base_Point.col);
         }
     }
-
     /**
      * Getter of player1.
      * @return player1
@@ -128,9 +127,9 @@ public class Backup implements java.io.Serializable{
         public Player turn_player;
 
         /**
-         *
-         * @param basePoint
-         * @param playerOnTurn
+         * Init class
+         * @param basePoint Point of click
+         * @param playerOnTurn Player on turn
          */
         public TurnBackUp(BoardField basePoint, Player playerOnTurn){
             turned = new ArrayList<BoardField>();
@@ -140,16 +139,16 @@ public class Backup implements java.io.Serializable{
         }
 
         /**
-         *
-         * @param frozenDisc
+         * Adds frozen discs to backup
+         * @param frozenDisc List of fields
          */
         public void add_Stack_freeze(List<BoardField> frozenDisc){
             freeze.addAll(frozenDisc);
         }
 
         /**
-         *
-         * @param turnedDisc
+         * Adds turned discs to backup
+         * @param turnedDisc List of fields
          */
         public void add_Stack_turned(List<BoardField> turnedDisc){
             turned.addAll(turnedDisc);

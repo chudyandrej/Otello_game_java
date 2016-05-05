@@ -100,27 +100,25 @@ public class Game {
      */
     public void nextPlayer(){
 
-        backupGame.addFrozenDiscs(frozen);
-        backupGame.saveBackupRecord();
-        rules.calcScore(currentPlayer);
-        frozenFields(discsToFreeze,CHTime,FTime);
-
-        currentPlayer = (currentPlayer == black) ? white : black;
-        if (currentPlayer.is_pc()) {
-            currentPlayer.uiTurn(this);
-            return;
-        }
-        else if(rules.isExistingTurn(currentPlayer)) {
-            return;
-        }
-        else if (!rules.isExistingTurn(white) && !rules.isExistingTurn(black)){
+        while (true) {
+            backupGame.addFrozenDiscs(frozen);
+            backupGame.saveBackupRecord();
             rules.calcScore(currentPlayer);
-            gameOver = true;
-            return;
-        }
-        currentPlayer = (currentPlayer == black) ? white : black;
-        if (currentPlayer.is_pc()) {
-            currentPlayer.uiTurn(this);
+            frozenFields(discsToFreeze, CHTime, FTime);
+
+            currentPlayer = (currentPlayer == black) ? white : black;
+            if (currentPlayer.is_pc()) {
+                currentPlayer.uiTurn();
+            }
+            else if (rules. isExistingTurn(currentPlayer)) {
+                return;
+            }
+            else if (!rules.isExistingTurn(white) && !rules.isExistingTurn(black)) {
+                rules.calcScore(currentPlayer);
+                gameOver = true;
+                System.out.printf("GameOver/n");
+                return;
+            }
         }
     }
 
@@ -143,13 +141,14 @@ public class Game {
             if (currentPlayer.is_pc()){
                 undo();
             }
-            rules.calcScore(currentPlayer);
+            Player tmp = (currentPlayer == black) ? white : black;
+            rules.calcScore(tmp);
         }
     }
 
     /**
-     * 
-     * @param frozen
+     * Load frozen fields.
+     * @param frozen List of Fields
      */
     private void loadFrozen(List <BoardField> frozen){
         for(BoardField field :frozen ){
@@ -159,28 +158,28 @@ public class Game {
     }
 
     /**
-     * 
-     * @param count
-     * @param max_timeFreeze
-     * @param max_timeChange
+     * Function for generate frozen fields.
+     * @param count How much fields will be frozen
+     * @param max_timeFreeze Max time (seconds) for which will be the fields frozen
+     * @param max_timeChange Max time (seconds) to change
      */
-    public void frozenFields(final int count, final int max_timeFreeze, final int max_timeChange){
+    public void frozenFields(final int count,  int max_timeFreeze,  int max_timeChange){
         unFreezeWhoCan();
         if(!freezeRunning.get()) {
             freezeRunning.set(true);
+            final int timeChange = (int) (Math.random() * max_timeChange);
+            for (int x = 0; x < count; x++) {
+                int randomX = (int) (Math.random() * (sizeBoard - 1));
+                int randomY = (int) (Math.random() * (sizeBoard - 1));
+                Board.field[randomX][randomY].freezeField(max_timeFreeze);
+                frozen.add(Board.field[randomX][randomY]);
+            }
             new Thread() {
                 public void run() {
-                    int timeChange = (int) (Math.random() * max_timeChange);
-                    for (int x = 0; x < count; x++) {
-                        int randomX = (int) (Math.random() * (sizeBoard - 1));
-                        int randomY = (int) (Math.random() * (sizeBoard - 1));
-                        Board.field[randomX][randomY].freezeField(max_timeFreeze);
-                        frozen.add(Board.field[randomX][randomY]);
-                    }
                     try {
                         TimeUnit.SECONDS.sleep(timeChange);
                     }catch (InterruptedException e) {
-                        System.err.println("Exception thrown  :" + e);
+                        System.out.println("Exception thrown  :" + e);
                     }
                     freezeRunning.set(false);
                 }
@@ -201,7 +200,7 @@ public class Game {
     }
 
     /**
-     * 
+     * Function unfreezes discs which were frozen for certain time.
      */
     private void unFreezeWhoCan(){
 

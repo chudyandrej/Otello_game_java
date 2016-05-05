@@ -80,16 +80,14 @@ public class Player  implements java.io.Serializable{
 
     /**
      * Methods runs AI algorithm depends on level.
-     * @param game instance of current game
      */
-    public void uiTurn(Game game) {
+    public void uiTurn() {
         if (level == 1) {
             Game.rules.uiAlgorithmLevel1(this);
         }
         else {
             Game.rules.uiAlgorithmLevel2(this);
         }
-        game.nextPlayer();
     }
 
     /**

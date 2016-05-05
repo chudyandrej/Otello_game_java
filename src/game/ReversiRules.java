@@ -27,8 +27,8 @@ public class ReversiRules {
 
     /**
      * Constructor, initializes Reversi rules
-     * @param size
-     * @param backupGame
+     * @param size Size of board
+     * @param backupGame Backup of game
      */
     public ReversiRules(int size, Backup backupGame){
         this.size = size;
@@ -97,11 +97,11 @@ public class ReversiRules {
     }
 
     /**
-     *
-     * @param field
-     * @param way
-     * @param playerTurn
-     * @return
+     * Checks color of discs in a direction.
+     * @param field Start field
+     * @param way Direction of checking
+     * @param playerTurn Player on turn
+     * @return List of turned fields
      */
     private List<BoardField> check_IN_direct(BoardField  field, BoardField.Direction way, Player playerTurn){
         field = field.nextField(way);
@@ -120,7 +120,7 @@ public class ReversiRules {
 
     /**
      *
-     * @param st
+     * @param st List of fileds for turnd.
      */
     public void turn_discs(List<BoardField> st){
         BoardField tmp;
