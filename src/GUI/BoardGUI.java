@@ -387,7 +387,7 @@ public class BoardGUI {
                 game.undo();
             }else if(button == saveBtn){
                 try {
-                    FileOutputStream fileOut = new FileOutputStream("employee.ser");
+                    FileOutputStream fileOut = new FileOutputStream("./examples/employee.ser");
                     ObjectOutputStream out = new ObjectOutputStream(fileOut);
                     out.writeObject(game.getBackupGame());
                     out.close();

@@ -374,7 +374,7 @@ public class OthelloGUI {
             else if(button == loadGameBtn){
                 Backup backup_game = null;
                 try {
-                    FileInputStream fileIn = new FileInputStream("employee.ser");
+                    FileInputStream fileIn = new FileInputStream("./examples/employee.ser");
                     ObjectInputStream in = new ObjectInputStream(fileIn);
                     backup_game = (Backup) in.readObject();
                     in.close();
