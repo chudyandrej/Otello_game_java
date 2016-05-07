@@ -19,7 +19,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -74,8 +73,8 @@ public class OthelloGUI {
     public OthelloGUI(){
         frame = new JFrame("Othello");
 
-        background = new ImageIcon(Images.resizeImage("lib/background.jpg", 500, 550));
-        buttonImage = new ImageIcon(Images.resizeImage("lib/button.jpg", 170, 40));
+        background = new ImageIcon(Images.resizeImage("/background.jpg", 500, 550));
+        buttonImage = new ImageIcon(Images.resizeImage("/button.jpg", 170, 40));
 
         createMainPage();
         createChooseGameModePage();
@@ -290,7 +289,7 @@ public class OthelloGUI {
             super.paintComponent(g);
             BufferedImage bg=null;
             try {
-                bg = ImageIO.read(new File("lib/background.jpg"));
+                bg = ImageIO.read(Images.class.getResource("/background.jpg"));
             }catch(IOException ex){
                 System.err.println(ex.getMessage());
                 ex.printStackTrace();

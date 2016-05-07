@@ -60,7 +60,7 @@ public class BoardGUI {
      * @param player2 instance of Player class
      * @param discsToFreeze max number of discs, which will be considered (randomly) to be frozen at each turn
      * @param CHTime max time in seconds after which will be random discs made frozen
-     * @param FTime max time in seconds after wchich will be the discs made unfrozen
+     * @param FTime max time in seconds after which will be the discs made unfrozen
      */
     public BoardGUI(JFrame frame, int boardSize, Player player1, Player player2, int discsToFreeze,int CHTime,int FTime){
         BoardGUI.frame = frame;
@@ -262,7 +262,7 @@ public class BoardGUI {
     private void createBoard(){
         board = new JLabel();
         board.setLayout(new BorderLayout());
-        board.setIcon(new ImageIcon(Images.resizeImage("lib/background.jpg", frame.getWidth(), frame.getHeight()+70)));
+        board.setIcon(new ImageIcon(Images.resizeImage("/background.jpg", frame.getWidth(), frame.getHeight()+70)));
 
 
         JToolBar topBar = new JToolBar();

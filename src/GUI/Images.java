@@ -13,7 +13,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -81,30 +80,30 @@ public class Images {
                 frame.setMinimumSize(new Dimension(700, 700));
         }
 
-        whitePlayerFieldDisc = new ImageIcon(resizeImage("lib/white2.png", w, h));
-        blackPlayerFieldDisc = new ImageIcon(resizeImage("lib/black2.png", w, h));
-        fieldBackground = new ImageIcon(resizeImage("lib/field.png", w, h));
-        fieldCanPutDisc = new ImageIcon(resizeImage("lib/fieldCanPut.png", w, h));
-        whitePlayerFieldDiscFrozen = new ImageIcon(resizeImage("lib/white2frozen.png", w, h));
-        blackPlayerFieldDiscFrozen = new ImageIcon(resizeImage("lib/black2frozen.png", w, h));
-        fieldBackgroundFrozen = new ImageIcon(resizeImage("lib/fieldFrozen.png", w, h));
-        whiteDisc = new ImageIcon(resizeImage("lib/whiteDisc.png", iconSize, iconSize));
-        blackDisc = new ImageIcon(resizeImage("lib/blackDisc.png", iconSize, iconSize));
-        arrowL = new ImageIcon(Images.openImage("lib/arrow_l.png"));
-        arrowR = new ImageIcon(Images.openImage("lib/arrow_r.png"));
+        whitePlayerFieldDisc = new ImageIcon(resizeImage("/white2.png", w, h));
+        blackPlayerFieldDisc = new ImageIcon(resizeImage("/black2.png", w, h));
+        fieldBackground = new ImageIcon(resizeImage("/field.png", w, h));
+        fieldCanPutDisc = new ImageIcon(resizeImage("/fieldCanPut.png", w, h));
+        whitePlayerFieldDiscFrozen = new ImageIcon(resizeImage("/white2frozen.png", w, h));
+        blackPlayerFieldDiscFrozen = new ImageIcon(resizeImage("/black2frozen.png", w, h));
+        fieldBackgroundFrozen = new ImageIcon(resizeImage("/fieldFrozen.png", w, h));
+        whiteDisc = new ImageIcon(resizeImage("/whiteDisc.png", iconSize, iconSize));
+        blackDisc = new ImageIcon(resizeImage("/blackDisc.png", iconSize, iconSize));
+        arrowL = new ImageIcon(Images.openImage("/arrow_l.png"));
+        arrowR = new ImageIcon(Images.openImage("/arrow_r.png"));
 
-        newGameBtnImage = new ImageIcon(Images.openImage("lib/icons/playAgain.png"));
-        newGameBtnImageE = new ImageIcon(Images.openImage("lib/icons/playAgainEntered.png"));
-        newGameBtnImageP = new ImageIcon(Images.openImage("lib/icons/playAgainPressed.png"));
-        homeBtnImage = new ImageIcon(Images.openImage("lib/icons/home.png"));
-        homeBtnImageE = new ImageIcon(Images.openImage("lib/icons/homeEntered.png"));
-        homeBtnImageP = new ImageIcon(Images.openImage("lib/icons/homePressed.png"));
-        undoBtnImage = new ImageIcon(Images.openImage("lib/icons/undo.png"));
-        undoBtnImageE = new ImageIcon(Images.openImage("lib/icons/undoEntered.png"));
-        undoBtnImageP = new ImageIcon(Images.openImage("lib/icons/undoPressed.png"));
-        saveBtnImage = new ImageIcon(Images.openImage("lib/icons/saveGame.png"));
-        saveBtnImageE = new ImageIcon(Images.openImage("lib/icons/saveGameEntered.png"));
-        saveBtnImageP = new ImageIcon(Images.openImage("lib/icons/saveGamePressed.png"));
+        newGameBtnImage = new ImageIcon(Images.openImage("/icons/playAgain.png"));
+        newGameBtnImageE = new ImageIcon(Images.openImage("/icons/playAgainEntered.png"));
+        newGameBtnImageP = new ImageIcon(Images.openImage("/icons/playAgainPressed.png"));
+        homeBtnImage = new ImageIcon(Images.openImage("/icons/home.png"));
+        homeBtnImageE = new ImageIcon(Images.openImage("/icons/homeEntered.png"));
+        homeBtnImageP = new ImageIcon(Images.openImage("/icons/homePressed.png"));
+        undoBtnImage = new ImageIcon(Images.openImage("/icons/undo.png"));
+        undoBtnImageE = new ImageIcon(Images.openImage("/icons/undoEntered.png"));
+        undoBtnImageP = new ImageIcon(Images.openImage("/icons/undoPressed.png"));
+        saveBtnImage = new ImageIcon(Images.openImage("/icons/saveGame.png"));
+        saveBtnImageE = new ImageIcon(Images.openImage("/icons/saveGameEntered.png"));
+        saveBtnImageP = new ImageIcon(Images.openImage("/icons/saveGamePressed.png"));
     }
 
     /**
@@ -131,7 +130,7 @@ public class Images {
     static public Image openImage(String imgName){
         Image img = null;
         try{
-            img = ImageIO.read(new File(imgName));
+            img = ImageIO.read(Images.class.getResource(imgName));
         }catch(IOException ex){
             System.err.println(ex.getMessage());
             ex.printStackTrace();
