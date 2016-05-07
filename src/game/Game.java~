@@ -158,7 +158,7 @@ public class Game {
     }
 
     /**
-     * Function for generating frozen fields.
+     * Function for generate frozen fields.
      * @param count How much fields will be frozen
      * @param max_timeFreeze Max time (seconds) for which will be the fields frozen
      * @param max_timeChange Max time (seconds) to change
@@ -179,7 +179,7 @@ public class Game {
                     try {
                         TimeUnit.SECONDS.sleep(timeChange);
                     }catch (InterruptedException e) {
-                        System.err.println("Exception thrown  :" + e);
+                        System.out.println("Exception thrown  :" + e);
                     }
                     freezeRunning.set(false);
                 }

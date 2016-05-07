@@ -119,8 +119,8 @@ public class ReversiRules {
     }
 
     /**
-     * Method turns discs given.
-     * @param st List of fields to be turned.
+     *
+     * @param st List of fileds for turnd.
      */
     public void turn_discs(List<BoardField> st){
         BoardField tmp;
@@ -224,5 +224,6 @@ public class ReversiRules {
         }
         return false;
     }
+
 }
 
