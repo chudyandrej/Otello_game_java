@@ -45,5 +45,4 @@ The application supports:
 - Andrej Chudý, xchudy03@stud.fit.vutbr.cz
 - Martin Kopec, xkopec42@stud.fit.vutbr.cz
 
-Faculty of Information Technology, Brno University of Technology 
-2016
+Faculty of Information Technology, Brno University of Technology, 2016
