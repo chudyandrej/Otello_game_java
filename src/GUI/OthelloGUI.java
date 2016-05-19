@@ -309,7 +309,6 @@ public class OthelloGUI {
                 if(!turn.turn_player.is_pc()) {
                     boardGUI.game.nextPlayer();
                 }
-                System.out.println("turn");
             }
         }else{
             JOptionPane.showMessageDialog(frame, "Couldn't find any saved game.");
