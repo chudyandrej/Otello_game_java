@@ -34,7 +34,7 @@ public class settingsMenu{
     JTextField botField = new JTextField("Computer", 10);
     public String computerName = "Computer";
 
-    JLabel fields = new JLabel("Discs (%)");
+    JLabel fields = new JLabel("Fields (%)");
     JTextField fieldsT = new JTextField("0", 10);
     public double FDisc = 0;
 
