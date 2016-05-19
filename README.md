@@ -3,13 +3,6 @@
 ## About
 The Othello a.k.a. [Reversi](https://en.wikipedia.org/wiki/Reversi) was implemented in Java as a school project. 
 
-**Authors:**
-- Andrej Chudý, xchudy03@stud.fit.vutbr.cz
-- Martin Kopec, xkopec42@stud.fit.vutbr.cz
-
-Faculty of Information Technology, Brno University of Technology 
-2016
-
 
 ## Installation
 Clone the repository and in the root directory provide ant compile command.
@@ -19,6 +12,7 @@ git clone < link>
 ant compile
 ant run
 ```
+
 
 ##Run the game
 In root depository provide:
@@ -33,6 +27,7 @@ or in the _dest-client_ directory is generated .jar file which you can run (on U
 java -jar othello-client.jar
 ```
 
+
 ##Rules
 [General rules](https://en.wikipedia.org/wiki/Reversi) of the game.
 The application supports:
@@ -44,3 +39,11 @@ The application supports:
   - Fields (%) - maximum fields (in percents) which can be frozen
   - Time to change (sec) - random number of fields will freeze, when the time's up
   - Froze time (sec) - fields will be made unfrozen, when the time's up, however, after the current turn
+
+
+## Authors of the application
+- Andrej Chudý, xchudy03@stud.fit.vutbr.cz
+- Martin Kopec, xkopec42@stud.fit.vutbr.cz
+
+Faculty of Information Technology, Brno University of Technology 
+2016
