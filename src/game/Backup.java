@@ -37,7 +37,7 @@ public class Backup implements java.io.Serializable{
     }
 
     /**
-     * Create new record into backup
+     * Create new record into the backup
      * @param basePoint Point of click
      * @param turnPlayer Player who made turn
      */
@@ -46,7 +46,7 @@ public class Backup implements java.io.Serializable{
     }
 
     /**
-     * Adds turned discs to backup
+     * Adds turned discs to the backup
      * @param turnedDisc list of fields
      */
     public void addTurnedDiscs(List<BoardField> turnedDisc){
@@ -54,7 +54,7 @@ public class Backup implements java.io.Serializable{
     }
 
     /**
-     * Adds frozen discs to backup
+     * Adds frozen discs to the backup
      * @param frozenDisc list of fields
      */
     public void addFrozenDiscs(List<BoardField> frozenDisc){
@@ -62,20 +62,12 @@ public class Backup implements java.io.Serializable{
     }
 
     /**
-     * Save turn to list
+     * Save turn to the list
      */
     public void saveBackupRecord(){
         backupTurns.add(newTurn);
     }
 
-    /**
-     * Magic
-     */
-    public void load(){
-        for(TurnBackUp turn  : backupTurns) {
-            turn.turn_player.putDisk(turn.base_Point.row,turn.base_Point.col);
-        }
-    }
     /**
      * Getter of player1.
      * @return player1

@@ -279,6 +279,44 @@ public class OthelloGUI {
     }
 
     /**
+     * Method loads game from a backup and replays whole game to restores
+     * the game state.
+     */
+    private void loadGame(){
+        Backup backup_game = null;
+        try {
+            FileInputStream fileIn = new FileInputStream("./examples/backupGame.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            backup_game = (Backup) in.readObject();
+            in.close();
+            fileIn.close();
+        }
+        catch(IOException i) {
+            i.printStackTrace();
+
+        }catch(ClassNotFoundException c) {
+            System.err.println("backupGame class not found");
+            c.printStackTrace();
+        }
+        if (backup_game != null){
+            if(settings != null) { updateSettings(); }
+            BoardGUI boardGUI = new BoardGUI(frame, backup_game.getBoardSize(), backup_game.getPlayer1(),
+                    backup_game.getPlayer2(), discsToFreeze ,CHTime ,FTime );
+            frame.remove(mainMenu);
+
+            for(Backup.TurnBackUp turn  : backup_game.backupTurns) {
+                turn.turn_player.putDisk(turn.base_Point.row,turn.base_Point.col);
+                if(!turn.turn_player.is_pc()) {
+                    boardGUI.game.nextPlayer();
+                }
+                System.out.println("turn");
+            }
+        }else{
+            JOptionPane.showMessageDialog(frame, "Couldn't find any saved game.");
+        }
+    }
+
+    /**
      * Background panel class, sets background image,
      * all menu pages are set on the panel.
      */
@@ -337,7 +375,7 @@ public class OthelloGUI {
 
     /**
      * Class implements action listener for buttons in main menu page
-     * and choose-game-mode page and provides actions when event occurs
+     * and choose-game-mode page and also provides actions when event occurs
      */
     private class buttonClicked implements ActionListener {
         private JButton button;
@@ -372,31 +410,7 @@ public class OthelloGUI {
                 changeScene(chooseMode, chooseBoardSize);
             }
             else if(button == loadGameBtn){
-                Backup backup_game = null;
-                try {
-                    FileInputStream fileIn = new FileInputStream("./examples/backupGame.ser");
-                    ObjectInputStream in = new ObjectInputStream(fileIn);
-                    backup_game = (Backup) in.readObject();
-                    in.close();
-                    fileIn.close();
-                }
-                catch(IOException i) {
-                    i.printStackTrace();
-
-                }catch(ClassNotFoundException c) {
-                    System.err.println("Employee class not found");
-                    c.printStackTrace();
-                }
-                if (backup_game != null){
-                    if(settings != null) { updateSettings(); }
-                    BoardGUI boardGUI = new BoardGUI(frame, backup_game.getBoardSize(), backup_game.getPlayer1(),
-                                                    backup_game.getPlayer2(), discsToFreeze ,CHTime ,FTime );
-                    frame.remove(mainMenu);
-
-                    backup_game.load();
-                }else{
-                    JOptionPane.showMessageDialog(frame, "Couldn't find any saved game.");
-                }
+                loadGame();
             }
         }
     }
