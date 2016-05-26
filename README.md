@@ -8,7 +8,7 @@ The Othello a.k.a. [Reversi](https://en.wikipedia.org/wiki/Reversi) was implemen
 Clone the repository and in the root directory provide ant compile command.
 
 ```
-git clone < link>
+git clone https://github.com/chudyandrej/Otello_game_java.git
 ant compile
 ant run
 ```
