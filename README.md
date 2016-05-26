@@ -9,7 +9,7 @@ Clone the repository and in the root directory provide ant compile command.
 
 ```
 git clone https://github.com/chudyandrej/Otello_game_java.git
-cd /Otello_game_java
+cd Otello_game_java
 ant compile
 ant run
 ```
