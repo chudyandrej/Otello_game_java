@@ -1,7 +1,8 @@
 # The Othello Game
 
 ## About
-The Othello a.k.a. [Reversi](https://en.wikipedia.org/wiki/Reversi) was implemented in Java as a school project. 
+The Othello a.k.a. [Reversi](https://en.wikipedia.org/wiki/Reversi) was
+implemented in Java as a school project.
 
 
 ## Installation
@@ -15,31 +16,35 @@ ant run
 ```
 
 
-##Run the game
-In root depository provide:
+## Run the game
+In the repository provide:
 
 ```
 ant run
 ```
 
-or in the _dest-client_ directory is generated .jar file which you can run (on UNIX systems) as:
+or a .jar file can be generated in the _dest-client_ directory (on UNIX
+systems) by:
 
 ```
 java -jar othello-client.jar
 ```
 
 
-##Rules
+## Rules
 [General rules](https://en.wikipedia.org/wiki/Reversi) of the game.
 The application supports:
-- option choose the board size (6x6, 8x8, 10x10, 12x12)
+- an option to choose the board size (6x6, 8x8, 10x10, 12x12)
 - save and load a game (game is saved into _examples_ directory)
 - undo operation
 - choose an oponnent (human or computer)
-- frozing fields (frozen fields cannot be turned), in settings it's needed to set up:
+- frozing fields (frozen fields cannot be turned), in settings it's needed to
+set up:
   - Fields (%) - maximum fields (in percents) which can be frozen
-  - Time to change (sec) - random number of fields will freeze, when the time's up
-  - Froze time (sec) - fields will be made unfrozen, when the time's up, however, after the current turn
+  - Time to change (sec) - a random number of fields will freeze, when the time's
+up
+  - Froze time (sec) - fields will be made unfrozen, when the time's up,
+however, after the current turn
 
 
 ## Authors of the application
